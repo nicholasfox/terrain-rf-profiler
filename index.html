@@ -1,0 +1,1399 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="utf-8" />
+    <link rel="icon" type="image/png" href="icons/Earth_icon_2.png">
+    <title>地形截面分析</title>
+    <style>
+        html,
+        body {
+            width: 100%;
+            height: 100%;
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+        }
+
+        #cesiumContainer {
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 100%;
+            bottom: 300px;
+        }
+
+        #profileChart {
+            position: absolute;
+            left: 0;
+            bottom: 0;
+            width: 100%;
+            height: 300px;
+            border-top: 1px solid #ccc;
+            background: #fff;
+        }
+    </style>
+
+    <script src="https://cesium.com/downloads/cesiumjs/releases/1.105/Build/Cesium/Cesium.js"></script>
+    <link href="https://cesium.com/downloads/cesiumjs/releases/1.105/Build/Cesium/Widgets/widgets.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/echarts@5/dist/echarts.min.js"></script>
+</head>
+
+<body>
+    <div id="cesiumContainer"></div>
+    <div id="profileChart"></div>
+
+    <div id="statusBar" style="position:absolute;top:50px;right:10px;z-index:1000;background:rgba(255,255,255,0.95);padding:5px;border-radius:4px;font-size:12px;color:#333;"></div>
+
+    <div id="controlPanel" style="position:absolute;left:10px;top:10px;z-index:1000;
+     background:rgba(255,255,255,0.6);padding:6px 8px;border-radius:4px;
+     font-size:12px;border:1px solid #ccc;">
+        A天线高:&nbsp;
+        <input id="antA" type="number" value="20" min="0" max="6000" step="1" style="width:60px;"> m&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        B天线高:
+        <input id="antB" type="number" value="20" min="0" max="6000" step="1" style="width:60px;"> m
+        <div style="margin-top:5px;">频&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;率:
+            <input id="freqGHz" type="number" value="1.4" min="0.1" max="100" step="0.1" style="width:60px;"> GHz
+            采样密度:
+            <input id="sampleDensity" type="number" value="300" min="300" max="1000" step="100" style="width:60px;">
+        </div>
+        <div style="margin-top:5px;">
+            A经度: <input id="lonAInput" type="number" step="0.000001" style="width:85px;">
+            纬度: <input id="latAInput" type="number" step="0.000001" style="width:80px;">
+            海拔: <span id="elevA" style="margin-left:10px;color:#333;">--</span> m
+        </div>
+        <div style="margin-top:5px;">
+            B经度: <input id="lonBInput" type="number" step="0.000001" style="width:85px;">
+            纬度: <input id="latBInput" type="number" step="0.000001" style="width:80px;">
+            海拔: <span id="elevB" style="margin-left:10px;color:#333;">--</span> m
+        </div>
+        <div style="margin-top:5px;">
+            <button id="pickAB">选点模式</button>
+        </div>
+        <div style="margin-top:5px; display:flex; align-items:center; font-size:12px; color:#333;">
+            <label style="margin-right:15px;">
+                <input type="checkbox" id="kFactorToggle"> 考虑折射 (K = 4/3)
+            </label>
+            <div id="radiusInfo"></div>
+        </div>
+        <div style="margin-top:5px; display:flex; align-items:center; flex-wrap:wrap; gap:8px;">
+            <label style="white-space:nowrap;">
+                <input type="checkbox" id="elevRampToggle"> 地形色谱图
+            </label>
+            <span id="gammaControl" style="display:none; white-space:nowrap; font-size:12px;">
+                色谱Gamma: <input id="gammaSlider" type="range" min="1.0" max="3.0" step="0.1" value="1.5" style="width:80px;vertical-align:middle;">
+                <span id="gammaValue">1.5</span>
+            </span>
+            <span id="regionControl" style="display:none; white-space:nowrap;">
+                <button id="rectSelectBtn" style="font-size:12px;">矩形选区</button>
+                <button id="clearSelectionBtn" style="font-size:12px;margin-left:5px;">清除选区</button>
+            </span>
+        </div>
+    </div>
+
+    <div id="legend"
+        style="position:absolute;top:200px;left:10px;z-index:1000;background:rgba(255,255,255,0.6);padding:8px;border-radius:4px;font-size:12px;border:1px solid #ccc;display:none;">
+        <div style="display:flex;flex-direction:column;align-items:center;">
+            <div>高度(m)</div>
+            <div style="display:flex;flex-direction:column;align-items:center;margin:5px 0;">
+                <span style="font-size:10px;">3000</span>
+                <div id="legendGradient"
+                    style="width:20px;height:100px;margin:2px 0;background:linear-gradient(to bottom, white, red, yellow, green, blue);border:1px solid #ccc;">
+                </div>
+                <span style="font-size:10px;">0</span>
+            </div>
+            <div id="legendText" style="font-size:11px;">0m - 3000m</div>
+        </div>
+    </div>
+
+    <script>
+        const chart = echarts.init(document.getElementById("profileChart"));
+        let currentImageryName = 'OpenStreetMap';
+
+        let status = {
+            map: '等待',
+            terrain: '等待',
+            spectrum: '未启用'
+        };
+
+        function updateStatusBar() {
+            const text = `地图图层: ${status.map}<br>地形数据: ${status.terrain}<br>色谱分析: ${status.spectrum}`;
+            document.getElementById('statusBar').innerHTML = text;
+        }
+
+        updateStatusBar();
+
+        window.addEventListener('resize', () => {
+            chart.resize();
+        });
+
+        const CONSTANTS = {
+            CAMERA_PITCH: -Math.PI / 2,
+            DEFAULT_SAMPLE_COUNT: 300,
+            MAX_ANTENNA_HEIGHT: 6000,
+            MIN_ANTENNA_HEIGHT: 0,
+            DEBOUNCE_TIME: 300,
+            UPDATE_INTERVAL: 500,
+            EARTH_RADIUS: 6371000,
+            HEIGHT_RAMP_MATERIAL_UNIFORMS: {
+                uMinHeight: 0.0,
+                uMaxHeight: 3000.0
+            }
+        };
+
+        const domElements = {
+            antA: document.getElementById("antA"),
+            antB: document.getElementById("antB"),
+            kFactorToggle: document.getElementById("kFactorToggle"),
+            elevRampToggle: document.getElementById("elevRampToggle"),
+            freqGHz: document.getElementById("freqGHz"),
+            sampleDensity: document.getElementById("sampleDensity"),
+            lonAInput: document.getElementById("lonAInput"),
+            latAInput: document.getElementById("latAInput"),
+            lonBInput: document.getElementById("lonBInput"),
+            latBInput: document.getElementById("latBInput"),
+            elevA: document.getElementById("elevA"),
+            elevB: document.getElementById("elevB"),
+            legend: document.getElementById("legend"),
+            legendText: document.getElementById("legendText"),
+            pickAB: document.getElementById("pickAB"),
+            radiusInfo: document.getElementById("radiusInfo"),
+            gammaSlider: document.getElementById("gammaSlider"),
+            gammaValue: document.getElementById("gammaValue"),
+            gammaControl: document.getElementById("gammaControl"),
+            regionControl: document.getElementById("regionControl"),
+            rectSelectBtn: document.getElementById("rectSelectBtn"),
+            clearSelectionBtn: document.getElementById("clearSelectionBtn")
+        };
+
+        const ConfigManager = {
+            defaults: {
+                antHeightA: 20,
+                antHeightB: 20,
+                frequency: 1.4e9,
+                kFactor: 1.0,
+                sampleCount: 300
+            },
+
+            getCurrentConfig() {
+                return {
+                    antHeightA: parseFloat(domElements.antA.value) || this.defaults.antHeightA,
+                    antHeightB: parseFloat(domElements.antB.value) || this.defaults.antHeightB,
+                    frequency: parseFloat(domElements.freqGHz.value) * 1e9 || this.defaults.frequency,
+                    kFactor: domElements.kFactorToggle.checked ? 4 / 3 : 1.0
+                };
+            }
+        };
+
+        const TerrainSampler = {
+            async sampleTerrainPath(startPoint, endPoint, sampleCount = CONSTANTS.DEFAULT_SAMPLE_COUNT) {
+                const geodesic = new Cesium.EllipsoidGeodesic(startPoint, endPoint);
+                const positions = [];
+                const distances = [];
+
+                for (let i = 0; i <= sampleCount; i++) {
+                    const t = i / sampleCount;
+                    const point = new Cesium.Cartographic();
+                    geodesic.interpolateUsingFraction(t, point);
+                    positions.push(point);
+                    distances.push(geodesic.surfaceDistance * t);
+                }
+
+                const samples = await Cesium.sampleTerrain(viewer.terrainProvider, 12, positions);
+                const heights = samples.map(s => s.height ?? 0);
+
+                return { positions, distances, heights };
+            },
+
+            async sampleElevation(cartographic) {
+                const samples = await Cesium.sampleTerrain(viewer.terrainProvider, 12, [cartographic]);
+                return samples[0].height;
+            }
+        };
+
+        const arcgisProvider = new Cesium.ArcGisMapServerImageryProvider({
+            url: 'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer'
+        });
+        const osmProvider = new Cesium.UrlTemplateImageryProvider({
+            url: 'https://tile.openstreetmap.org/{z}/{x}/{y}.png'
+        });
+
+        const imageryViewModels = [
+            new Cesium.ProviderViewModel({
+                name: 'OpenStreetMap',
+                iconUrl: Cesium.buildModuleUrl('Widgets/Images/ImageryProviders/openStreetMap.png'),
+                tooltip: 'OSM 地图',
+                creationFunction: () => osmProvider
+            }),
+            new Cesium.ProviderViewModel({
+                name: 'ArcGIS World Imagery',
+                iconUrl: 'https://upload.wikimedia.org/wikipedia/commons/7/71/Earth_icon_2.png',
+                tooltip: 'ArcGIS 全球卫星图',
+                creationFunction: () => arcgisProvider
+            })
+        ];
+
+        const viewer = new Cesium.Viewer('cesiumContainer', {
+            imageryProviderViewModels: imageryViewModels,
+            selectedImageryProviderViewModel: imageryViewModels[0],
+            baseLayerPicker: true,
+            geocoder: false,
+            sceneModePicker: false,
+            homeButton: false,
+            navigationHelpButton: false,
+            timeline: false,
+            animation: false,
+            infoBox: false,
+            selectionIndicator: false,
+            creditContainer: document.createElement("div")
+        });
+
+        viewer.baseLayerPicker.viewModel.selectedImagery = imageryViewModels[0];
+
+        viewer.scene.globe.tileLoadProgressEvent.addEventListener((queueLength) => {
+            if (queueLength === 0) {
+                status.map = '✓完成';
+            } else {
+                status.map = '加载中';
+            }
+            updateStatusBar();
+        });
+
+        let viewMinHeight = 0;
+        let viewMaxHeight = 100;
+
+        const heightRampMaterial = new Cesium.Material({
+            fabric: {
+                uniforms: {
+                    uMinHeight: CONSTANTS.HEIGHT_RAMP_MATERIAL_UNIFORMS.uMinHeight,
+                    uMaxHeight: CONSTANTS.HEIGHT_RAMP_MATERIAL_UNIFORMS.uMaxHeight,
+                    uGamma: 1.5
+                },
+                source: `
+      czm_material czm_getMaterial(czm_materialInput materialInput)
+      {
+        czm_material m = czm_getDefaultMaterial(materialInput);
+        float h = materialInput.height;
+
+        float t = clamp((h - uMinHeight) / (uMaxHeight - uMinHeight), 0.0, 1.0);
+        t = pow(t, uGamma);
+
+        vec3 color;
+        if (t < 0.25) {
+          color = mix(vec3(0.1, 0.2, 0.6), vec3(0.2, 0.8, 0.2), t / 0.25);
+        } else if (t < 0.5) {
+          color = mix(vec3(0.2, 0.8, 0.2), vec3(1.0, 1.0, 0.0), (t - 0.25) / 0.25);
+        } else if (t < 0.75) {
+          color = mix(vec3(1.0, 1.0, 0.0), vec3(1.0, 0.2, 0.0), (t - 0.5) / 0.25);
+        } else {
+          color = mix(vec3(1.0, 0.2, 0.0), vec3(1.0, 1.0, 1.0), (t - 0.75) / 0.25);
+        }
+
+        m.diffuse = color;
+        m.alpha = 0.6;
+        return m;
+      }
+    `
+            }
+        });
+
+        Cesium.ArcGISTiledElevationTerrainProvider.fromUrl(
+            "https://elevation3d.arcgis.com/arcgis/rest/services/WorldElevation3D/Terrain3D/ImageServer"
+        ).then(function (terrain) {
+            viewer.terrainProvider = terrain;
+            status.terrain = '✓完成';
+            updateStatusBar();
+            runProfile(true);
+        });
+
+        viewer.scene.screenSpaceCameraController.enableTilt = false;
+
+        viewer.camera.setView({
+            orientation: {
+                heading: 0,
+                pitch: CONSTANTS.CAMERA_PITCH,
+                roll: 0
+            }
+        });
+
+        let debounceTimer = null;
+        let isSampling = false;
+
+        viewer.camera.changed.addEventListener(() => {
+            if (Math.abs(viewer.camera.pitch - (CONSTANTS.CAMERA_PITCH)) > 0.001) {
+                viewer.camera.setView({
+                    orientation: {
+                        heading: viewer.camera.heading,
+                        pitch: CONSTANTS.CAMERA_PITCH,
+                        roll: 0
+                    }
+                });
+                return;
+            }
+
+            if (domElements.elevRampToggle.checked) {
+                if (debounceTimer) clearTimeout(debounceTimer);
+
+                debounceTimer = setTimeout(async () => {
+                    if (isSampling || !domElements.elevRampToggle.checked) return;
+
+                    isSampling = true;
+                    try {
+                        await updateViewHeightRange();
+                    } finally {
+                        isSampling = false;
+                    }
+                }, CONSTANTS.DEBOUNCE_TIME);
+            }
+        });
+
+        let pickingAB = false;
+        let pickState = 0;
+
+        let A = Cesium.Cartographic.fromDegrees(111.270049, 22.272179, 0);
+        let B = Cesium.Cartographic.fromDegrees(112.944868, 22.176439, 0);
+        let lonA = Cesium.Math.toDegrees(A.longitude);
+        let latA = Cesium.Math.toDegrees(A.latitude);
+        let lonB = Cesium.Math.toDegrees(B.longitude);
+        let latB = Cesium.Math.toDegrees(B.latitude);
+        let markerA = null;
+        let markerB = null;
+
+        let isDragging = false;
+        let draggedEntity = null;
+        let draggedPosition = null;
+        let hoverEntity = null;
+
+        let lineEntity = null;
+
+        let selectionMode = null;
+        let selectionRegion = null;
+        let selectionEntity = null;
+        let selectionStartPosCarto = null;
+
+        let antHeightA = 0;
+        let antHeightB = 0;
+
+        let K = 1.0;
+
+        let freqHz = 1.4e9;
+
+        let lastUpdateTime = 0;
+
+        viewer.scene.postRender.addEventListener(() => {
+            const provider = viewer.imageryProvider;
+            let name;
+            if (provider && provider.url) {
+                if (provider.url.includes('openstreetmap')) {
+                    name = 'OpenStreetMap';
+                } else if (provider.url.includes('arcgisonline')) {
+                    name = 'ArcGIS World Imagery';
+                } else {
+                    name = '';
+                }
+            } else {
+                name = '';
+            }
+
+            if (name !== currentImageryName) {
+                currentImageryName = name;
+                updateLabelColors();
+            }
+        });
+
+        let currentMin = 0;
+        let currentMax = 3000;
+        let lastSampleTime = 0;
+        let lastSampledRect = null;
+
+        function withTimeout(promise, ms) {
+            return Promise.race([
+                promise,
+                new Promise((_, reject) => setTimeout(() => reject(new Error('采样超时')), ms))
+            ]);
+        }
+
+        function updateViewStatus(text) {
+            status.spectrum = text;
+            updateStatusBar();
+        }
+
+        async function updateViewHeightRange() {
+            const now = performance.now();
+            if (now - lastSampleTime < 2000) return;
+
+            let rawRect;
+            let isRegionMode = false;
+            let regionGrid = 8;
+
+            if (selectionRegion) {
+                rawRect = selectionRegion;
+                isRegionMode = true;
+                const rectWidth = rawRect.east - rawRect.west;
+                const rectHeight = rawRect.north - rawRect.south;
+                const areaRad = rectWidth * rectHeight;
+                regionGrid = Math.max(12, Math.min(20, Math.floor(Math.sqrt(areaRad) * 1000)));
+            } else {
+                rawRect = viewer.camera.computeViewRectangle();
+                if (!rawRect) return;
+
+                if (lastSampledRect) {
+                    const dLon = rawRect.east - rawRect.west;
+                    const dLat = rawRect.north - rawRect.south;
+                    const centerLon = (rawRect.east + rawRect.west) / 2;
+                    const centerLat = (rawRect.north + rawRect.south) / 2;
+                    const prevCenterLon = (lastSampledRect.east + lastSampledRect.west) / 2;
+                    const prevCenterLat = (lastSampledRect.north + lastSampledRect.south) / 2;
+                    const prevDLon = lastSampledRect.east - lastSampledRect.west;
+                    const prevDLat = lastSampledRect.north - lastSampledRect.south;
+                    const movedFraction = Math.sqrt(
+                        ((centerLon - prevCenterLon) / Math.max(prevDLon, 1e-6)) ** 2 +
+                        ((centerLat - prevCenterLat) / Math.max(prevDLat, 1e-6)) ** 2
+                    );
+                    if (movedFraction < 0.05) return;
+                }
+            }
+
+            const cameraHeight = viewer.camera.positionCartographic.height;
+
+            let rect;
+            let baseGrid;
+            if (isRegionMode) {
+                rect = rawRect;
+                baseGrid = regionGrid;
+            } else {
+                const expansionFactor = Math.max(1.5, Math.min(10.0, cameraHeight / 100000 + 1.0));
+                const expCenterLon = (rawRect.east + rawRect.west) / 2;
+                const expCenterLat = (rawRect.north + rawRect.south) / 2;
+                const expDLon = (rawRect.east - rawRect.west) * expansionFactor;
+                const expDLat = (rawRect.north - rawRect.south) * expansionFactor;
+                rect = {
+                    west: expCenterLon - expDLon / 2,
+                    east: expCenterLon + expDLon / 2,
+                    south: expCenterLat - expDLat / 2,
+                    north: expCenterLat + expDLat / 2
+                };
+                baseGrid = Math.max(8, Math.min(32, Math.floor(100 / Math.max(cameraHeight / 1000, 0.5))));
+            }
+
+            const buffer = isRegionMode
+                ? (rect.east - rect.west) * 0.05
+                : 0.01;
+
+            isSampling = true;
+            updateViewStatus('进行中');
+
+            try {
+                const baseSamples = [];
+                for (let i = 0; i < baseGrid; i++) {
+                    for (let j = 0; j < baseGrid; j++) {
+                        const lon = Cesium.Math.lerp(rect.west - buffer, rect.east + buffer, i / (baseGrid - 1));
+                        const lat = Cesium.Math.lerp(rect.south - buffer, rect.north + buffer, j / (baseGrid - 1));
+                        baseSamples.push(Cesium.Cartographic.fromRadians(lon, lat));
+                    }
+                }
+
+                const batchSize = 32;
+                const baseUpdated = [];
+                for (let i = 0; i < baseSamples.length; i += batchSize) {
+                    const batch = baseSamples.slice(i, Math.min(i + batchSize, baseSamples.length));
+                    const batchUpdated = await withTimeout(
+                        Cesium.sampleTerrainMostDetailed(viewer.terrainProvider, batch),
+                        15000
+                    );
+                    baseUpdated.push(...batchUpdated);
+                    const progress = Math.min(i + batchSize, baseSamples.length);
+                    updateViewStatus(`采样 ${progress}/${baseSamples.length} 点...`);
+                    await new Promise(r => setTimeout(r, 0));
+                }
+
+                const baseValidHeights = baseUpdated.map(p => p.height).filter(h => h !== undefined);
+
+                if (baseValidHeights.length === 0) {
+                    console.warn("基础采样失败，无有效高度数据");
+                    updateViewStatus('采样失败');
+                    return;
+                }
+
+                const allValidHeights = [...baseValidHeights];
+                if (allValidHeights.length > 0) {
+                    viewMinHeight = Math.min(...allValidHeights);
+                    viewMaxHeight = Math.max(...allValidHeights);
+                    if (viewMaxHeight - viewMinHeight < (isRegionMode ? 1 : 10)) {
+                        viewMaxHeight = viewMinHeight + (isRegionMode ? 1 : 10);
+                    }
+                    const rangePad = isRegionMode ? 0 : (viewMaxHeight - viewMinHeight) * 0.2;
+                    viewMinHeight = Math.max(0, viewMinHeight - rangePad);
+                    viewMaxHeight = viewMaxHeight + rangePad;
+
+                    const regionInfo = isRegionMode
+                        ? `选区${((rect.east - rect.west) * 111.32).toFixed(2)}×${((rect.north - rect.south) * 111.32).toFixed(2)}km `
+                        : '';
+                    console.log(`色谱采样完成：${regionInfo}${baseValidHeights.length}点，范围[${viewMinHeight.toFixed(0)}, ${viewMaxHeight.toFixed(0)}]`);
+
+                    if (viewer.scene.globe.material) {
+                        viewer.scene.globe.material.uniforms.uMinHeight = viewMinHeight;
+                        viewer.scene.globe.material.uniforms.uMaxHeight = viewMaxHeight;
+                        domElements.legendText.innerText = `${viewMinHeight.toFixed(0)}m - ${viewMaxHeight.toFixed(0)}m`;
+
+                        const legendSpans = domElements.legend.querySelectorAll('span');
+                        if (legendSpans.length >= 2) {
+                            legendSpans[0].innerText = Math.round(viewMaxHeight);
+                            legendSpans[1].innerText = Math.round(viewMinHeight);
+                        }
+
+                        viewer.scene.requestRender();
+                    }
+                }
+            } catch (e) {
+                if (e.message === '采样超时') {
+                    console.warn("采样超时，请稍后重试");
+                    updateViewStatus('采样超时');
+                } else {
+                    console.warn("采样被取消或失败", e);
+                    updateViewStatus('采样失败');
+                }
+            } finally {
+                isSampling = false;
+                lastSampleTime = performance.now();
+                lastSampledRect = rawRect;
+                status.spectrum = domElements.elevRampToggle.checked ? '✓完成' : '未启用';
+                updateStatusBar();
+            }
+        }
+
+        function setupEventListeners() {
+            domElements.antA.addEventListener("input", () => runProfile(true));
+            domElements.antB.addEventListener("input", () => runProfile(true));
+            domElements.kFactorToggle.addEventListener("change", () => {
+                K = domElements.kFactorToggle.checked ? 4 / 3 : 1.0;
+                runProfile(true);
+            });
+
+            domElements.elevRampToggle.addEventListener("change", async () => {
+                const enabled = domElements.elevRampToggle.checked;
+                domElements.legend.style.display = enabled ? 'block' : 'none';
+                domElements.gammaControl.style.display = enabled ? 'block' : 'none';
+                domElements.regionControl.style.display = enabled ? 'block' : 'none';
+
+                if (!enabled) {
+                    viewer.scene.globe.material = null;
+                    status.spectrum = '未启用';
+                    status.terrain = '✓完成';
+                    updateStatusBar();
+                }
+
+                if (enabled) {
+                    if (selectionRegion) {
+                        viewer.scene.globe.material = heightRampMaterial;
+                        await updateViewHeightRange();
+                    } else {
+                        viewer.scene.globe.material = null;
+                        status.spectrum = '等待选区';
+                        updateStatusBar();
+                    }
+                }
+            });
+
+            domElements.gammaSlider.addEventListener("input", () => {
+                const gamma = parseFloat(domElements.gammaSlider.value);
+                domElements.gammaValue.innerText = gamma.toFixed(1);
+                if (viewer.scene.globe.material) {
+                    viewer.scene.globe.material.uniforms.uGamma = gamma;
+                    viewer.scene.requestRender();
+                }
+            });
+
+            viewer.camera.moveEnd.addEventListener(() => {
+                if (domElements.elevRampToggle.checked) {
+                    updateViewHeightRange();
+                }
+            });
+
+            domElements.freqGHz.addEventListener("input", updateFrequency);
+
+            function updateFrequency() {
+                const v = parseFloat(domElements.freqGHz.value);
+                if (!isNaN(v) && v > 0) {
+                    freqHz = v * 1e9;
+                    runProfile(true);
+                }
+            }
+
+            domElements.sampleDensity.addEventListener("input", () => runProfile(true));
+
+            let updateTimer = null;
+            function debouncedUpdate() {
+                clearTimeout(updateTimer);
+                updateTimer = setTimeout(() => {
+                    updateABCoordinates();
+                }, 500);
+            }
+
+            domElements.lonAInput.addEventListener("input", debouncedUpdate);
+            domElements.latAInput.addEventListener("input", debouncedUpdate);
+            domElements.lonBInput.addEventListener("input", debouncedUpdate);
+            domElements.latBInput.addEventListener("input", debouncedUpdate);
+
+            function updateABCoordinates() {
+                lonA = parseFloat(domElements.lonAInput.value);
+                latA = parseFloat(domElements.latAInput.value);
+                lonB = parseFloat(domElements.lonBInput.value);
+                latB = parseFloat(domElements.latBInput.value);
+
+                A = Cesium.Cartographic.fromDegrees(lonA, latA);
+                B = Cesium.Cartographic.fromDegrees(lonB, latB);
+
+                if (markerA) markerA.position = Cesium.Cartesian3.fromDegrees(lonA, latA);
+                if (markerB) markerB.position = Cesium.Cartesian3.fromDegrees(lonB, latB);
+
+                runProfile(true);
+            }
+
+            domElements.pickAB.onclick = () => {
+                pickingAB = !pickingAB;
+                pickState = 0;
+                domElements.pickAB.innerText = pickingAB ? "点击地图选 A/B" : "选点模式";
+                const disable = pickingAB;
+                domElements.lonAInput.disabled = disable;
+                domElements.latAInput.disabled = disable;
+                domElements.lonBInput.disabled = disable;
+                domElements.latBInput.disabled = disable;
+            };
+
+            domElements.rectSelectBtn.onclick = () => {
+                if (selectionMode === 'rectangle') {
+                    selectionMode = null;
+                    domElements.rectSelectBtn.innerText = "矩形选区";
+                } else {
+                    selectionMode = 'rectangle';
+                    domElements.rectSelectBtn.innerText = "选区模式...";
+                }
+            };
+
+            domElements.clearSelectionBtn.onclick = () => {
+                clearSelection();
+            };
+
+            function clearSelection() {
+                selectionRegion = null;
+                selectionMode = null;
+                domElements.rectSelectBtn.innerText = "矩形选区";
+                if (selectionEntity) {
+                    viewer.entities.remove(selectionEntity);
+                    selectionEntity = null;
+                }
+                if (domElements.elevRampToggle.checked) {
+                    viewer.scene.globe.material = null;
+                    status.spectrum = '等待选区';
+                    updateStatusBar();
+                }
+            }
+        }
+
+        setupEventListeners();
+
+        domElements.lonAInput.value = lonA.toFixed(6);
+        domElements.latAInput.value = latA.toFixed(6);
+        domElements.lonBInput.value = lonB.toFixed(6);
+        domElements.latBInput.value = latB.toFixed(6);
+
+        function updateLabelColors() {
+            const provider = viewer.imageryProvider;
+            let isOSM = false;
+            if (provider && provider.url) {
+                isOSM = provider.url.includes('openstreetmap');
+            }
+
+            const fillColor = isOSM ? Cesium.Color.RED : Cesium.Color.RED;
+
+            if (markerA && markerA.label) {
+                markerA.label.fillColor = fillColor;
+            }
+            if (markerB && markerB.label) {
+                markerB.label.fillColor = fillColor;
+            }
+
+            viewer.scene.requestRender();
+        }
+
+        try {
+            if (viewer.baseLayerPicker.viewModel && viewer.baseLayerPicker.viewModel.changedEvent) {
+                viewer.baseLayerPicker.viewModel.changedEvent.addEventListener(updateLabelColors);
+            }
+        } catch (e) {
+            console.warn("影像图层监听器设置失败:", e);
+        }
+
+        updateLabelColors();
+
+        const handler = new Cesium.ScreenSpaceEventHandler(viewer.scene.canvas);
+        handler.setInputAction(function (click) {
+            if (!pickingAB) return;
+
+            const ray = viewer.camera.getPickRay(click.position);
+            const cartesian = viewer.scene.globe.pick(ray, viewer.scene);
+            if (!cartesian) return;
+
+            const carto = Cesium.Cartographic.fromCartesian(cartesian);
+
+            if (pickState === 0) {
+                A = new Cesium.Cartographic(carto.longitude, carto.latitude, 0);
+                pickState = 1;
+
+            } else {
+                B = new Cesium.Cartographic(carto.longitude, carto.latitude, 0);
+                pickState = 0;
+                pickingAB = false;
+                domElements.pickAB.innerText = "选点模式";
+                domElements.lonAInput.disabled = false;
+                domElements.latAInput.disabled = false;
+                domElements.lonBInput.disabled = false;
+                domElements.latBInput.disabled = false;
+                runProfile(true);
+            }
+        }, Cesium.ScreenSpaceEventType.LEFT_CLICK);
+
+        handler.setInputAction(function (click) {
+            // Priority 1: Rectangle selection
+            if (selectionMode === 'rectangle' && !pickingAB) {
+                const ray = viewer.camera.getPickRay(click.position);
+                const cartesian = viewer.scene.globe.pick(ray, viewer.scene);
+                if (!cartesian) return;
+                selectionStartPosCarto = Cesium.Cartographic.fromCartesian(cartesian);
+                viewer.scene.screenSpaceCameraController.enableInputs = false;
+                return;
+            }
+            // Priority 2: A/B marker drag
+            const pickedObject = viewer.scene.pick(click.position);
+            if (Cesium.defined(pickedObject) && pickedObject.id) {
+                if (pickedObject.id.id === 'A' || pickedObject.id.id === 'B') {
+                    isDragging = true;
+                    draggedEntity = pickedObject.id;
+                    draggedPosition = Cesium.Cartesian3.fromRadians(
+                        draggedEntity.id === 'A' ? A.longitude : B.longitude,
+                        draggedEntity.id === 'A' ? A.latitude : B.latitude,
+                        draggedEntity.id === 'A' ? A.height || 0 : B.height || 0
+                    );
+                    viewer.scene.screenSpaceCameraController.enableInputs = false;
+                }
+            }
+        }, Cesium.ScreenSpaceEventType.LEFT_DOWN);
+
+        handler.setInputAction(function (movement) {
+            // Priority 1: Rectangle selection drag
+            if (selectionMode === 'rectangle' && selectionStartPosCarto) {
+                const ray = viewer.camera.getPickRay(movement.endPosition);
+                const cartesian = viewer.scene.globe.pick(ray, viewer.scene);
+                if (!cartesian) return;
+
+                const endCarto = Cesium.Cartographic.fromCartesian(cartesian);
+                const west = Math.min(selectionStartPosCarto.longitude, endCarto.longitude);
+                const east = Math.max(selectionStartPosCarto.longitude, endCarto.longitude);
+                const south = Math.min(selectionStartPosCarto.latitude, endCarto.latitude);
+                const north = Math.max(selectionStartPosCarto.latitude, endCarto.latitude);
+
+                if (!selectionEntity) {
+                    selectionEntity = viewer.entities.add({
+                        rectangle: {
+                            coordinates: new Cesium.CallbackProperty(() => {
+                                return Cesium.Rectangle.fromRadians(west, south, east, north);
+                            }, false),
+                            material: Cesium.Color.RED.withAlpha(0.15),
+                            outline: true,
+                            outlineColor: Cesium.Color.RED,
+                            outlineWidth: 1
+                        }
+                    });
+                } else {
+                    selectionEntity.rectangle.coordinates = new Cesium.CallbackProperty(() => {
+                        return Cesium.Rectangle.fromRadians(west, south, east, north);
+                    }, false);
+                }
+                return;
+            }
+            // Priority 2: A/B marker drag
+            if (!isDragging || !draggedEntity) return;
+
+            const ray = viewer.camera.getPickRay(movement.endPosition);
+            const cartesian = viewer.scene.globe.pick(ray, viewer.scene);
+            if (!cartesian) return;
+
+            const carto = Cesium.Cartographic.fromCartesian(cartesian);
+
+            draggedPosition = Cesium.Cartesian3.fromRadians(carto.longitude, carto.latitude, carto.height);
+
+            if (draggedEntity.id === 'A') {
+                domElements.lonAInput.value = Cesium.Math.toDegrees(carto.longitude).toFixed(6);
+                domElements.latAInput.value = Cesium.Math.toDegrees(carto.latitude).toFixed(6);
+            } else {
+                domElements.lonBInput.value = Cesium.Math.toDegrees(carto.longitude).toFixed(6);
+                domElements.latBInput.value = Cesium.Math.toDegrees(carto.latitude).toFixed(6);
+            }
+        }, Cesium.ScreenSpaceEventType.MOUSE_MOVE);
+
+        handler.setInputAction(function () {
+            // Priority 1: Rectangle selection
+            if (selectionMode === 'rectangle' && selectionStartPosCarto) {
+                viewer.scene.screenSpaceCameraController.enableInputs = true;
+
+                if (selectionEntity && selectionEntity.rectangle) {
+                    const rect = selectionEntity.rectangle.coordinates.getValue();
+                    if (rect) {
+                        selectionRegion = rect.clone();
+                        const widthKm = (rect.east - rect.west) * 111.32;
+                        const heightKm = (rect.north - rect.south) * 111.32;
+                        if (domElements.elevRampToggle.checked) {
+                            viewer.scene.globe.material = heightRampMaterial;
+                            status.spectrum = `选区 ${widthKm.toFixed(2)}×${heightKm.toFixed(2)}km 采样中...`;
+                            updateStatusBar();
+                            updateViewHeightRange();
+                        }
+                    }
+                    selectionMode = null;
+                    domElements.rectSelectBtn.innerText = "矩形选区";
+                }
+
+                selectionStartPosCarto = null;
+
+                if (selectionRegion && domElements.elevRampToggle.checked) {
+                    updateViewHeightRange();
+                }
+                return;
+            }
+            // Priority 2: A/B marker drag
+            if (isDragging) {
+                isDragging = false;
+                const carto = Cesium.Cartographic.fromCartesian(draggedPosition);
+                if (draggedEntity.id === 'A') {
+                    A.longitude = carto.longitude;
+                    A.latitude = carto.latitude;
+                } else {
+                    B.longitude = carto.longitude;
+                    B.latitude = carto.latitude;
+                }
+                draggedPosition = null;
+                draggedEntity = null;
+                viewer.scene.screenSpaceCameraController.enableInputs = true;
+
+                runProfile(false);
+            }
+        }, Cesium.ScreenSpaceEventType.LEFT_UP);
+
+        async function runProfile(shouldFly = false) {
+            status.terrain = '进行中';
+            updateStatusBar();
+
+            const config = ConfigManager.getCurrentConfig();
+            antHeightA = config.antHeightA;
+            antHeightB = config.antHeightB;
+            freqHz = config.frequency;
+            K = config.kFactor;
+
+            try {
+                const [elevA, elevB] = await Promise.all([
+                    TerrainSampler.sampleElevation(A),
+                    TerrainSampler.sampleElevation(B)
+                ]);
+                A.height = elevA;
+                B.height = elevB;
+                domElements.elevA.innerText = elevA.toFixed(0);
+                domElements.elevB.innerText = elevB.toFixed(0);
+            } catch (error) {
+                console.error("采样A/B点地形失败:", error);
+            }
+
+            const geodesic = new Cesium.EllipsoidGeodesic(A, B);
+            const totalDist = geodesic.surfaceDistance;
+            const cameraHeight = totalDist * 3;
+
+            if (shouldFly) {
+                viewer.camera.flyTo({
+                    destination: Cesium.Cartesian3.fromRadians(
+                        (A.longitude + B.longitude) / 2,
+                        (A.latitude + B.latitude) / 2,
+                        cameraHeight
+                    )
+                });
+            }
+
+            if (!lineEntity) {
+                lineEntity = viewer.entities.add({
+                    polyline: {
+                        positions: new Cesium.CallbackProperty(() => [
+                            Cesium.Cartesian3.fromRadians(A.longitude, A.latitude, 0),
+                            Cesium.Cartesian3.fromRadians(B.longitude, B.latitude, 0)
+                        ], false),
+                        width: 3,
+                        material: Cesium.Color.YELLOW
+                    }
+                });
+            }
+
+            const labelFillColor = Cesium.Color.RED;
+            const labelOutlineColor = Cesium.Color.RED;
+
+            if (!markerA) {
+                markerA = viewer.entities.add({
+                    id: 'A',
+                    position: new Cesium.CallbackProperty(() => {
+                        if (isDragging && draggedEntity && draggedEntity.id === 'A') {
+                            return draggedPosition;
+                        }
+                        return Cesium.Cartesian3.fromRadians(A.longitude, A.latitude, A.height || 0);
+                    }, false),
+                    billboard: { image: "icons/target.png", width: 48, height: 48, verticalOrigin: Cesium.VerticalOrigin.BOTTOM },
+                    label: {
+                        text: new Cesium.CallbackProperty(() => {
+                            let lon, lat, elev;
+                            if (isDragging && draggedEntity && draggedEntity.id === 'A') {
+                                const carto = Cesium.Cartographic.fromCartesian(draggedPosition);
+                                lon = Cesium.Math.toDegrees(carto.longitude).toFixed(6);
+                                lat = Cesium.Math.toDegrees(carto.latitude).toFixed(6);
+                                elev = A.height != null ? A.height.toFixed(0) : '--';
+                            } else {
+                                lon = Cesium.Math.toDegrees(A.longitude).toFixed(6);
+                                lat = Cesium.Math.toDegrees(A.latitude).toFixed(6);
+                                elev = A.height != null ? A.height.toFixed(0) : '--';
+                            }
+                            return `A: ${lon}, ${lat}, ${elev}m`;
+                        }, false),
+                        font: '12pt sans-serif',
+                        fillColor: labelFillColor,
+                        outlineColor: labelOutlineColor,
+                        outlineWidth: 2,
+                        style: Cesium.LabelStyle.FILL_AND_OUTLINE,
+                        verticalOrigin: Cesium.VerticalOrigin.BOTTOM,
+                        pixelOffset: new Cesium.Cartesian2(140, 0)
+                    }
+                });
+            }
+            if (!markerB) {
+                markerB = viewer.entities.add({
+                    id: 'B',
+                    position: new Cesium.CallbackProperty(() => {
+                        if (isDragging && draggedEntity && draggedEntity.id === 'B') {
+                            return draggedPosition;
+                        }
+                        return Cesium.Cartesian3.fromRadians(B.longitude, B.latitude, B.height || 0);
+                    }, false),
+                    billboard: { image: "icons/target.png", width: 48, height: 48, verticalOrigin: Cesium.VerticalOrigin.BOTTOM },
+                    label: {
+                        text: new Cesium.CallbackProperty(() => {
+                            let lon, lat, elev;
+                            if (isDragging && draggedEntity && draggedEntity.id === 'B') {
+                                const carto = Cesium.Cartographic.fromCartesian(draggedPosition);
+                                lon = Cesium.Math.toDegrees(carto.longitude).toFixed(6);
+                                lat = Cesium.Math.toDegrees(carto.latitude).toFixed(6);
+                                elev = B.height != null ? B.height.toFixed(0) : '--';
+                            } else {
+                                lon = Cesium.Math.toDegrees(B.longitude).toFixed(6);
+                                lat = Cesium.Math.toDegrees(B.latitude).toFixed(6);
+                                elev = B.height != null ? B.height.toFixed(0) : '--';
+                            }
+                            return `B: ${lon}, ${lat}, ${elev}m`;
+                        }, false),
+                        font: '12pt sans-serif',
+                        fillColor: labelFillColor,
+                        outlineColor: labelOutlineColor,
+                        outlineWidth: 2,
+                        style: Cesium.LabelStyle.FILL_AND_OUTLINE,
+                        verticalOrigin: Cesium.VerticalOrigin.BOTTOM,
+                        pixelOffset: new Cesium.Cartesian2(140, 0)
+                    }
+                });
+            }
+
+            updateLabelColors();
+
+            try {
+                const sampleCount = parseInt(domElements.sampleDensity.value) || 300;
+                const { distances, heights: samplesHeights } = await TerrainSampler.sampleTerrainPath(A, B, sampleCount);
+                renderProfile(distances, samplesHeights, antHeightA, antHeightB);
+            } catch (error) {
+                console.error("采样地形失败:", error);
+            }
+        }
+
+        function renderProfile(distances, samplesHeights, antHeightA, antHeightB) {
+            const R = CONSTANTS.EARTH_RADIUS;
+            const D = distances[distances.length - 1];
+            if (!D || D <= 0) return;
+
+            const profileGeodesic = new Cesium.EllipsoidGeodesic(A, B);
+
+            const heights = samplesHeights.map((h, i) => {
+                const x = distances[i];
+                const bulge = x * (D - x) / (2 * R * K);
+                return h + bulge;
+            });
+
+            const zeroLine = distances.map((d, i) => {
+                const x = distances[i];
+                return x * (D - x) / (2 * R);
+            });
+
+            const zeroLineEffective = distances.map((d, i) => {
+                const x = distances[i];
+                return x * (D - x) / (2 * R * K);
+            });
+
+            const maxZero = Math.max(...zeroLine);
+
+            const groundA = heights[0];
+            const groundB = heights[heights.length - 1];
+
+            const hA = groundA + antHeightA;
+            const hB = groundB + antHeightB;
+
+            const losLine = distances.map((d, i) => {
+                const x = distances[i];
+                const t = x / D;
+                return hA + (hB - hA) * t;
+            });
+
+            const lambda = 3e8 / freqHz;
+
+            const fresnelUpper = distances.map((d, i) => {
+                const x = distances[i];
+                const F1 = Math.sqrt(lambda * x * (D - x) / D);
+                return losLine[i] + 0.6 * F1;
+            });
+
+            const fresnelLower = distances.map((d, i) => {
+                const x = distances[i];
+                const F1 = Math.sqrt(lambda * x * (D - x) / D);
+                return losLine[i] - 0.6 * F1;
+            });
+
+            const xKm = distances.map(d => d / 1000);
+
+            const fresnelIntrusions = [];
+            for (let i = 0; i < heights.length; i++) {
+                if (heights[i] > fresnelLower[i]) {
+                    fresnelIntrusions.push([xKm[i], heights[i]]);
+                }
+            }
+
+            const losBlocks = [];
+            for (let i = 0; i < heights.length; i++) {
+                if (heights[i] > losLine[i]) {
+                    losBlocks.push([xKm[i], heights[i]]);
+                }
+            }
+
+            const losClear = losBlocks.length === 0;
+
+            let minClearanceRatio = Infinity;
+
+            for (let i = 1; i < heights.length - 1; i++) {
+                const x = distances[i];
+                const F1 = Math.sqrt(lambda * x * (D - x) / D);
+                if (F1 > 0) {
+                    const clearanceRatio = (losLine[i] - heights[i]) / F1;
+                    if (!isNaN(clearanceRatio) && isFinite(clearanceRatio)) {
+                        minClearanceRatio = Math.min(minClearanceRatio, clearanceRatio);
+                    }
+                }
+            }
+
+            const rawPercent = (minClearanceRatio / 0.6) * 100;
+            const clearancePercent = Math.max(0, Math.min(100, rawPercent)).toFixed(1);
+
+            const statusText = losClear ? "LOS 通视" : "LOS 遮挡";
+            const clearanceText = `第一菲涅尔区静空率: ${clearancePercent}%`;
+
+            const option = {
+                tooltip: {
+                    show: true,
+                    trigger: 'axis',
+                    formatter: function(params) {
+                        let result = `距离A点: ${params[0].data[0].toFixed(2)} km<br/>`;
+                        const terrainParam = params.find(p => p.seriesName === '地形');
+                        if (terrainParam && terrainParam.data && terrainParam.data[1] !== undefined) {
+                            result += `地形高度: ${terrainParam.data[1].toFixed(2)} m`;
+                        }
+                        return result;
+                    }
+                },
+                grid: {
+                    left: 40,
+                    right: 40,
+                    top: 10,
+                    bottom: 25,
+                    containLabel: false
+                },
+
+                xAxis: {
+                    type: "value",
+                    min: 0,
+                    max: +(D / 1000).toFixed(2),
+                    axisLabel: {
+                        show: true,
+                        formatter: v => v.toFixed(2),
+                        color: "#333",
+                        fontSize: 11
+                    },
+                    axisTick: { show: true },
+                    axisLine: { show: true },
+                    splitLine: { show: false }
+                },
+
+                yAxis: {
+                    type: "value",
+                    axisLabel: { show: true, color: "#333", fontSize: 11 },
+                    axisTick: { show: true },
+                    axisLine: { show: true },
+                    splitLine: { show: false }
+                },
+
+                graphic: [
+                    {
+                        type: "text",
+                        left: 50,
+                        top: 10,
+                        style: {
+                            text: statusText,
+                            fill: losClear ? "green" : "red",
+                            fontSize: 14,
+                            fontWeight: "bold"
+                        }
+                    },
+                    {
+                        type: "text",
+                        left: 200,
+                        top: 10,
+                        style: {
+                            text: clearanceText,
+                            fill: "#333",
+                            fontSize: 14
+                        }
+                    }
+                ],
+
+                series: [
+                    {
+                        type: "line",
+                        data: xKm.map((x, i) => [x, heights[i]]),
+                        symbol: "none",
+                        lineStyle: { width: 0 },
+                        areaStyle: { color: "rgba(180,180,180,0.4)" },
+                        z: 1
+                    },
+
+                    {
+                        type: "line",
+                        data: xKm.map((x, i) => [x, zeroLineEffective[i]]),
+                        symbol: "none",
+                        lineStyle: { width: 0 },
+                        areaStyle: { color: "#ffffff" },
+                        z: 2
+                    },
+
+                    {
+                        name: "最高曲率线",
+                        type: "line",
+                        data: [
+                            [0, maxZero],
+                            [+(D / 1000).toFixed(2), maxZero]
+                        ],
+                        symbol: "none",
+                        lineStyle: { width: 1, color: "#555", type: "dashed" },
+                        z: 3.3,
+                        tooltip: {
+                            trigger: 'item',
+                            formatter: function(params) {
+                                const distance = params.data[0];
+                                const height = params.data[1];
+                                return `最高曲率线<br/>距离A点: ${distance.toFixed(2)} km<br/>曲率高度: ${height.toFixed(0)} m`;
+                            }
+                        }
+                    },
+
+                    {
+                        name: "0 海拔线",
+                        type: "line",
+                        data: xKm.map((x, i) => [x, zeroLine[i]]),
+                        symbol: "none",
+                        lineStyle: { width: 1, color: "#888", type: "dashed" },
+                        z: 3.4,
+                        tooltip: {
+                            trigger: 'item',
+                            formatter: function(params) {
+                                const distance = params.data[0];
+                                const height = params.data[1];
+                                return `0海拔线<br/>距离A点: ${distance.toFixed(2)} km<br/>地球曲率高度: ${height.toFixed(0)} m`;
+                            }
+                        }
+                    },
+
+                    {
+                        name: "Fresnel 上界",
+                        type: "line",
+                        data: xKm.map((x, i) => [x, fresnelUpper[i]]),
+                        symbol: "none",
+                        lineStyle: { width: 1, color: "blue", type: "dashed" },
+                        z: 4.6,
+                        tooltip: {
+                            trigger: 'item',
+                            formatter: function(params) {
+                                const distance = params.data[0];
+                                const height = params.data[1];
+                                return `Fresnel上界<br/>距离A点: ${distance.toFixed(2)} km<br/>高度: ${height.toFixed(0)} m`;
+                            }
+                        }
+                    },
+                    {
+                        name: "Fresnel 下界",
+                        type: "line",
+                        data: xKm.map((x, i) => [x, fresnelLower[i]]),
+                        symbol: "none",
+                        lineStyle: { width: 1, color: "blue", type: "dashed" },
+                        z: 4.6,
+                        tooltip: {
+                            trigger: 'item',
+                            formatter: function(params) {
+                                const distance = params.data[0];
+                                const height = params.data[1];
+                                return `Fresnel下界<br/>距离A点: ${distance.toFixed(2)} km<br/>高度: ${height.toFixed(0)} m`;
+                            }
+                        }
+                    },
+
+                    {
+                        name: "地形",
+                        type: "line",
+                        data: xKm.map((x, i) => [x, heights[i]]),
+                        symbol: 'circle',
+                        symbolSize: 1,
+                        lineStyle: { width: 1.5, color: "#333" },
+                        z: 5
+                    },
+
+                    {
+                        name: "K=1（无折射）",
+                        type: "line",
+                        data: (K !== 1)
+                            ? xKm.map((x, i) => {
+                                const xx = distances[i];
+                                const bulge1 = xx * (D - xx) / (2 * R * 1.0);
+                                return [x, samplesHeights[i] + bulge1];
+                            })
+                            : [],
+                        symbol: "none",
+                        lineStyle: { width: 1, color: "#999", type: "dashed" },
+                        z: 4.9,
+                        showSymbol: false,
+                        emphasis: { disabled: true }
+                    },
+
+                    {
+                        name: "LOS",
+                        type: "line",
+                        data: xKm.map((x, i) => [x, losLine[i]]),
+                        symbol: "none",
+                        lineStyle: { width: 1.5, color: "red" },
+                        z: 5.2,
+                        tooltip: {
+                            trigger: 'item',
+                            formatter: function(params) {
+                                const distance = params.data[0];
+                                const height = params.data[1];
+                                return `LOS视线线<br/>距离A点: ${distance.toFixed(2)} km<br/>视线高度: ${height.toFixed(0)} m`;
+                            }
+                        }
+                    },
+
+                    {
+                        name: "Fresnel 侵入",
+                        type: "scatter",
+                        data: fresnelIntrusions,
+                        symbolSize: 6,
+                        itemStyle: { color: "red" },
+                        z: 6,
+                        tooltip: {
+                            trigger: 'item',
+                            formatter: function(params) {
+                                const distance = params.data[0];
+                                const terrainHeight = params.data[1];
+                                return `Fresnel侵入点<br/>距离A点: ${distance.toFixed(2)} km<br/>地形高度: ${terrainHeight.toFixed(0)} m`;
+                            }
+                        }
+                    },
+
+                    {
+                        name: "LOS 阻挡",
+                        type: "scatter",
+                        data: losBlocks,
+                        symbolSize: 6,
+                        itemStyle: { color: "black" },
+                        z: 6,
+                        tooltip: {
+                            trigger: 'item',
+                            formatter: function(params) {
+                                const distance = params.data[0];
+                                const terrainHeight = params.data[1];
+                                return `LOS阻挡点<br/>距离A点: ${distance.toFixed(2)} km<br/>地形高度: ${terrainHeight.toFixed(0)} m`;
+                            }
+                        }
+                    }
+                ]
+            };
+
+            chart.setOption(option);
+
+            chart.off('showTip');
+            chart.off('hideTip');
+
+            chart.on('showTip', function(params) {
+                let distance;
+                if (Array.isArray(params)) {
+                    const terrainParam = params.find(p => p.seriesName === '地形');
+                    if (terrainParam) distance = terrainParam.data[0] * 1000;
+                } else if (params.dataByCoordSys && params.dataByCoordSys.length > 0) {
+                    const axis = params.dataByCoordSys[0].dataByAxis.find(a => a.axisDim === 'x');
+                    if (axis) distance = axis.value * 1000;
+                }
+                if (distance != null && isFinite(distance) && distance <= profileGeodesic.surfaceDistance) {
+                    const fraction = distance / profileGeodesic.surfaceDistance;
+                    const point = new Cesium.Cartographic();
+                    profileGeodesic.interpolateUsingFraction(fraction, point);
+
+                    const height = A.height + fraction * (B.height - A.height);
+                    point.height = height;
+
+                    if (!hoverEntity) {
+                        hoverEntity = viewer.entities.add({
+                            position: Cesium.Cartesian3.fromRadians(point.longitude, point.latitude, point.height),
+                            point: {
+                                pixelSize: 15,
+                                color: Cesium.Color.RED
+                            }
+                        });
+                    } else {
+                        hoverEntity.position = Cesium.Cartesian3.fromRadians(point.longitude, point.latitude, point.height);
+                    }
+                    viewer.scene.requestRender();
+                }
+            });
+
+            chart.on('hideTip', function() {
+                if (hoverEntity) {
+                    viewer.entities.remove(hoverEntity);
+                    hoverEntity = null;
+                }
+            });
+
+            status.terrain = '✓完成';
+            updateStatusBar();
+
+            const effectiveR = R * K;
+            domElements.radiusInfo.innerText =
+                K === 1.0
+                    ? `平均地球半径: ${(R / 1000).toFixed(0)} km`
+                    : `有效地球半径: ${(effectiveR / 1000).toFixed(0)} km (K=${K.toFixed(3)})`;
+        }
+    </script>
+</body>
+
+</html>
