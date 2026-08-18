@@ -34,8 +34,10 @@
         }
     </style>
 
-    <script src="https://cesium.com/downloads/cesiumjs/releases/1.105/Build/Cesium/Cesium.js"></script>
-    <link href="https://cesium.com/downloads/cesiumjs/releases/1.105/Build/Cesium/Widgets/widgets.css" rel="stylesheet">
+    <script src="https://cesium.com/downloads/cesiumjs/releases/1.120/Build/Cesium/Cesium.js"></script>
+    <link href="https://cesium.com/downloads/cesiumjs/releases/1.120/Build/Cesium/Widgets/widgets.css" rel="stylesheet">
+    <script src="lib/bytebuffer.min.js"></script>
+    <script src="lib/cesiumTdt.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/echarts@5/dist/echarts.min.js"></script>
 </head>
 
@@ -297,14 +299,53 @@
             }
         });
 
-        Cesium.ArcGISTiledElevationTerrainProvider.fromUrl(
-            "https://elevation3d.arcgis.com/arcgis/rest/services/WorldElevation3D/Terrain3D/ImageServer"
-        ).then(function (terrain) {
-            viewer.terrainProvider = terrain;
-            status.terrain = '✓完成';
-            updateStatusBar();
-            runProfile(true);
-        });
+        async function loadKey() {
+            try {
+                const resp = await fetch('key.txt?' + Date.now());
+                if (!resp.ok) throw new Error('HTTP ' + resp.status);
+                const text = await resp.text();
+                const key = text.trim();
+                if (!key || key.length < 10) throw new Error('Key内码过短或为空');
+                return key;
+            } catch (e) {
+                return null;
+            }
+        }
+
+        async function initTerrain() {
+            const key = await loadKey();
+            if (!key) {
+                status.terrain = '✗失败';
+                updateStatusBar();
+                alert('无法加载天地图Key。\n请在项目根目录的 key.txt 中填入您的天地图开发者密钥。\n申请地址: http://lbs.tianditu.gov.cn/');
+                return;
+            }
+
+            const subdomains = ['0', '1', '2', '3', '4', '5', '6', '7'];
+            const tdtUrl = 'https://t{s}.tianditu.gov.cn/';
+            const terrainUrls = [];
+            for (let i = 0; i < subdomains.length; i++) {
+                terrainUrls.push(
+                    tdtUrl.replace('{s}', subdomains[i]) + 'mapservice/swdx?T=elv_c&tk=' + key
+                );
+            }
+
+            try {
+                const provider = new Cesium.GeoTerrainProvider({
+                    urls: terrainUrls
+                });
+                viewer.terrainProvider = provider;
+                status.terrain = '✓完成';
+                updateStatusBar();
+                runProfile(true);
+            } catch (e) {
+                status.terrain = '✗失败';
+                updateStatusBar();
+                alert('天地图地形加载失败: ' + e.message + '\n请检查 key.txt 中的密钥是否正确。');
+            }
+        }
+
+        initTerrain();
 
         viewer.scene.screenSpaceCameraController.enableTilt = false;
 
