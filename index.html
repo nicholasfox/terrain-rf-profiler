@@ -201,44 +201,79 @@
                     distances.push(geodesic.surfaceDistance * t);
                 }
 
-                const samples = await Cesium.sampleTerrain(viewer.terrainProvider, 12, positions);
-                const heights = samples.map(s => s.height ?? 0);
+                const heights = positions.map(p => {
+                    const h = viewer.scene.sampleHeight(p);
+                    return h !== undefined ? h : 0;
+                });
 
                 return { positions, distances, heights };
             },
 
             async sampleElevation(cartographic) {
-                const samples = await Cesium.sampleTerrain(viewer.terrainProvider, 12, [cartographic]);
-                return samples[0].height;
+                const h = viewer.scene.sampleHeight(cartographic);
+                return h !== undefined ? h : 0;
             }
         };
 
-        const arcgisProvider = new Cesium.ArcGisMapServerImageryProvider({
-            url: 'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer'
-        });
-        const osmProvider = new Cesium.UrlTemplateImageryProvider({
-            url: 'https://tile.openstreetmap.org/{z}/{x}/{y}.png'
-        });
+        let tdtKey = null;
+        try {
+            var _xhr = new XMLHttpRequest();
+            _xhr.open('GET', 'key.txt?' + Date.now(), false);
+            _xhr.send();
+            if (_xhr.status === 200) {
+                tdtKey = _xhr.responseText.trim();
+                if (!tdtKey || tdtKey.length < 10) tdtKey = null;
+            }
+        } catch (e) { tdtKey = null; }
 
-        const imageryViewModels = [
+        if (!tdtKey) {
+            status.terrain = '✗失败';
+            updateStatusBar();
+            alert('无法加载天地图Key。\n请在项目根目录的 key.txt 中填入您的天地图开发者密钥。\n申请地址: http://lbs.tianditu.gov.cn/');
+        }
+
+        const tdtSubdomains = ['0', '1', '2', '3', '4', '5', '6', '7'];
+
+        let terrainOption = undefined;
+        if (tdtKey) {
+            const terrainUrls = tdtSubdomains.map(s =>
+                `https://t${s}.tianditu.gov.cn/mapservice/swdx?T=elv_c&tk=${tdtKey}`
+            );
+            try {
+                const geoProvider = new Cesium.GeoTerrainProvider({ urls: terrainUrls });
+                terrainOption = new Cesium.Terrain(geoProvider);
+                status.terrain = '加载中';
+            } catch (e) {
+                console.error('GeoTerrainProvider 创建失败:', e);
+                status.terrain = '✗失败';
+            }
+        }
+
+        function tdtImageryProvider(type) {
+            return new Cesium.UrlTemplateImageryProvider({
+                url: `https://t{s}.tianditu.gov.cn/DataServer?T=${type}_w&x={x}&y={y}&l={z}&tk=` + tdtKey,
+                subdomains: tdtSubdomains,
+                tilingScheme: new Cesium.WebMercatorTilingScheme(),
+                maximumLevel: 18
+            });
+        }
+
+        const imageryViewModels = tdtKey ? [
             new Cesium.ProviderViewModel({
-                name: 'OpenStreetMap',
-                iconUrl: Cesium.buildModuleUrl('Widgets/Images/ImageryProviders/openStreetMap.png'),
-                tooltip: 'OSM 地图',
-                creationFunction: () => osmProvider
+                name: '天地图 影像',
+                iconUrl: Cesium.buildModuleUrl('Widgets/Images/ImageryProviders/aerial.png'),
+                tooltip: '天地图卫星影像',
+                creationFunction: () => tdtImageryProvider('img')
             }),
             new Cesium.ProviderViewModel({
-                name: 'ArcGIS World Imagery',
-                iconUrl: 'https://upload.wikimedia.org/wikipedia/commons/7/71/Earth_icon_2.png',
-                tooltip: 'ArcGIS 全球卫星图',
-                creationFunction: () => arcgisProvider
+                name: '天地图 矢量',
+                iconUrl: Cesium.buildModuleUrl('Widgets/Images/ImageryProviders/openStreetMap.png'),
+                tooltip: '天地图矢量底图',
+                creationFunction: () => tdtImageryProvider('vec')
             })
-        ];
+        ] : [];
 
-        const viewer = new Cesium.Viewer('cesiumContainer', {
-            imageryProviderViewModels: imageryViewModels,
-            selectedImageryProviderViewModel: imageryViewModels[0],
-            baseLayerPicker: true,
+        const viewerOptions = {
             geocoder: false,
             sceneModePicker: false,
             homeButton: false,
@@ -248,9 +283,25 @@
             infoBox: false,
             selectionIndicator: false,
             creditContainer: document.createElement("div")
-        });
+        };
 
-        viewer.baseLayerPicker.viewModel.selectedImagery = imageryViewModels[0];
+        if (tdtKey) {
+            viewerOptions.imageryProviderViewModels = imageryViewModels;
+            viewerOptions.selectedImageryProviderViewModel = imageryViewModels[0];
+            viewerOptions.baseLayerPicker = true;
+            if (terrainOption) {
+                viewerOptions.terrain = terrainOption;
+            }
+        }
+
+        const viewer = new Cesium.Viewer('cesiumContainer', viewerOptions);
+
+        if (tdtKey) {
+            viewer.baseLayerPicker.viewModel.selectedImagery = imageryViewModels[0];
+            const annotLayer = viewer.imageryLayers.addImageryProvider(tdtImageryProvider('cva'));
+            annotLayer.alpha = 0.8;
+            currentImageryName = '天地图 影像';
+        }
 
         viewer.scene.globe.tileLoadProgressEvent.addEventListener((queueLength) => {
             if (queueLength === 0) {
@@ -299,53 +350,15 @@
             }
         });
 
-        async function loadKey() {
-            try {
-                const resp = await fetch('key.txt?' + Date.now());
-                if (!resp.ok) throw new Error('HTTP ' + resp.status);
-                const text = await resp.text();
-                const key = text.trim();
-                if (!key || key.length < 10) throw new Error('Key内码过短或为空');
-                return key;
-            } catch (e) {
-                return null;
-            }
+        if (tdtKey && terrainOption) {
+            viewer.scene.globe.tileLoadProgressEvent.addEventListener((queueLength) => {
+                if (queueLength === 0 && status.terrain === '加载中') {
+                    status.terrain = '✓完成';
+                    updateStatusBar();
+                }
+            });
+            setTimeout(() => runProfile(true), 500);
         }
-
-        async function initTerrain() {
-            const key = await loadKey();
-            if (!key) {
-                status.terrain = '✗失败';
-                updateStatusBar();
-                alert('无法加载天地图Key。\n请在项目根目录的 key.txt 中填入您的天地图开发者密钥。\n申请地址: http://lbs.tianditu.gov.cn/');
-                return;
-            }
-
-            const subdomains = ['0', '1', '2', '3', '4', '5', '6', '7'];
-            const tdtUrl = 'https://t{s}.tianditu.gov.cn/';
-            const terrainUrls = [];
-            for (let i = 0; i < subdomains.length; i++) {
-                terrainUrls.push(
-                    tdtUrl.replace('{s}', subdomains[i]) + 'mapservice/swdx?T=elv_c&tk=' + key
-                );
-            }
-
-            try {
-                const provider = new Cesium.GeoTerrainProvider({
-                    urls: terrainUrls
-                });
-                viewer.terrainProvider = provider;
-                status.terrain = '✓完成';
-                updateStatusBar();
-                runProfile(true);
-            } catch (e) {
-                status.terrain = '✗失败';
-                updateStatusBar();
-                alert('天地图地形加载失败: ' + e.message + '\n请检查 key.txt 中的密钥是否正确。');
-            }
-        }
-
-        initTerrain();
 
         viewer.scene.screenSpaceCameraController.enableTilt = false;
 
@@ -423,17 +436,12 @@
 
         viewer.scene.postRender.addEventListener(() => {
             const provider = viewer.imageryProvider;
-            let name;
+            let name = '';
             if (provider && provider.url) {
-                if (provider.url.includes('openstreetmap')) {
-                    name = 'OpenStreetMap';
-                } else if (provider.url.includes('arcgisonline')) {
-                    name = 'ArcGIS World Imagery';
-                } else {
-                    name = '';
-                }
-            } else {
-                name = '';
+                if (provider.url.includes('img_w')) name = '天地图 影像';
+                else if (provider.url.includes('vec_w')) name = '天地图 矢量';
+                else if (provider.url.includes('openstreetmap')) name = 'OpenStreetMap';
+                else if (provider.url.includes('arcgisonline')) name = 'ArcGIS World Imagery';
             }
 
             if (name !== currentImageryName) {
@@ -743,7 +751,7 @@
             const provider = viewer.imageryProvider;
             let isOSM = false;
             if (provider && provider.url) {
-                isOSM = provider.url.includes('openstreetmap');
+                isOSM = provider.url.includes('openstreetmap') || provider.url.includes('img_w') || provider.url.includes('vec_w');
             }
 
             const fillColor = isOSM ? Cesium.Color.RED : Cesium.Color.RED;
