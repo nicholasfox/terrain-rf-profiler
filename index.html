@@ -991,7 +991,7 @@
                         }
                         return Cesium.Cartesian3.fromRadians(A.longitude, A.latitude, A.height || 0);
                     }, false),
-                    billboard: { image: "icons/target.png", width: 48, height: 48, verticalOrigin: Cesium.VerticalOrigin.BOTTOM },
+                    billboard: { image: "icons/target.png", width: 48, height: 48, verticalOrigin: Cesium.VerticalOrigin.BOTTOM, disableDepthTestDistance: Number.POSITIVE_INFINITY },
                     label: {
                         text: new Cesium.CallbackProperty(() => {
                             let lon, lat, elev;
@@ -1007,13 +1007,14 @@
                             }
                             return `A: ${lon}, ${lat}, ${elev}m`;
                         }, false),
-                        font: '12pt sans-serif',
+                        font: 'bold 14pt sans-serif',
                         fillColor: labelFillColor,
-                        outlineColor: labelOutlineColor,
-                        outlineWidth: 2,
+                        outlineColor: Cesium.Color.BLACK,
+                        outlineWidth: 3,
                         style: Cesium.LabelStyle.FILL_AND_OUTLINE,
                         verticalOrigin: Cesium.VerticalOrigin.BOTTOM,
-                        pixelOffset: new Cesium.Cartesian2(140, 0)
+                        pixelOffset: new Cesium.Cartesian2(30, -10),
+                        disableDepthTestDistance: Number.POSITIVE_INFINITY
                     }
                 });
             }
@@ -1026,7 +1027,7 @@
                         }
                         return Cesium.Cartesian3.fromRadians(B.longitude, B.latitude, B.height || 0);
                     }, false),
-                    billboard: { image: "icons/target.png", width: 48, height: 48, verticalOrigin: Cesium.VerticalOrigin.BOTTOM },
+                    billboard: { image: "icons/target.png", width: 48, height: 48, verticalOrigin: Cesium.VerticalOrigin.BOTTOM, disableDepthTestDistance: Number.POSITIVE_INFINITY },
                     label: {
                         text: new Cesium.CallbackProperty(() => {
                             let lon, lat, elev;
@@ -1042,13 +1043,14 @@
                             }
                             return `B: ${lon}, ${lat}, ${elev}m`;
                         }, false),
-                        font: '12pt sans-serif',
+                        font: 'bold 14pt sans-serif',
                         fillColor: labelFillColor,
-                        outlineColor: labelOutlineColor,
-                        outlineWidth: 2,
+                        outlineColor: Cesium.Color.BLACK,
+                        outlineWidth: 3,
                         style: Cesium.LabelStyle.FILL_AND_OUTLINE,
                         verticalOrigin: Cesium.VerticalOrigin.BOTTOM,
-                        pixelOffset: new Cesium.Cartesian2(140, 0)
+                        pixelOffset: new Cesium.Cartesian2(30, -10),
+                        disableDepthTestDistance: Number.POSITIVE_INFINITY
                     }
                 });
             }
