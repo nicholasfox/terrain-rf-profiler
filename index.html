@@ -188,6 +188,93 @@
         };
 
         const TerrainSampler = {
+            _tileCache: new Map(),
+            TILE_LEVEL: 12,
+            GRID_SIZE: 150,
+
+            _getTileCoords(lonRad, latRad, level) {
+                const lonDeg = lonRad * 180 / Math.PI;
+                const latDeg = latRad * 180 / Math.PI;
+                const x = Math.floor((lonDeg + 180) / 360 * (1 << level));
+                const y = Math.floor((90 - latDeg) / 180 * (1 << (level - 1)));
+                return { x, y };
+            },
+
+            _getTileBounds(x, y, level) {
+                const tileW = 360 / (1 << level);
+                const tileH = 180 / (1 << (level - 1));
+                return {
+                    west: -180 + x * tileW,
+                    east: -180 + (x + 1) * tileW,
+                    south: 90 - (y + 1) * tileH,
+                    north: 90 - y * tileH,
+                };
+            },
+
+            async _fetchTile(x, y, level) {
+                const key = `${x}_${y}_${level}`;
+                if (this._tileCache.has(key)) return this._tileCache.get(key);
+
+                const url = `https://t0.tianditu.gov.cn/mapservice/swdx?T=elv_c&tk=${tdtKey}&x=${x}&y=${y}&l=${level}`;
+                try {
+                    const resp = await fetch(url);
+                    const buf = await resp.arrayBuffer();
+                    const ds = new DecompressionStream('deflate');
+                    const writer = ds.writable.getWriter();
+                    writer.write(new Uint8Array(buf));
+                    writer.close();
+                    const reader = ds.readable.getReader();
+                    const chunks = [];
+                    while (true) {
+                        const { done, value } = await reader.read();
+                        if (done) break;
+                        chunks.push(value);
+                    }
+                    const totalLen = chunks.reduce((s, c) => s + c.length, 0);
+                    if (totalLen !== this.GRID_SIZE * this.GRID_SIZE * 2) return null;
+
+                    const merged = new Uint8Array(totalLen);
+                    let off = 0;
+                    for (const chunk of chunks) { merged.set(chunk, off); off += chunk.length; }
+
+                    const bounds = this._getTileBounds(x, y, level);
+                    const tile = { data: new Uint16Array(merged.buffer), bounds, x, y, level };
+                    this._tileCache.set(key, tile);
+                    return tile;
+                } catch (e) {
+                    console.warn(`Terrain tile fetch failed (${x},${y},${level}):`, e);
+                    return null;
+                }
+            },
+
+            _interpolateHeight(tile, lonDeg, latDeg) {
+                if (!tile) return 0;
+                const { data, bounds } = tile;
+                const g = this.GRID_SIZE - 1;
+                const colF = (lonDeg - bounds.west) / (bounds.east - bounds.west) * g;
+                const rowF = (latDeg - bounds.south) / (bounds.north - bounds.south) * g;
+                const col = Math.max(0, Math.min(g, colF));
+                const row = Math.max(0, Math.min(g, rowF));
+                const c0 = Math.floor(col), r0 = Math.floor(row);
+                const c1 = Math.min(c0 + 1, g), r1 = Math.min(r0 + 1, g);
+                const fx = col - c0, fy = row - r0;
+                const h00 = data[r0 * this.GRID_SIZE + c0];
+                const h10 = data[r0 * this.GRID_SIZE + c1];
+                const h01 = data[r1 * this.GRID_SIZE + c0];
+                const h11 = data[r1 * this.GRID_SIZE + c1];
+                return (h00 * (1 - fx) * (1 - fy) + h10 * fx * (1 - fy) +
+                        h01 * (1 - fx) * fy + h11 * fx * fy);
+            },
+
+            async _getHeight(lonRad, latRad) {
+                const lonDeg = lonRad * 180 / Math.PI;
+                const latDeg = latRad * 180 / Math.PI;
+                const level = this.TILE_LEVEL;
+                const { x, y } = this._getTileCoords(lonRad, latRad, level);
+                const tile = await this._fetchTile(x, y, level);
+                return this._interpolateHeight(tile, lonDeg, latDeg);
+            },
+
             async sampleTerrainPath(startPoint, endPoint, sampleCount = CONSTANTS.DEFAULT_SAMPLE_COUNT) {
                 const geodesic = new Cesium.EllipsoidGeodesic(startPoint, endPoint);
                 const positions = [];
@@ -201,17 +288,31 @@
                     distances.push(geodesic.surfaceDistance * t);
                 }
 
-                const heights = positions.map(p => {
-                    const h = viewer.scene.sampleHeight(p);
-                    return h !== undefined ? h : 0;
-                });
+                const neededTiles = new Set();
+                const level = this.TILE_LEVEL;
+                for (const p of positions) {
+                    const { x, y } = this._getTileCoords(p.longitude, p.latitude, level);
+                    neededTiles.add(`${x}_${y}_${level}`);
+                }
+
+                const fetchPromises = [];
+                for (const key of neededTiles) {
+                    const [tx, ty, tl] = key.split('_').map(Number);
+                    fetchPromises.push(this._fetchTile(tx, ty, tl));
+                }
+                await Promise.all(fetchPromises);
+
+                const heights = [];
+                for (const p of positions) {
+                    const h = await this._getHeight(p.longitude, p.latitude);
+                    heights.push(h);
+                }
 
                 return { positions, distances, heights };
             },
 
             async sampleElevation(cartographic) {
-                const h = viewer.scene.sampleHeight(cartographic);
-                return h !== undefined ? h : 0;
+                return await this._getHeight(cartographic.longitude, cartographic.latitude);
             }
         };
 
@@ -235,13 +336,14 @@
         const tdtSubdomains = ['0', '1', '2', '3', '4', '5', '6', '7'];
 
         let terrainOption = undefined;
+        window.geoTerrainProvider = null;
         if (tdtKey) {
             const terrainUrls = tdtSubdomains.map(s =>
                 `https://t${s}.tianditu.gov.cn/mapservice/swdx?T=elv_c&tk=${tdtKey}`
             );
             try {
-                const geoProvider = new Cesium.GeoTerrainProvider({ urls: terrainUrls });
-                terrainOption = new Cesium.Terrain(geoProvider);
+                geoTerrainProvider = new Cesium.GeoTerrainProvider({ urls: terrainUrls });
+                terrainOption = new Cesium.Terrain(geoTerrainProvider);
                 status.terrain = '加载中';
             } catch (e) {
                 console.error('GeoTerrainProvider 创建失败:', e);
@@ -261,13 +363,13 @@
         const imageryViewModels = tdtKey ? [
             new Cesium.ProviderViewModel({
                 name: '天地图 影像',
-                iconUrl: Cesium.buildModuleUrl('Widgets/Images/ImageryProviders/aerial.png'),
+                iconUrl: 'data:image/svg+xml,' + encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" width="48" height="48"><rect width="48" height="48" fill="#1a5c2a"/><text x="6" y="20" fill="#fff" font-size="11" font-weight="bold">天地图</text><text x="8" y="36" fill="#8f8" font-size="10">影像</text></svg>'),
                 tooltip: '天地图卫星影像',
                 creationFunction: () => tdtImageryProvider('img')
             }),
             new Cesium.ProviderViewModel({
                 name: '天地图 矢量',
-                iconUrl: Cesium.buildModuleUrl('Widgets/Images/ImageryProviders/openStreetMap.png'),
+                iconUrl: 'data:image/svg+xml,' + encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" width="48" height="48"><rect width="48" height="48" fill="#2a5c8a"/><text x="6" y="20" fill="#fff" font-size="11" font-weight="bold">天地图</text><text x="8" y="36" fill="#8df" font-size="10">矢量</text></svg>'),
                 tooltip: '天地图矢量底图',
                 creationFunction: () => tdtImageryProvider('vec')
             })
@@ -350,16 +452,6 @@
             }
         });
 
-        if (tdtKey && terrainOption) {
-            viewer.scene.globe.tileLoadProgressEvent.addEventListener((queueLength) => {
-                if (queueLength === 0 && status.terrain === '加载中') {
-                    status.terrain = '✓完成';
-                    updateStatusBar();
-                }
-            });
-            setTimeout(() => runProfile(true), 500);
-        }
-
         viewer.scene.screenSpaceCameraController.enableTilt = false;
 
         viewer.camera.setView({
@@ -412,6 +504,69 @@
         let latB = Cesium.Math.toDegrees(B.latitude);
         let markerA = null;
         let markerB = null;
+
+        if (tdtKey && terrainOption) {
+            let terrainRan = false;
+
+            function waitForTilesThenSample() {
+                if (terrainRan) return;
+                const checkSample = async () => {
+                    if (terrainRan) return;
+                    try {
+                        const h = await TerrainSampler.sampleElevation(A);
+                        if (h !== undefined && !isNaN(h) && h > 0) {
+                            terrainRan = true;
+                            runProfile(true);
+                            return true;
+                        }
+                    } catch (e) { /* ignore */ }
+                    return false;
+                };
+                if (checkSample()) return;
+                const maxWait = 30000;
+                const interval = 500;
+                let elapsed = 0;
+                const timer = setInterval(() => {
+                    elapsed += interval;
+                    if (checkSample() || elapsed >= maxWait) {
+                        clearInterval(timer);
+                        if (!terrainRan) {
+                            terrainRan = true;
+                            runProfile(true);
+                        }
+                    }
+                }, interval);
+            }
+
+            viewer.camera.setView({
+                destination: Cesium.Cartesian3.fromRadians(
+                    (A.longitude + B.longitude) / 2,
+                    (A.latitude + B.latitude) / 2,
+                    50000
+                ),
+                orientation: {
+                    heading: 0,
+                    pitch: -Math.PI / 2,
+                    roll: 0
+                }
+            });
+
+            viewer.scene.globe.tileLoadProgressEvent.addEventListener((queueLength) => {
+                if (queueLength === 0 && status.terrain === '加载中') {
+                    status.terrain = '✓完成';
+                    updateStatusBar();
+                    setTimeout(waitForTilesThenSample, 1000);
+                }
+            });
+
+            setTimeout(() => {
+                if (status.terrain === '加载中') {
+                    status.terrain = '✓完成';
+                    updateStatusBar();
+                    waitForTilesThenSample();
+                }
+            }, 10000);
+        }
 
         let isDragging = false;
         let draggedEntity = null;
@@ -940,28 +1095,26 @@
             K = config.kFactor;
 
             try {
-                const [elevA, elevB] = await Promise.all([
-                    TerrainSampler.sampleElevation(A),
-                    TerrainSampler.sampleElevation(B)
-                ]);
-                A.height = elevA;
-                B.height = elevB;
-                domElements.elevA.innerText = elevA.toFixed(0);
-                domElements.elevB.innerText = elevB.toFixed(0);
+                const sampleCount = parseInt(domElements.sampleDensity.value) || 300;
+                const { distances, heights: samplesHeights } = await TerrainSampler.sampleTerrainPath(A, B, sampleCount);
+                A.height = samplesHeights[0];
+                B.height = samplesHeights[samplesHeights.length - 1];
+                domElements.elevA.innerText = A.height.toFixed(0);
+                domElements.elevB.innerText = B.height.toFixed(0);
+                updateLabelColors();
+                renderProfile(distances, samplesHeights, antHeightA, antHeightB);
             } catch (error) {
-                console.error("采样A/B点地形失败:", error);
+                console.error("采样地形失败:", error);
             }
 
             const geodesic = new Cesium.EllipsoidGeodesic(A, B);
             const totalDist = geodesic.surfaceDistance;
-            const cameraHeight = totalDist * 3;
-
             if (shouldFly) {
                 viewer.camera.flyTo({
                     destination: Cesium.Cartesian3.fromRadians(
                         (A.longitude + B.longitude) / 2,
                         (A.latitude + B.latitude) / 2,
-                        cameraHeight
+                        totalDist * 3
                     )
                 });
             }
@@ -970,17 +1123,17 @@
                 lineEntity = viewer.entities.add({
                     polyline: {
                         positions: new Cesium.CallbackProperty(() => [
-                            Cesium.Cartesian3.fromRadians(A.longitude, A.latitude, 0),
-                            Cesium.Cartesian3.fromRadians(B.longitude, B.latitude, 0)
+                            Cesium.Cartesian3.fromRadians(A.longitude, A.latitude, A.height || 0),
+                            Cesium.Cartesian3.fromRadians(B.longitude, B.latitude, B.height || 0)
                         ], false),
                         width: 3,
-                        material: Cesium.Color.YELLOW
+                        material: Cesium.Color.YELLOW,
+                        clampToGround: true
                     }
                 });
             }
 
             const labelFillColor = Cesium.Color.RED;
-            const labelOutlineColor = Cesium.Color.RED;
 
             if (!markerA) {
                 markerA = viewer.entities.add({
@@ -1053,16 +1206,6 @@
                         disableDepthTestDistance: Number.POSITIVE_INFINITY
                     }
                 });
-            }
-
-            updateLabelColors();
-
-            try {
-                const sampleCount = parseInt(domElements.sampleDensity.value) || 300;
-                const { distances, heights: samplesHeights } = await TerrainSampler.sampleTerrainPath(A, B, sampleCount);
-                renderProfile(distances, samplesHeights, antHeightA, antHeightB);
-            } catch (error) {
-                console.error("采样地形失败:", error);
             }
         }
 
