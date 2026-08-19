@@ -855,9 +855,6 @@
                 A = Cesium.Cartographic.fromDegrees(lonA, latA);
                 B = Cesium.Cartographic.fromDegrees(lonB, latB);
 
-                if (markerA) markerA.position = Cesium.Cartesian3.fromDegrees(lonA, latA);
-                if (markerB) markerB.position = Cesium.Cartesian3.fromDegrees(lonB, latB);
-
                 runProfile(true);
             }
 
@@ -1167,13 +1164,13 @@
                             }
                             return `A: ${lon}, ${lat}, ${elev}m`;
                         }, false),
-                        font: 'bold 14pt sans-serif',
-                        fillColor: labelFillColor,
+                        font: 'bold 13pt sans-serif',
+                        fillColor: Cesium.Color.WHITE,
                         outlineColor: Cesium.Color.BLACK,
-                        outlineWidth: 3,
+                        outlineWidth: 4,
                         style: Cesium.LabelStyle.FILL_AND_OUTLINE,
-                        verticalOrigin: Cesium.VerticalOrigin.BOTTOM,
-                        pixelOffset: new Cesium.Cartesian2(30, -10),
+                        verticalOrigin: Cesium.VerticalOrigin.TOP,
+                        pixelOffset: new Cesium.Cartesian2(0, 30),
                         disableDepthTestDistance: Number.POSITIVE_INFINITY,
                         scaleByDistance: new Cesium.NearFarScalar(1e3, 1, 5e6, 0.3),
                         translucencyByDistance: new Cesium.NearFarScalar(1e3, 1, 3e6, 0.2)
@@ -1205,13 +1202,13 @@
                             }
                             return `B: ${lon}, ${lat}, ${elev}m`;
                         }, false),
-                        font: 'bold 14pt sans-serif',
-                        fillColor: labelFillColor,
+                        font: 'bold 13pt sans-serif',
+                        fillColor: Cesium.Color.WHITE,
                         outlineColor: Cesium.Color.BLACK,
-                        outlineWidth: 3,
+                        outlineWidth: 4,
                         style: Cesium.LabelStyle.FILL_AND_OUTLINE,
-                        verticalOrigin: Cesium.VerticalOrigin.BOTTOM,
-                        pixelOffset: new Cesium.Cartesian2(30, -10),
+                        verticalOrigin: Cesium.VerticalOrigin.TOP,
+                        pixelOffset: new Cesium.Cartesian2(0, 30),
                         disableDepthTestDistance: Number.POSITIVE_INFINITY,
                         scaleByDistance: new Cesium.NearFarScalar(1e3, 1, 5e6, 0.3),
                         translucencyByDistance: new Cesium.NearFarScalar(1e3, 1, 3e6, 0.2)
@@ -1322,8 +1319,8 @@
                     }
                 },
                 grid: {
-                    left: 65,
-                    right: 40,
+                    left: 50,
+                    right: 5,
                     top: 10,
                     bottom: 25,
                     containLabel: false
@@ -1350,7 +1347,7 @@
                         show: true,
                         color: "#333",
                         fontSize: 11,
-                        formatter: v => v >= 10000 ? (v / 1000).toFixed(1) + 'k' : v.toFixed(0)
+                        formatter: v => v.toFixed(0)
                     },
                     axisTick: { show: true },
                     axisLine: { show: true },
