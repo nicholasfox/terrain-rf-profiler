@@ -360,18 +360,39 @@
             });
         }
 
+        const baseAnnotationMap = { img: 'cia', vec: 'cva', ter: 'cta' };
+        let currentAnnotationLayer = null;
+
+        function addAnnotationLayer(baseType) {
+            if (currentAnnotationLayer) {
+                viewer.imageryLayers.remove(currentAnnotationLayer, true);
+                currentAnnotationLayer = null;
+            }
+            const annotType = baseAnnotationMap[baseType];
+            if (annotType) {
+                currentAnnotationLayer = viewer.imageryLayers.addImageryProvider(tdtImageryProvider(annotType));
+                currentAnnotationLayer.alpha = 1.0;
+            }
+        }
+
         const imageryViewModels = tdtKey ? [
             new Cesium.ProviderViewModel({
                 name: '天地图 影像',
                 iconUrl: 'data:image/svg+xml,' + encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" width="48" height="48"><rect width="48" height="48" fill="#1a5c2a"/><text x="6" y="20" fill="#fff" font-size="11" font-weight="bold">天地图</text><text x="8" y="36" fill="#8f8" font-size="10">影像</text></svg>'),
-                tooltip: '天地图卫星影像',
+                tooltip: '天地图卫星影像+注记',
                 creationFunction: () => tdtImageryProvider('img')
             }),
             new Cesium.ProviderViewModel({
                 name: '天地图 矢量',
                 iconUrl: 'data:image/svg+xml,' + encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" width="48" height="48"><rect width="48" height="48" fill="#2a5c8a"/><text x="6" y="20" fill="#fff" font-size="11" font-weight="bold">天地图</text><text x="8" y="36" fill="#8df" font-size="10">矢量</text></svg>'),
-                tooltip: '天地图矢量底图',
+                tooltip: '天地图矢量底图+注记',
                 creationFunction: () => tdtImageryProvider('vec')
+            }),
+            new Cesium.ProviderViewModel({
+                name: '天地图 地形',
+                iconUrl: 'data:image/svg+xml,' + encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" width="48" height="48"><rect width="48" height="48" fill="#5c4a1a"/><text x="6" y="20" fill="#fff" font-size="11" font-weight="bold">天地图</text><text x="8" y="36" fill="#fd8" font-size="10">地形</text></svg>'),
+                tooltip: '天地图地形晕渲+注记',
+                creationFunction: () => tdtImageryProvider('ter')
             })
         ] : [];
 
@@ -400,8 +421,7 @@
 
         if (tdtKey) {
             viewer.baseLayerPicker.viewModel.selectedImagery = imageryViewModels[0];
-            const annotLayer = viewer.imageryLayers.addImageryProvider(tdtImageryProvider('cva'));
-            annotLayer.alpha = 0.8;
+            addAnnotationLayer('img');
             currentImageryName = '天地图 影像';
         }
 
@@ -927,7 +947,14 @@
 
         try {
             if (viewer.baseLayerPicker.viewModel && viewer.baseLayerPicker.viewModel.changedEvent) {
-                viewer.baseLayerPicker.viewModel.changedEvent.addEventListener(updateLabelColors);
+                viewer.baseLayerPicker.viewModel.changedEvent.addEventListener((e) => {
+                    updateLabelColors();
+                    if (e && e.name) {
+                        const nameToType = { '天地图 影像': 'img', '天地图 矢量': 'vec', '天地图 地形': 'ter' };
+                        const baseType = nameToType[e.name];
+                        if (baseType) addAnnotationLayer(baseType);
+                    }
+                });
             }
         } catch (e) {
             console.warn("影像图层监听器设置失败:", e);
