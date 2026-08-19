@@ -78,6 +78,11 @@
             </label>
             <div id="radiusInfo"></div>
         </div>
+        <div style="margin-top:5px; display:flex; align-items:center; gap:6px; font-size:12px;">
+            <span>起伏夸张:</span>
+            <input id="vertExagSlider" type="range" min="1" max="5" step="0.1" value="1" style="width:100px;">
+            <span id="vertExagVal">1.0</span>
+        </div>
         <div style="margin-top:5px; display:flex; flex-direction:column; gap:4px;">
             <label style="white-space:nowrap;">
                 <input type="checkbox" id="elevRampToggle"> 地形色谱图
@@ -137,6 +142,8 @@
             antA: document.getElementById("antA"),
             antB: document.getElementById("antB"),
             kFactorToggle: document.getElementById("kFactorToggle"),
+            vertExagSlider: document.getElementById("vertExagSlider"),
+            vertExagVal: document.getElementById("vertExagVal"),
             elevRampToggle: document.getElementById("elevRampToggle"),
             freqGHz: document.getElementById("freqGHz"),
             sampleDensity: document.getElementById("sampleDensity"),
@@ -171,6 +178,7 @@
                 sampleCount: 300,
                 rampMin: 0,
                 rampMax: 1000,
+                vertExag: 1.0,
             },
 
             getCurrentConfig() {
@@ -181,6 +189,7 @@
                     kFactor: domElements.kFactorToggle.checked ? 4 / 3 : 1.0,
                     rampMin: parseFloat(domElements.rampMinSlider.value),
                     rampMax: parseFloat(domElements.rampMaxSlider.value),
+                    vertExag: parseFloat(domElements.vertExagSlider.value),
                 };
             },
             save() {
@@ -194,11 +203,14 @@
                     if (saved) {
                         if (saved.rampMin !== undefined) domElements.rampMinSlider.value = saved.rampMin;
                         if (saved.rampMax !== undefined) domElements.rampMaxSlider.value = saved.rampMax;
+                        if (saved.vertExag !== undefined) domElements.vertExagSlider.value = saved.vertExag;
                     }
                 } catch (e) {}
             }
         };
         ConfigManager.load();
+        viewer.scene.verticalExaggeration = parseFloat(domElements.vertExagSlider.value);
+        domElements.vertExagVal.innerText = parseFloat(domElements.vertExagSlider.value).toFixed(1);
         domElements.rampMinVal.innerText = domElements.rampMinSlider.value;
         domElements.rampMaxVal.innerText = domElements.rampMaxSlider.value;
         domElements.legendMin.innerText = `${domElements.rampMinSlider.value}m`;
@@ -667,6 +679,13 @@ function setupEventListeners() {
             domElements.kFactorToggle.addEventListener("change", () => {
                 K = domElements.kFactorToggle.checked ? 4 / 3 : 1.0;
                 runProfile(true);
+            });
+
+            domElements.vertExagSlider.addEventListener("input", () => {
+                const v = parseFloat(domElements.vertExagSlider.value);
+                domElements.vertExagVal.innerText = v.toFixed(1);
+                viewer.scene.verticalExaggeration = v;
+                ConfigManager.save();
             });
 
             domElements.elevRampToggle.addEventListener("change", () => {
