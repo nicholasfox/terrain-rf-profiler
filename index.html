@@ -238,7 +238,7 @@
                     for (const chunk of chunks) { merged.set(chunk, off); off += chunk.length; }
 
                     const bounds = this._getTileBounds(x, y, level);
-                    const tile = { data: new Uint16Array(merged.buffer), bounds, x, y, level };
+                    const tile = { data: new Int16Array(merged.buffer), bounds, x, y, level };
                     this._tileCache.set(key, tile);
                     return tile;
                 } catch (e) {
@@ -1167,7 +1167,9 @@
                         style: Cesium.LabelStyle.FILL_AND_OUTLINE,
                         verticalOrigin: Cesium.VerticalOrigin.BOTTOM,
                         pixelOffset: new Cesium.Cartesian2(30, -10),
-                        disableDepthTestDistance: Number.POSITIVE_INFINITY
+                        disableDepthTestDistance: Number.POSITIVE_INFINITY,
+                        scaleByDistance: new Cesium.NearFarScalar(1e3, 1, 5e6, 0.3),
+                        translucencyByDistance: new Cesium.NearFarScalar(1e3, 1, 3e6, 0.2)
                     }
                 });
             }
@@ -1203,7 +1205,9 @@
                         style: Cesium.LabelStyle.FILL_AND_OUTLINE,
                         verticalOrigin: Cesium.VerticalOrigin.BOTTOM,
                         pixelOffset: new Cesium.Cartesian2(30, -10),
-                        disableDepthTestDistance: Number.POSITIVE_INFINITY
+                        disableDepthTestDistance: Number.POSITIVE_INFINITY,
+                        scaleByDistance: new Cesium.NearFarScalar(1e3, 1, 5e6, 0.3),
+                        translucencyByDistance: new Cesium.NearFarScalar(1e3, 1, 3e6, 0.2)
                     }
                 });
             }
@@ -1561,7 +1565,9 @@
                             position: Cesium.Cartesian3.fromRadians(point.longitude, point.latitude, point.height),
                             point: {
                                 pixelSize: 15,
-                                color: Cesium.Color.RED
+                                color: Cesium.Color.RED,
+                                disableDepthTestDistance: Number.POSITIVE_INFINITY,
+                                heightReference: Cesium.HeightReference.CLAMP_TO_GROUND
                             }
                         });
                     } else {
