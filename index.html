@@ -1186,7 +1186,7 @@
                         }
                         return Cesium.Cartesian3.fromRadians(A.longitude, A.latitude, A.height || 0);
                     }, false),
-                    billboard: { image: "icons/target.png", width: 48, height: 48, verticalOrigin: Cesium.VerticalOrigin.BOTTOM, disableDepthTestDistance: Number.POSITIVE_INFINITY, heightReference: Cesium.HeightReference.CLAMP_TO_GROUND },
+                    billboard: { image: "icons/target.png", width: 48, height: 48, verticalOrigin: Cesium.VerticalOrigin.BOTTOM, disableDepthTestDistance: 50000, heightReference: Cesium.HeightReference.CLAMP_TO_GROUND },
                     label: {
                         text: new Cesium.CallbackProperty(() => {
                             let lon, lat, elev;
@@ -1209,7 +1209,7 @@
                         style: Cesium.LabelStyle.FILL_AND_OUTLINE,
                         verticalOrigin: Cesium.VerticalOrigin.TOP,
                         pixelOffset: new Cesium.Cartesian2(0, 30),
-                        disableDepthTestDistance: Number.POSITIVE_INFINITY,
+                        disableDepthTestDistance: 50000,
                         scaleByDistance: new Cesium.NearFarScalar(1e3, 1, 5e6, 0.3),
                         translucencyByDistance: new Cesium.NearFarScalar(1e3, 1, 3e6, 0.2),
                         heightReference: Cesium.HeightReference.CLAMP_TO_GROUND
@@ -1225,7 +1225,7 @@
                         }
                         return Cesium.Cartesian3.fromRadians(B.longitude, B.latitude, B.height || 0);
                     }, false),
-                    billboard: { image: "icons/target.png", width: 48, height: 48, verticalOrigin: Cesium.VerticalOrigin.BOTTOM, disableDepthTestDistance: Number.POSITIVE_INFINITY, heightReference: Cesium.HeightReference.CLAMP_TO_GROUND },
+                    billboard: { image: "icons/target.png", width: 48, height: 48, verticalOrigin: Cesium.VerticalOrigin.BOTTOM, disableDepthTestDistance: 50000, heightReference: Cesium.HeightReference.CLAMP_TO_GROUND },
                     label: {
                         text: new Cesium.CallbackProperty(() => {
                             let lon, lat, elev;
@@ -1248,7 +1248,7 @@
                         style: Cesium.LabelStyle.FILL_AND_OUTLINE,
                         verticalOrigin: Cesium.VerticalOrigin.TOP,
                         pixelOffset: new Cesium.Cartesian2(0, 30),
-                        disableDepthTestDistance: Number.POSITIVE_INFINITY,
+                        disableDepthTestDistance: 50000,
                         scaleByDistance: new Cesium.NearFarScalar(1e3, 1, 5e6, 0.3),
                         translucencyByDistance: new Cesium.NearFarScalar(1e3, 1, 3e6, 0.2),
                         heightReference: Cesium.HeightReference.CLAMP_TO_GROUND
@@ -1615,7 +1615,7 @@
                             point: {
                                 pixelSize: 15,
                                 color: Cesium.Color.RED,
-                                disableDepthTestDistance: Number.POSITIVE_INFINITY,
+                                disableDepthTestDistance: 50000,
                                 heightReference: Cesium.HeightReference.CLAMP_TO_GROUND
                             }
                         });
