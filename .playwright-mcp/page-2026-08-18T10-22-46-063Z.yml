@@ -1,0 +1,35 @@
+- generic [active] [ref=f4e1]:
+  - generic [ref=f4e3]:
+    - button "天地图 影像" [ref=f4e8] [cursor=pointer]
+    - button "Full screen" [ref=f4e11] [cursor=pointer]
+  - generic [ref=f4e16]: "地图图层: 加载中地形数据: 进行中色谱分析: 未启用"
+  - generic [ref=f4e17]:
+    - text: "A天线高:"
+    - spinbutton [ref=f4e18]: "20"
+    - text: "m B天线高:"
+    - spinbutton [ref=f4e19]: "20"
+    - text: m
+    - generic [ref=f4e20]:
+      - text: "频 率:"
+      - spinbutton [ref=f4e21]: "1.4"
+      - text: "GHz 采样密度:"
+      - spinbutton [ref=f4e22]: "300"
+    - generic [ref=f4e23]:
+      - text: "A经度:"
+      - spinbutton [ref=f4e24]: "111.270049"
+      - text: "纬度:"
+      - spinbutton [ref=f4e25]: "22.272179"
+      - text: "海拔: -- m"
+    - generic [ref=f4e26]:
+      - text: "B经度:"
+      - spinbutton [ref=f4e27]: "112.944868"
+      - text: "纬度:"
+      - spinbutton [ref=f4e28]: "22.176439"
+      - text: "海拔: -- m"
+    - button "选点模式" [ref=f4e30]
+    - generic [ref=f4e32]:
+      - checkbox "考虑折射 (K = 4/3)" [ref=f4e33]
+      - text: 考虑折射 (K = 4/3)
+    - generic [ref=f4e35]:
+      - checkbox "地形色谱图" [ref=f4e36]
+      - text: 地形色谱图

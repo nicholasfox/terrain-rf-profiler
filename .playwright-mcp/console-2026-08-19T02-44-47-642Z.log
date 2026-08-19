@@ -1,0 +1,14 @@
+[     721ms] [LOG] %c欢迎使用CesiumTdt插件，%c该插件由Jason提供，%c目前支持1.120版本 color: green; font-size: 16px; font-weight: bold; color: blue; font-size: 14px; font-style: italic; color: red; font-size: 14px; font-weight: bold; @ http://localhost:8080/lib/cesiumTdt.js:0
+[    2593ms] [ERROR] An error occurred while rendering.  Rendering has stopped.
+TypeError: Cannot read properties of undefined (reading 'projection')
+TypeError: Cannot read properties of undefined (reading 'projection')
+    at _i._createTileImagerySkeletons (https://cesium.com/downloads/cesiumjs/releases/1.120/Build/Cesium/Cesium.js:10698:5664)
+    at fst (https://cesium.com/downloads/cesiumjs/releases/1.120/Build/Cesium/Cesium.js:10678:5826)
+    at qo.initialize (https://cesium.com/downloads/cesiumjs/releases/1.120/Build/Cesium/Cesium.js:10678:3101)
+    at qo.processStateMachine (https://cesium.com/downloads/cesiumjs/releases/1.120/Build/Cesium/Cesium.js:10678:3183)
+    at $o.loadTile (https://cesium.com/downloads/cesiumjs/releases/1.120/Build/Cesium/Cesium.js:10698:37006)
+    at Bj (https://cesium.com/downloads/cesiumjs/releases/1.120/Build/Cesium/Cesium.js:10698:89196)
+    at Bct (https://cesium.com/downloads/cesiumjs/releases/1.120/Build/Cesium/Cesium.js:10698:88912)
+    at $u.endFrame (https://cesium.com/downloads/cesiumjs/releases/1.120/Build/Cesium/Cesium.js:10698:81026)
+    at Vh.endFrame (https://cesium.com/downloads/cesiumjs/releases/1.120/Build/Cesium/Cesium.js:10698:100322)
+    at ugt (https://cesium.com/downloads/cesiumjs/releases/1.120/Build/Cesium/Cesium.js:14900:39269) @ https://cesium.com/downloads/cesiumjs/releases/1.120/Build/Cesium/Cesium.js:15181

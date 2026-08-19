@@ -1,0 +1,434 @@
+[     185ms] [LOG] %c欢迎使用CesiumTdt插件，%c该插件由Jason提供，%c目前支持1.120版本 color: green; font-size: 16px; font-weight: bold; color: blue; font-size: 14px; font-style: italic; color: red; font-size: 14px; font-weight: bold; @ http://localhost:8080/lib/cesiumTdt.js:0
+[     858ms] [ERROR] 采样A/B点地形失败: TypeError: Cannot read properties of undefined (reading 'computeMaximumLevelAtPosition')
+    at Object.Qre (https://cesium.com/downloads/cesiumjs/releases/1.120/Build/Cesium/Cesium.js:93:186783)
+    at Object.sampleElevation (http://localhost:8080/index.html?v=2:211:46)
+    at runProfile (http://localhost:8080/index.html?v=2:942:36)
+    at http://localhost:8080/index.html?v=2:358:30 @ http://localhost:8080/index.html?v=2:949
+[     866ms] [ERROR] 采样地形失败: TypeError: Cannot read properties of undefined (reading 'computeMaximumLevelAtPosition')
+    at Object.Qre (https://cesium.com/downloads/cesiumjs/releases/1.120/Build/Cesium/Cesium.js:93:186783)
+    at Object.sampleTerrainPath (http://localhost:8080/index.html?v=2:204:46)
+    at runProfile (http://localhost:8080/index.html?v=2:1058:85) @ http://localhost:8080/index.html?v=2:1060
+[    1703ms] [ERROR] Failed to load resource: the server responded with a status of 404 (Not Found) @ https://t3.tianditu.gov.cn/img_w?x=1&y=1&l=1&tk=3434e0337ed4d651277ec7e690a61b4c:0
+[    1705ms] [LOG] An error occurred in "Tw": Failed to obtain image tile X: 1 Y: 1 Level: 1. @ https://cesium.com/downloads/cesiumjs/releases/1.120/Build/Cesium/Cesium.js:85
+[    1712ms] [ERROR] Failed to load resource: the server responded with a status of 404 (Not Found) @ https://t1.tianditu.gov.cn/img_w?x=0&y=0&l=1&tk=3434e0337ed4d651277ec7e690a61b4c:0
+[    1716ms] [ERROR] Failed to load resource: the server responded with a status of 404 (Not Found) @ https://t2.tianditu.gov.cn/img_w?x=0&y=1&l=1&tk=3434e0337ed4d651277ec7e690a61b4c:0
+[    1718ms] [ERROR] Failed to load resource: the server responded with a status of 404 (Not Found) @ https://t2.tianditu.gov.cn/cva_w?x=0&y=1&l=1&tk=3434e0337ed4d651277ec7e690a61b4c:0
+[    1727ms] [ERROR] Failed to load resource: the server responded with a status of 404 (Not Found) @ https://t3.tianditu.gov.cn/cva_w?x=1&y=1&l=1&tk=3434e0337ed4d651277ec7e690a61b4c:0
+[    1727ms] [ERROR] Failed to load resource: the server responded with a status of 404 (Not Found) @ https://t1.tianditu.gov.cn/cva_w?x=0&y=0&l=1&tk=3434e0337ed4d651277ec7e690a61b4c:0
+[    1728ms] [ERROR] Failed to load resource: the server responded with a status of 404 (Not Found) @ https://t2.tianditu.gov.cn/img_w?x=1&y=0&l=1&tk=3434e0337ed4d651277ec7e690a61b4c:0
+[    1729ms] [ERROR] Failed to load resource: the server responded with a status of 404 (Not Found) @ https://t2.tianditu.gov.cn/cva_w?x=1&y=0&l=1&tk=3434e0337ed4d651277ec7e690a61b4c:0
+[    1732ms] [LOG] An error occurred in "Tw": Failed to obtain image tile X: 0 Y: 0 Level: 1. @ https://cesium.com/downloads/cesiumjs/releases/1.120/Build/Cesium/Cesium.js:85
+[    1733ms] [LOG] An error occurred in "Tw": Failed to obtain image tile X: 0 Y: 1 Level: 1. @ https://cesium.com/downloads/cesiumjs/releases/1.120/Build/Cesium/Cesium.js:85
+[    1736ms] [LOG] An error occurred in "Tw": Failed to obtain image tile X: 0 Y: 1 Level: 1. @ https://cesium.com/downloads/cesiumjs/releases/1.120/Build/Cesium/Cesium.js:85
+[    1736ms] [LOG] An error occurred in "Tw": Failed to obtain image tile X: 1 Y: 1 Level: 1. @ https://cesium.com/downloads/cesiumjs/releases/1.120/Build/Cesium/Cesium.js:85
+[    1737ms] [LOG] An error occurred in "Tw": Failed to obtain image tile X: 0 Y: 0 Level: 1. @ https://cesium.com/downloads/cesiumjs/releases/1.120/Build/Cesium/Cesium.js:85
+[    1737ms] [LOG] An error occurred in "Tw": Failed to obtain image tile X: 1 Y: 0 Level: 1. @ https://cesium.com/downloads/cesiumjs/releases/1.120/Build/Cesium/Cesium.js:85
+[    1737ms] [LOG] An error occurred in "Tw": Failed to obtain image tile X: 1 Y: 0 Level: 1. @ https://cesium.com/downloads/cesiumjs/releases/1.120/Build/Cesium/Cesium.js:85
+[    1905ms] [ERROR] Failed to load resource: the server responded with a status of 404 (Not Found) @ https://t0.tianditu.gov.cn/img_w?x=0&y=0&l=0&tk=3434e0337ed4d651277ec7e690a61b4c:0
+[    1908ms] [LOG] An error occurred in "Tw": Failed to obtain image tile X: 0 Y: 0 Level: 0. @ https://cesium.com/downloads/cesiumjs/releases/1.120/Build/Cesium/Cesium.js:85
+[    2011ms] [ERROR] Failed to load resource: the server responded with a status of 404 (Not Found) @ https://t0.tianditu.gov.cn/cva_w?x=0&y=0&l=0&tk=3434e0337ed4d651277ec7e690a61b4c:0
+[    2103ms] [LOG] An error occurred in "Tw": Failed to obtain image tile X: 0 Y: 0 Level: 0. @ https://cesium.com/downloads/cesiumjs/releases/1.120/Build/Cesium/Cesium.js:85
+[    2272ms] [ERROR] Failed to load resource: the server responded with a status of 404 (Not Found) @ https://t3.tianditu.gov.cn/cva_w?x=15&y=8&l=4&tk=3434e0337ed4d651277ec7e690a61b4c:0
+[    2273ms] [ERROR] Failed to load resource: the server responded with a status of 404 (Not Found) @ https://t3.tianditu.gov.cn/img_w?x=15&y=8&l=4&tk=3434e0337ed4d651277ec7e690a61b4c:0
+[    2275ms] [LOG] An error occurred in "Tw": Failed to obtain image tile X: 15 Y: 8 Level: 4. @ https://cesium.com/downloads/cesiumjs/releases/1.120/Build/Cesium/Cesium.js:85
+[    2275ms] [LOG] An error occurred in "Tw": Failed to obtain image tile X: 15 Y: 8 Level: 4. @ https://cesium.com/downloads/cesiumjs/releases/1.120/Build/Cesium/Cesium.js:85
+[    2315ms] [ERROR] Failed to load resource: the server responded with a status of 404 (Not Found) @ https://t0.tianditu.gov.cn/img_w?x=12&y=8&l=4&tk=3434e0337ed4d651277ec7e690a61b4c:0
+[    2317ms] [LOG] An error occurred in "Tw": Failed to obtain image tile X: 12 Y: 8 Level: 4. @ https://cesium.com/downloads/cesiumjs/releases/1.120/Build/Cesium/Cesium.js:85
+[    2334ms] [ERROR] Failed to load resource: the server responded with a status of 404 (Not Found) @ https://t1.tianditu.gov.cn/img_w?x=12&y=9&l=4&tk=3434e0337ed4d651277ec7e690a61b4c:0
+[    2337ms] [LOG] An error occurred in "Tw": Failed to obtain image tile X: 12 Y: 9 Level: 4. @ https://cesium.com/downloads/cesiumjs/releases/1.120/Build/Cesium/Cesium.js:85
+[    2342ms] [ERROR] Failed to load resource: the server responded with a status of 404 (Not Found) @ https://t1.tianditu.gov.cn/cva_w?x=12&y=9&l=4&tk=3434e0337ed4d651277ec7e690a61b4c:0
+[    2343ms] [LOG] An error occurred in "Tw": Failed to obtain image tile X: 12 Y: 9 Level: 4. @ https://cesium.com/downloads/cesiumjs/releases/1.120/Build/Cesium/Cesium.js:85
+[    2353ms] [ERROR] Failed to load resource: the server responded with a status of 404 (Not Found) @ https://t0.tianditu.gov.cn/cva_w?x=12&y=8&l=4&tk=3434e0337ed4d651277ec7e690a61b4c:0
+[    2355ms] [LOG] An error occurred in "Tw": Failed to obtain image tile X: 12 Y: 8 Level: 4. @ https://cesium.com/downloads/cesiumjs/releases/1.120/Build/Cesium/Cesium.js:85
+[    2361ms] [ERROR] Failed to load resource: the server responded with a status of 404 (Not Found) @ https://t5.tianditu.gov.cn/img_w?x=3&y=0&l=2&tk=3434e0337ed4d651277ec7e690a61b4c:0
+[    2363ms] [LOG] An error occurred in "Tw": Failed to obtain image tile X: 3 Y: 0 Level: 2. @ https://cesium.com/downloads/cesiumjs/releases/1.120/Build/Cesium/Cesium.js:85
+[    2384ms] [ERROR] Failed to load resource: the server responded with a status of 404 (Not Found) @ https://t0.tianditu.gov.cn/img_w?x=3&y=3&l=2&tk=3434e0337ed4d651277ec7e690a61b4c:0
+[    2386ms] [ERROR] Failed to load resource: the server responded with a status of 404 (Not Found) @ https://t6.tianditu.gov.cn/cva_w?x=3&y=1&l=2&tk=3434e0337ed4d651277ec7e690a61b4c:0
+[    2390ms] [ERROR] Failed to load resource: the server responded with a status of 404 (Not Found) @ https://t6.tianditu.gov.cn/img_w?x=3&y=1&l=2&tk=3434e0337ed4d651277ec7e690a61b4c:0
+[    2392ms] [ERROR] Failed to load resource: the server responded with a status of 404 (Not Found) @ https://t5.tianditu.gov.cn/cva_w?x=3&y=0&l=2&tk=3434e0337ed4d651277ec7e690a61b4c:0
+[    2394ms] [LOG] An error occurred in "Tw": Failed to obtain image tile X: 3 Y: 3 Level: 2. @ https://cesium.com/downloads/cesiumjs/releases/1.120/Build/Cesium/Cesium.js:85
+[    2394ms] [LOG] An error occurred in "Tw": Failed to obtain image tile X: 3 Y: 1 Level: 2. @ https://cesium.com/downloads/cesiumjs/releases/1.120/Build/Cesium/Cesium.js:85
+[    2395ms] [LOG] An error occurred in "Tw": Failed to obtain image tile X: 3 Y: 1 Level: 2. @ https://cesium.com/downloads/cesiumjs/releases/1.120/Build/Cesium/Cesium.js:85
+[    2395ms] [LOG] An error occurred in "Tw": Failed to obtain image tile X: 3 Y: 0 Level: 2. @ https://cesium.com/downloads/cesiumjs/releases/1.120/Build/Cesium/Cesium.js:85
+[    2412ms] [ERROR] Failed to load resource: the server responded with a status of 404 (Not Found) @ https://t4.tianditu.gov.cn/img_w?x=15&y=9&l=4&tk=3434e0337ed4d651277ec7e690a61b4c:0
+[    2415ms] [ERROR] Failed to load resource: the server responded with a status of 404 (Not Found) @ https://t0.tianditu.gov.cn/cva_w?x=3&y=3&l=2&tk=3434e0337ed4d651277ec7e690a61b4c:0
+[    2416ms] [ERROR] Failed to load resource: the server responded with a status of 404 (Not Found) @ https://t4.tianditu.gov.cn/cva_w?x=15&y=9&l=4&tk=3434e0337ed4d651277ec7e690a61b4c:0
+[    2417ms] [LOG] An error occurred in "Tw": Failed to obtain image tile X: 15 Y: 9 Level: 4. @ https://cesium.com/downloads/cesiumjs/releases/1.120/Build/Cesium/Cesium.js:85
+[    2417ms] [LOG] An error occurred in "Tw": Failed to obtain image tile X: 15 Y: 9 Level: 4. @ https://cesium.com/downloads/cesiumjs/releases/1.120/Build/Cesium/Cesium.js:85
+[    2423ms] [LOG] An error occurred in "Tw": Failed to obtain image tile X: 3 Y: 3 Level: 2. @ https://cesium.com/downloads/cesiumjs/releases/1.120/Build/Cesium/Cesium.js:85
+[    2429ms] [ERROR] Failed to load resource: the server responded with a status of 404 (Not Found) @ https://t5.tianditu.gov.cn/img_w?x=6&y=4&l=3&tk=3434e0337ed4d651277ec7e690a61b4c:0
+[    2430ms] [LOG] An error occurred in "Tw": Failed to obtain image tile X: 6 Y: 4 Level: 3. @ https://cesium.com/downloads/cesiumjs/releases/1.120/Build/Cesium/Cesium.js:85
+[    2433ms] [ERROR] Failed to load resource: the server responded with a status of 404 (Not Found) @ https://t7.tianditu.gov.cn/img_w?x=3&y=2&l=2&tk=3434e0337ed4d651277ec7e690a61b4c:0
+[    2433ms] [LOG] An error occurred in "Tw": Failed to obtain image tile X: 3 Y: 2 Level: 2. @ https://cesium.com/downloads/cesiumjs/releases/1.120/Build/Cesium/Cesium.js:85
+[    2457ms] [LOG] An error occurred in "": Failed to obtain terrain tile X: 55 Y: 11 Level: 5. Error message: "undefined" @ https://cesium.com/downloads/cesiumjs/releases/1.120/Build/Cesium/Cesium.js:85
+[    2458ms] [ERROR] Failed to load resource: the server responded with a status of 404 (Not Found) @ https://t7.tianditu.gov.cn/cva_w?x=3&y=2&l=2&tk=3434e0337ed4d651277ec7e690a61b4c:0
+[    2461ms] [LOG] An error occurred in "Tw": Failed to obtain image tile X: 3 Y: 2 Level: 2. @ https://cesium.com/downloads/cesiumjs/releases/1.120/Build/Cesium/Cesium.js:85
+[    2462ms] [LOG] An error occurred in "": Failed to obtain terrain tile X: 54 Y: 11 Level: 5. Error message: "undefined" @ https://cesium.com/downloads/cesiumjs/releases/1.120/Build/Cesium/Cesium.js:85
+[    2462ms] [LOG] An error occurred in "": Failed to obtain terrain tile X: 55 Y: 12 Level: 5. Error message: "undefined" @ https://cesium.com/downloads/cesiumjs/releases/1.120/Build/Cesium/Cesium.js:85
+[    2463ms] [LOG] An error occurred in "": Failed to obtain terrain tile X: 54 Y: 12 Level: 5. Error message: "undefined" @ https://cesium.com/downloads/cesiumjs/releases/1.120/Build/Cesium/Cesium.js:85
+[    2463ms] [LOG] An error occurred in "": Failed to obtain terrain tile X: 54 Y: 10 Level: 5. Error message: "undefined" @ https://cesium.com/downloads/cesiumjs/releases/1.120/Build/Cesium/Cesium.js:85
+[    2464ms] [LOG] An error occurred in "": Failed to obtain terrain tile X: 55 Y: 13 Level: 5. Error message: "undefined" @ https://cesium.com/downloads/cesiumjs/releases/1.120/Build/Cesium/Cesium.js:85
+[    2465ms] [LOG] An error occurred in "": Failed to obtain terrain tile X: 54 Y: 13 Level: 5. Error message: "undefined" @ https://cesium.com/downloads/cesiumjs/releases/1.120/Build/Cesium/Cesium.js:85
+[    2466ms] [LOG] An error occurred in "": Failed to obtain terrain tile X: 53 Y: 13 Level: 5. Error message: "undefined" @ https://cesium.com/downloads/cesiumjs/releases/1.120/Build/Cesium/Cesium.js:85
+[    2485ms] [LOG] An error occurred in "": Failed to obtain terrain tile X: 53 Y: 12 Level: 5. Error message: "undefined" @ https://cesium.com/downloads/cesiumjs/releases/1.120/Build/Cesium/Cesium.js:85
+[    2503ms] [ERROR] Failed to load resource: the server responded with a status of 404 (Not Found) @ https://t6.tianditu.gov.cn/cva_w?x=7&y=4&l=3&tk=3434e0337ed4d651277ec7e690a61b4c:0
+[    2504ms] [ERROR] Failed to load resource: the server responded with a status of 404 (Not Found) @ https://t6.tianditu.gov.cn/img_w?x=7&y=4&l=3&tk=3434e0337ed4d651277ec7e690a61b4c:0
+[    2504ms] [ERROR] Failed to load resource: the server responded with a status of 404 (Not Found) @ https://t6.tianditu.gov.cn/img_w?x=6&y=5&l=3&tk=3434e0337ed4d651277ec7e690a61b4c:0
+[    2505ms] [ERROR] Failed to load resource: the server responded with a status of 404 (Not Found) @ https://t5.tianditu.gov.cn/cva_w?x=6&y=4&l=3&tk=3434e0337ed4d651277ec7e690a61b4c:0
+[    2505ms] [ERROR] Failed to load resource: the server responded with a status of 404 (Not Found) @ https://t7.tianditu.gov.cn/cva_w?x=7&y=5&l=3&tk=3434e0337ed4d651277ec7e690a61b4c:0
+[    2506ms] [ERROR] Failed to load resource: the server responded with a status of 404 (Not Found) @ https://t6.tianditu.gov.cn/cva_w?x=6&y=5&l=3&tk=3434e0337ed4d651277ec7e690a61b4c:0
+[    2510ms] [ERROR] Failed to load resource: the server responded with a status of 404 (Not Found) @ https://t7.tianditu.gov.cn/img_w?x=7&y=5&l=3&tk=3434e0337ed4d651277ec7e690a61b4c:0
+[    2526ms] [LOG] An error occurred in "": Failed to obtain terrain tile X: 52 Y: 12 Level: 5. Error message: "undefined" @ https://cesium.com/downloads/cesiumjs/releases/1.120/Build/Cesium/Cesium.js:85
+[    2536ms] [LOG] An error occurred in "": Failed to obtain terrain tile X: 56 Y: 13 Level: 5. Error message: "undefined" @ https://cesium.com/downloads/cesiumjs/releases/1.120/Build/Cesium/Cesium.js:85
+[    2536ms] [LOG] An error occurred in "": Failed to obtain terrain tile X: 55 Y: 10 Level: 5. Error message: "undefined" @ https://cesium.com/downloads/cesiumjs/releases/1.120/Build/Cesium/Cesium.js:85
+[    2536ms] [LOG] An error occurred in "": Failed to obtain terrain tile X: 56 Y: 11 Level: 5. Error message: "undefined" @ https://cesium.com/downloads/cesiumjs/releases/1.120/Build/Cesium/Cesium.js:85
+[    2537ms] [LOG] An error occurred in "Tw": Failed to obtain image tile X: 7 Y: 4 Level: 3. @ https://cesium.com/downloads/cesiumjs/releases/1.120/Build/Cesium/Cesium.js:85
+[    2537ms] [LOG] An error occurred in "Tw": Failed to obtain image tile X: 7 Y: 4 Level: 3. @ https://cesium.com/downloads/cesiumjs/releases/1.120/Build/Cesium/Cesium.js:85
+[    2537ms] [LOG] An error occurred in "Tw": Failed to obtain image tile X: 6 Y: 5 Level: 3. @ https://cesium.com/downloads/cesiumjs/releases/1.120/Build/Cesium/Cesium.js:85
+[    2537ms] [LOG] An error occurred in "Tw": Failed to obtain image tile X: 6 Y: 4 Level: 3. @ https://cesium.com/downloads/cesiumjs/releases/1.120/Build/Cesium/Cesium.js:85
+[    2537ms] [LOG] An error occurred in "Tw": Failed to obtain image tile X: 7 Y: 5 Level: 3. @ https://cesium.com/downloads/cesiumjs/releases/1.120/Build/Cesium/Cesium.js:85
+[    2537ms] [LOG] An error occurred in "Tw": Failed to obtain image tile X: 6 Y: 5 Level: 3. @ https://cesium.com/downloads/cesiumjs/releases/1.120/Build/Cesium/Cesium.js:85
+[    2537ms] [LOG] An error occurred in "Tw": Failed to obtain image tile X: 7 Y: 5 Level: 3. @ https://cesium.com/downloads/cesiumjs/releases/1.120/Build/Cesium/Cesium.js:85
+[    2570ms] [LOG] An error occurred in "": Failed to obtain terrain tile X: 57 Y: 10 Level: 5. Error message: "undefined" @ https://cesium.com/downloads/cesiumjs/releases/1.120/Build/Cesium/Cesium.js:85
+[    2570ms] [LOG] An error occurred in "": Failed to obtain terrain tile X: 52 Y: 13 Level: 5. Error message: "undefined" @ https://cesium.com/downloads/cesiumjs/releases/1.120/Build/Cesium/Cesium.js:85
+[    2586ms] [LOG] An error occurred in "": Failed to obtain terrain tile X: 56 Y: 12 Level: 5. Error message: "undefined" @ https://cesium.com/downloads/cesiumjs/releases/1.120/Build/Cesium/Cesium.js:85
+[    2588ms] [LOG] An error occurred in "": Failed to obtain terrain tile X: 56 Y: 10 Level: 5. Error message: "undefined" @ https://cesium.com/downloads/cesiumjs/releases/1.120/Build/Cesium/Cesium.js:85
+[    2605ms] [ERROR] Failed to load resource: the server responded with a status of 404 (Not Found) @ https://t5.tianditu.gov.cn/img_w?x=53&y=26&l=6&tk=3434e0337ed4d651277ec7e690a61b4c:0
+[    2607ms] [LOG] An error occurred in "Tw": Failed to obtain image tile X: 53 Y: 26 Level: 6. @ https://cesium.com/downloads/cesiumjs/releases/1.120/Build/Cesium/Cesium.js:85
+[    2616ms] [ERROR] Failed to load resource: the server responded with a status of 404 (Not Found) @ https://t6.tianditu.gov.cn/cva_w?x=53&y=27&l=6&tk=3434e0337ed4d651277ec7e690a61b4c:0
+[    2616ms] [ERROR] Failed to load resource: the server responded with a status of 404 (Not Found) @ https://t5.tianditu.gov.cn/cva_w?x=53&y=26&l=6&tk=3434e0337ed4d651277ec7e690a61b4c:0
+[    2616ms] [ERROR] Failed to load resource: the server responded with a status of 404 (Not Found) @ https://t6.tianditu.gov.cn/img_w?x=53&y=27&l=6&tk=3434e0337ed4d651277ec7e690a61b4c:0
+[    2622ms] [ERROR] Failed to load resource: the server responded with a status of 404 (Not Found) @ https://t4.tianditu.gov.cn/img_w?x=53&y=25&l=6&tk=3434e0337ed4d651277ec7e690a61b4c:0
+[    2623ms] [LOG] An error occurred in "Tw": Failed to obtain image tile X: 53 Y: 26 Level: 6. @ https://cesium.com/downloads/cesiumjs/releases/1.120/Build/Cesium/Cesium.js:85
+[    2625ms] [LOG] An error occurred in "Tw": Failed to obtain image tile X: 53 Y: 27 Level: 6. @ https://cesium.com/downloads/cesiumjs/releases/1.120/Build/Cesium/Cesium.js:85
+[    2626ms] [LOG] An error occurred in "Tw": Failed to obtain image tile X: 53 Y: 25 Level: 6. @ https://cesium.com/downloads/cesiumjs/releases/1.120/Build/Cesium/Cesium.js:85
+[    2627ms] [LOG] An error occurred in "Tw": Failed to obtain image tile X: 53 Y: 27 Level: 6. @ https://cesium.com/downloads/cesiumjs/releases/1.120/Build/Cesium/Cesium.js:85
+[    2642ms] [ERROR] Failed to load resource: the server responded with a status of 404 (Not Found) @ https://t5.tianditu.gov.cn/img_w?x=52&y=27&l=6&tk=3434e0337ed4d651277ec7e690a61b4c:0
+[    2643ms] [ERROR] Failed to load resource: the server responded with a status of 404 (Not Found) @ https://t6.tianditu.gov.cn/img_w?x=27&y=14&l=5&tk=3434e0337ed4d651277ec7e690a61b4c:0
+[    2657ms] [ERROR] Failed to load resource: the server responded with a status of 404 (Not Found) @ https://t6.tianditu.gov.cn/cva_w?x=27&y=14&l=5&tk=3434e0337ed4d651277ec7e690a61b4c:0
+[    2658ms] [ERROR] Failed to load resource: the server responded with a status of 404 (Not Found) @ https://t5.tianditu.gov.cn/cva_w?x=52&y=27&l=6&tk=3434e0337ed4d651277ec7e690a61b4c:0
+[    2659ms] [ERROR] Failed to load resource: the server responded with a status of 404 (Not Found) @ https://t4.tianditu.gov.cn/img_w?x=52&y=26&l=6&tk=3434e0337ed4d651277ec7e690a61b4c:0
+[    2659ms] [ERROR] Failed to load resource: the server responded with a status of 404 (Not Found) @ https://t4.tianditu.gov.cn/cva_w?x=53&y=25&l=6&tk=3434e0337ed4d651277ec7e690a61b4c:0
+[    2660ms] [ERROR] Failed to load resource: the server responded with a status of 404 (Not Found) @ https://t7.tianditu.gov.cn/cva_w?x=55&y=26&l=6&tk=3434e0337ed4d651277ec7e690a61b4c:0
+[    2661ms] [ERROR] Failed to load resource: the server responded with a status of 404 (Not Found) @ https://t7.tianditu.gov.cn/cva_w?x=54&y=27&l=6&tk=3434e0337ed4d651277ec7e690a61b4c:0
+[    2665ms] [ERROR] Failed to load resource: the server responded with a status of 404 (Not Found) @ https://t0.tianditu.gov.cn/cva_w?x=55&y=27&l=6&tk=3434e0337ed4d651277ec7e690a61b4c:0
+[    2683ms] [ERROR] Failed to load resource: the server responded with a status of 404 (Not Found) @ https://t6.tianditu.gov.cn/cva_w?x=54&y=26&l=6&tk=3434e0337ed4d651277ec7e690a61b4c:0
+[    2687ms] [ERROR] Failed to load resource: the server responded with a status of 404 (Not Found) @ https://t0.tianditu.gov.cn/img_w?x=55&y=27&l=6&tk=3434e0337ed4d651277ec7e690a61b4c:0
+[    2689ms] [ERROR] Failed to load resource: the server responded with a status of 404 (Not Found) @ https://t7.tianditu.gov.cn/img_w?x=54&y=27&l=6&tk=3434e0337ed4d651277ec7e690a61b4c:0
+[    2690ms] [LOG] An error occurred in "Tw": Failed to obtain image tile X: 52 Y: 27 Level: 6. @ https://cesium.com/downloads/cesiumjs/releases/1.120/Build/Cesium/Cesium.js:85
+[    2691ms] [ERROR] Failed to load resource: the server responded with a status of 404 (Not Found) @ https://t6.tianditu.gov.cn/img_w?x=54&y=26&l=6&tk=3434e0337ed4d651277ec7e690a61b4c:0
+[    2694ms] [ERROR] Failed to load resource: the server responded with a status of 404 (Not Found) @ https://t4.tianditu.gov.cn/cva_w?x=52&y=26&l=6&tk=3434e0337ed4d651277ec7e690a61b4c:0
+[    2696ms] [ERROR] Failed to load resource: the server responded with a status of 404 (Not Found) @ https://t7.tianditu.gov.cn/img_w?x=55&y=26&l=6&tk=3434e0337ed4d651277ec7e690a61b4c:0
+[    2699ms] [ERROR] Failed to load resource: the server responded with a status of 404 (Not Found) @ https://t3.tianditu.gov.cn/img_w?x=52&y=25&l=6&tk=3434e0337ed4d651277ec7e690a61b4c:0
+[    2702ms] [ERROR] Failed to load resource: the server responded with a status of 404 (Not Found) @ https://t5.tianditu.gov.cn/img_w?x=27&y=13&l=5&tk=3434e0337ed4d651277ec7e690a61b4c:0
+[    2711ms] [ERROR] Failed to load resource: the server responded with a status of 404 (Not Found) @ https://t3.tianditu.gov.cn/cva_w?x=52&y=25&l=6&tk=3434e0337ed4d651277ec7e690a61b4c:0
+[    2712ms] [ERROR] Failed to load resource: the server responded with a status of 404 (Not Found) @ https://t1.tianditu.gov.cn/img_w?x=55&y=28&l=6&tk=3434e0337ed4d651277ec7e690a61b4c:0
+[    2713ms] [ERROR] Failed to load resource: the server responded with a status of 404 (Not Found) @ https://t0.tianditu.gov.cn/img_w?x=54&y=28&l=6&tk=3434e0337ed4d651277ec7e690a61b4c:0
+[    2719ms] [ERROR] Failed to load resource: the server responded with a status of 404 (Not Found) @ https://t6.tianditu.gov.cn/img_w?x=55&y=25&l=6&tk=3434e0337ed4d651277ec7e690a61b4c:0
+[    2721ms] [ERROR] Failed to load resource: the server responded with a status of 404 (Not Found) @ https://t1.tianditu.gov.cn/cva_w?x=55&y=28&l=6&tk=3434e0337ed4d651277ec7e690a61b4c:0
+[    2724ms] [ERROR] Failed to load resource: the server responded with a status of 404 (Not Found) @ https://t4.tianditu.gov.cn/img_w?x=27&y=12&l=5&tk=3434e0337ed4d651277ec7e690a61b4c:0
+[    2727ms] [ERROR] Failed to load resource: the server responded with a status of 404 (Not Found) @ https://t6.tianditu.gov.cn/cva_w?x=55&y=25&l=6&tk=3434e0337ed4d651277ec7e690a61b4c:0
+[    2730ms] [ERROR] Failed to load resource: the server responded with a status of 404 (Not Found) @ https://t5.tianditu.gov.cn/cva_w?x=27&y=13&l=5&tk=3434e0337ed4d651277ec7e690a61b4c:0
+[    2733ms] [ERROR] Failed to load resource: the server responded with a status of 404 (Not Found) @ https://t0.tianditu.gov.cn/cva_w?x=54&y=28&l=6&tk=3434e0337ed4d651277ec7e690a61b4c:0
+[    2744ms] [LOG] An error occurred in "Tw": Failed to obtain image tile X: 27 Y: 14 Level: 5. @ https://cesium.com/downloads/cesiumjs/releases/1.120/Build/Cesium/Cesium.js:85
+[    2744ms] [LOG] An error occurred in "Tw": Failed to obtain image tile X: 27 Y: 14 Level: 5. @ https://cesium.com/downloads/cesiumjs/releases/1.120/Build/Cesium/Cesium.js:85
+[    2744ms] [LOG] An error occurred in "Tw": Failed to obtain image tile X: 52 Y: 27 Level: 6. @ https://cesium.com/downloads/cesiumjs/releases/1.120/Build/Cesium/Cesium.js:85
+[    2745ms] [LOG] An error occurred in "Tw": Failed to obtain image tile X: 52 Y: 26 Level: 6. @ https://cesium.com/downloads/cesiumjs/releases/1.120/Build/Cesium/Cesium.js:85
+[    2745ms] [LOG] An error occurred in "Tw": Failed to obtain image tile X: 53 Y: 25 Level: 6. @ https://cesium.com/downloads/cesiumjs/releases/1.120/Build/Cesium/Cesium.js:85
+[    2746ms] [LOG] An error occurred in "Tw": Failed to obtain image tile X: 55 Y: 26 Level: 6. @ https://cesium.com/downloads/cesiumjs/releases/1.120/Build/Cesium/Cesium.js:85
+[    2746ms] [LOG] An error occurred in "Tw": Failed to obtain image tile X: 54 Y: 27 Level: 6. @ https://cesium.com/downloads/cesiumjs/releases/1.120/Build/Cesium/Cesium.js:85
+[    2747ms] [LOG] An error occurred in "Tw": Failed to obtain image tile X: 55 Y: 27 Level: 6. @ https://cesium.com/downloads/cesiumjs/releases/1.120/Build/Cesium/Cesium.js:85
+[    2747ms] [LOG] An error occurred in "Tw": Failed to obtain image tile X: 54 Y: 26 Level: 6. @ https://cesium.com/downloads/cesiumjs/releases/1.120/Build/Cesium/Cesium.js:85
+[    2748ms] [LOG] An error occurred in "Tw": Failed to obtain image tile X: 55 Y: 27 Level: 6. @ https://cesium.com/downloads/cesiumjs/releases/1.120/Build/Cesium/Cesium.js:85
+[    2748ms] [LOG] An error occurred in "Tw": Failed to obtain image tile X: 54 Y: 27 Level: 6. @ https://cesium.com/downloads/cesiumjs/releases/1.120/Build/Cesium/Cesium.js:85
+[    2750ms] [LOG] An error occurred in "Tw": Failed to obtain image tile X: 54 Y: 26 Level: 6. @ https://cesium.com/downloads/cesiumjs/releases/1.120/Build/Cesium/Cesium.js:85
+[    2751ms] [LOG] An error occurred in "Tw": Failed to obtain image tile X: 52 Y: 26 Level: 6. @ https://cesium.com/downloads/cesiumjs/releases/1.120/Build/Cesium/Cesium.js:85
+[    2752ms] [LOG] An error occurred in "Tw": Failed to obtain image tile X: 55 Y: 26 Level: 6. @ https://cesium.com/downloads/cesiumjs/releases/1.120/Build/Cesium/Cesium.js:85
+[    2753ms] [LOG] An error occurred in "Tw": Failed to obtain image tile X: 52 Y: 25 Level: 6. @ https://cesium.com/downloads/cesiumjs/releases/1.120/Build/Cesium/Cesium.js:85
+[    2753ms] [LOG] An error occurred in "Tw": Failed to obtain image tile X: 27 Y: 13 Level: 5. @ https://cesium.com/downloads/cesiumjs/releases/1.120/Build/Cesium/Cesium.js:85
+[    2753ms] [LOG] An error occurred in "Tw": Failed to obtain image tile X: 52 Y: 25 Level: 6. @ https://cesium.com/downloads/cesiumjs/releases/1.120/Build/Cesium/Cesium.js:85
+[    2754ms] [LOG] An error occurred in "Tw": Failed to obtain image tile X: 55 Y: 28 Level: 6. @ https://cesium.com/downloads/cesiumjs/releases/1.120/Build/Cesium/Cesium.js:85
+[    2754ms] [LOG] An error occurred in "Tw": Failed to obtain image tile X: 54 Y: 28 Level: 6. @ https://cesium.com/downloads/cesiumjs/releases/1.120/Build/Cesium/Cesium.js:85
+[    2754ms] [LOG] An error occurred in "Tw": Failed to obtain image tile X: 55 Y: 25 Level: 6. @ https://cesium.com/downloads/cesiumjs/releases/1.120/Build/Cesium/Cesium.js:85
+[    2754ms] [LOG] An error occurred in "Tw": Failed to obtain image tile X: 55 Y: 28 Level: 6. @ https://cesium.com/downloads/cesiumjs/releases/1.120/Build/Cesium/Cesium.js:85
+[    2754ms] [LOG] An error occurred in "Tw": Failed to obtain image tile X: 27 Y: 12 Level: 5. @ https://cesium.com/downloads/cesiumjs/releases/1.120/Build/Cesium/Cesium.js:85
+[    2755ms] [LOG] An error occurred in "Tw": Failed to obtain image tile X: 55 Y: 25 Level: 6. @ https://cesium.com/downloads/cesiumjs/releases/1.120/Build/Cesium/Cesium.js:85
+[    2755ms] [LOG] An error occurred in "Tw": Failed to obtain image tile X: 27 Y: 13 Level: 5. @ https://cesium.com/downloads/cesiumjs/releases/1.120/Build/Cesium/Cesium.js:85
+[    2755ms] [LOG] An error occurred in "Tw": Failed to obtain image tile X: 54 Y: 28 Level: 6. @ https://cesium.com/downloads/cesiumjs/releases/1.120/Build/Cesium/Cesium.js:85
+[    2810ms] [ERROR] Failed to load resource: the server responded with a status of 404 (Not Found) @ https://t2.tianditu.gov.cn/cva_w?x=55&y=29&l=6&tk=3434e0337ed4d651277ec7e690a61b4c:0
+[    2812ms] [ERROR] Failed to load resource: the server responded with a status of 404 (Not Found) @ https://t2.tianditu.gov.cn/img_w?x=55&y=29&l=6&tk=3434e0337ed4d651277ec7e690a61b4c:0
+[    2820ms] [ERROR] Failed to load resource: the server responded with a status of 404 (Not Found) @ https://t5.tianditu.gov.cn/cva_w?x=54&y=25&l=6&tk=3434e0337ed4d651277ec7e690a61b4c:0
+[    2821ms] [ERROR] Failed to load resource: the server responded with a status of 404 (Not Found) @ https://t2.tianditu.gov.cn/img_w?x=25&y=12&l=5&tk=3434e0337ed4d651277ec7e690a61b4c:0
+[    2822ms] [ERROR] Failed to load resource: the server responded with a status of 404 (Not Found) @ https://t5.tianditu.gov.cn/img_w?x=54&y=25&l=6&tk=3434e0337ed4d651277ec7e690a61b4c:0
+[    2824ms] [ERROR] Failed to load resource: the server responded with a status of 404 (Not Found) @ https://t2.tianditu.gov.cn/cva_w?x=25&y=12&l=5&tk=3434e0337ed4d651277ec7e690a61b4c:0
+[    2827ms] [ERROR] Failed to load resource: the server responded with a status of 404 (Not Found) @ https://t5.tianditu.gov.cn/img_w?x=26&y=14&l=5&tk=3434e0337ed4d651277ec7e690a61b4c:0
+[    2829ms] [ERROR] Failed to load resource: the server responded with a status of 404 (Not Found) @ https://t3.tianditu.gov.cn/img_w?x=26&y=12&l=5&tk=3434e0337ed4d651277ec7e690a61b4c:0
+[    2833ms] [ERROR] Failed to load resource: the server responded with a status of 404 (Not Found) @ https://t3.tianditu.gov.cn/cva_w?x=26&y=12&l=5&tk=3434e0337ed4d651277ec7e690a61b4c:0
+[    2843ms] [ERROR] Failed to load resource: the server responded with a status of 404 (Not Found) @ https://t6.tianditu.gov.cn/cva_w?x=13&y=5&l=4&tk=3434e0337ed4d651277ec7e690a61b4c:0
+[    2846ms] [ERROR] Failed to load resource: the server responded with a status of 404 (Not Found) @ https://t4.tianditu.gov.cn/cva_w?x=27&y=12&l=5&tk=3434e0337ed4d651277ec7e690a61b4c:0
+[    2848ms] [ERROR] Failed to load resource: the server responded with a status of 404 (Not Found) @ https://t6.tianditu.gov.cn/img_w?x=13&y=5&l=4&tk=3434e0337ed4d651277ec7e690a61b4c:0
+[    2850ms] [ERROR] Failed to load resource: the server responded with a status of 404 (Not Found) @ https://t3.tianditu.gov.cn/cva_w?x=6&y=2&l=3&tk=3434e0337ed4d651277ec7e690a61b4c:0
+[    2862ms] [ERROR] Failed to load resource: the server responded with a status of 404 (Not Found) @ https://t3.tianditu.gov.cn/img_w?x=6&y=2&l=3&tk=3434e0337ed4d651277ec7e690a61b4c:0
+[    2865ms] [ERROR] Failed to load resource: the server responded with a status of 404 (Not Found) @ https://t4.tianditu.gov.cn/img_w?x=26&y=13&l=5&tk=3434e0337ed4d651277ec7e690a61b4c:0
+[    2866ms] [LOG] An error occurred in "Tw": Failed to obtain image tile X: 55 Y: 29 Level: 6. @ https://cesium.com/downloads/cesiumjs/releases/1.120/Build/Cesium/Cesium.js:85
+[    2867ms] [ERROR] Failed to load resource: the server responded with a status of 404 (Not Found) @ https://t7.tianditu.gov.cn/img_w?x=13&y=6&l=4&tk=3434e0337ed4d651277ec7e690a61b4c:0
+[    2869ms] [ERROR] Failed to load resource: the server responded with a status of 404 (Not Found) @ https://t7.tianditu.gov.cn/cva_w?x=13&y=6&l=4&tk=3434e0337ed4d651277ec7e690a61b4c:0
+[    2872ms] [ERROR] Failed to load resource: the server responded with a status of 404 (Not Found) @ https://t3.tianditu.gov.cn/img_w?x=25&y=13&l=5&tk=3434e0337ed4d651277ec7e690a61b4c:0
+[    2875ms] [ERROR] Failed to load resource: the server responded with a status of 404 (Not Found) @ https://t3.tianditu.gov.cn/cva_w?x=25&y=13&l=5&tk=3434e0337ed4d651277ec7e690a61b4c:0
+[    2875ms] [ERROR] Failed to load resource: the server responded with a status of 404 (Not Found) @ https://t5.tianditu.gov.cn/cva_w?x=26&y=14&l=5&tk=3434e0337ed4d651277ec7e690a61b4c:0
+[    2878ms] [ERROR] Failed to load resource: the server responded with a status of 404 (Not Found) @ https://t4.tianditu.gov.cn/cva_w?x=26&y=13&l=5&tk=3434e0337ed4d651277ec7e690a61b4c:0
+[    2881ms] [ERROR] Failed to load resource: the server responded with a status of 404 (Not Found) @ https://t0.tianditu.gov.cn/img_w?x=53&y=29&l=6&tk=3434e0337ed4d651277ec7e690a61b4c:0
+[    2882ms] [ERROR] Failed to load resource: the server responded with a status of 404 (Not Found) @ https://t7.tianditu.gov.cn/img_w?x=53&y=28&l=6&tk=3434e0337ed4d651277ec7e690a61b4c:0
+[    2884ms] [ERROR] Failed to load resource: the server responded with a status of 404 (Not Found) @ https://t0.tianditu.gov.cn/img_w?x=13&y=7&l=4&tk=3434e0337ed4d651277ec7e690a61b4c:0
+[    2885ms] [ERROR] Failed to load resource: the server responded with a status of 404 (Not Found) @ https://t1.tianditu.gov.cn/img_w?x=54&y=29&l=6&tk=3434e0337ed4d651277ec7e690a61b4c:0
+[    2890ms] [ERROR] Failed to load resource: the server responded with a status of 404 (Not Found) @ https://t0.tianditu.gov.cn/cva_w?x=13&y=7&l=4&tk=3434e0337ed4d651277ec7e690a61b4c:0
+[    2894ms] [ERROR] Failed to load resource: the server responded with a status of 404 (Not Found) @ https://t5.tianditu.gov.cn/img_w?x=12&y=5&l=4&tk=3434e0337ed4d651277ec7e690a61b4c:0
+[    2897ms] [ERROR] Failed to load resource: the server responded with a status of 404 (Not Found) @ https://t6.tianditu.gov.cn/cva_w?x=12&y=6&l=4&tk=3434e0337ed4d651277ec7e690a61b4c:0
+[    2900ms] [ERROR] Failed to load resource: the server responded with a status of 404 (Not Found) @ https://t6.tianditu.gov.cn/img_w?x=12&y=6&l=4&tk=3434e0337ed4d651277ec7e690a61b4c:0
+[    2904ms] [ERROR] Failed to load resource: the server responded with a status of 404 (Not Found) @ https://t6.tianditu.gov.cn/cva_w?x=52&y=28&l=6&tk=3434e0337ed4d651277ec7e690a61b4c:0
+[    2907ms] [ERROR] Failed to load resource: the server responded with a status of 404 (Not Found) @ https://t6.tianditu.gov.cn/img_w?x=52&y=28&l=6&tk=3434e0337ed4d651277ec7e690a61b4c:0
+[    2911ms] [ERROR] Failed to load resource: the server responded with a status of 404 (Not Found) @ https://t4.tianditu.gov.cn/img_w?x=6&y=3&l=3&tk=3434e0337ed4d651277ec7e690a61b4c:0
+[    2914ms] [ERROR] Failed to load resource: the server responded with a status of 404 (Not Found) @ https://t4.tianditu.gov.cn/cva_w?x=6&y=3&l=3&tk=3434e0337ed4d651277ec7e690a61b4c:0
+[    2917ms] [ERROR] Failed to load resource: the server responded with a status of 404 (Not Found) @ https://t1.tianditu.gov.cn/cva_w?x=54&y=29&l=6&tk=3434e0337ed4d651277ec7e690a61b4c:0
+[    2928ms] [ERROR] Failed to load resource: the server responded with a status of 404 (Not Found) @ https://t5.tianditu.gov.cn/cva_w?x=12&y=5&l=4&tk=3434e0337ed4d651277ec7e690a61b4c:0
+[    2928ms] [ERROR] Failed to load resource: the server responded with a status of 404 (Not Found) @ https://t0.tianditu.gov.cn/cva_w?x=53&y=29&l=6&tk=3434e0337ed4d651277ec7e690a61b4c:0
+[    2929ms] [ERROR] Failed to load resource: the server responded with a status of 404 (Not Found) @ https://t7.tianditu.gov.cn/cva_w?x=53&y=28&l=6&tk=3434e0337ed4d651277ec7e690a61b4c:0
+[    2934ms] [LOG] An error occurred in "Tw": Failed to obtain image tile X: 55 Y: 29 Level: 6. @ https://cesium.com/downloads/cesiumjs/releases/1.120/Build/Cesium/Cesium.js:85
+[    2934ms] [LOG] An error occurred in "Tw": Failed to obtain image tile X: 54 Y: 25 Level: 6. @ https://cesium.com/downloads/cesiumjs/releases/1.120/Build/Cesium/Cesium.js:85
+[    2935ms] [LOG] An error occurred in "Tw": Failed to obtain image tile X: 25 Y: 12 Level: 5. @ https://cesium.com/downloads/cesiumjs/releases/1.120/Build/Cesium/Cesium.js:85
+[    2935ms] [LOG] An error occurred in "Tw": Failed to obtain image tile X: 54 Y: 25 Level: 6. @ https://cesium.com/downloads/cesiumjs/releases/1.120/Build/Cesium/Cesium.js:85
+[    2936ms] [LOG] An error occurred in "Tw": Failed to obtain image tile X: 25 Y: 12 Level: 5. @ https://cesium.com/downloads/cesiumjs/releases/1.120/Build/Cesium/Cesium.js:85
+[    2936ms] [LOG] An error occurred in "Tw": Failed to obtain image tile X: 26 Y: 14 Level: 5. @ https://cesium.com/downloads/cesiumjs/releases/1.120/Build/Cesium/Cesium.js:85
+[    2936ms] [LOG] An error occurred in "Tw": Failed to obtain image tile X: 26 Y: 12 Level: 5. @ https://cesium.com/downloads/cesiumjs/releases/1.120/Build/Cesium/Cesium.js:85
+[    2937ms] [LOG] An error occurred in "Tw": Failed to obtain image tile X: 26 Y: 12 Level: 5. @ https://cesium.com/downloads/cesiumjs/releases/1.120/Build/Cesium/Cesium.js:85
+[    2937ms] [LOG] An error occurred in "Tw": Failed to obtain image tile X: 13 Y: 5 Level: 4. @ https://cesium.com/downloads/cesiumjs/releases/1.120/Build/Cesium/Cesium.js:85
+[    2938ms] [LOG] An error occurred in "Tw": Failed to obtain image tile X: 27 Y: 12 Level: 5. @ https://cesium.com/downloads/cesiumjs/releases/1.120/Build/Cesium/Cesium.js:85
+[    2938ms] [LOG] An error occurred in "Tw": Failed to obtain image tile X: 13 Y: 5 Level: 4. @ https://cesium.com/downloads/cesiumjs/releases/1.120/Build/Cesium/Cesium.js:85
+[    2938ms] [LOG] An error occurred in "Tw": Failed to obtain image tile X: 6 Y: 2 Level: 3. @ https://cesium.com/downloads/cesiumjs/releases/1.120/Build/Cesium/Cesium.js:85
+[    2938ms] [LOG] An error occurred in "Tw": Failed to obtain image tile X: 6 Y: 2 Level: 3. @ https://cesium.com/downloads/cesiumjs/releases/1.120/Build/Cesium/Cesium.js:85
+[    2938ms] [LOG] An error occurred in "Tw": Failed to obtain image tile X: 26 Y: 13 Level: 5. @ https://cesium.com/downloads/cesiumjs/releases/1.120/Build/Cesium/Cesium.js:85
+[    2938ms] [LOG] An error occurred in "Tw": Failed to obtain image tile X: 13 Y: 6 Level: 4. @ https://cesium.com/downloads/cesiumjs/releases/1.120/Build/Cesium/Cesium.js:85
+[    2938ms] [LOG] An error occurred in "Tw": Failed to obtain image tile X: 13 Y: 6 Level: 4. @ https://cesium.com/downloads/cesiumjs/releases/1.120/Build/Cesium/Cesium.js:85
+[    2938ms] [LOG] An error occurred in "Tw": Failed to obtain image tile X: 25 Y: 13 Level: 5. @ https://cesium.com/downloads/cesiumjs/releases/1.120/Build/Cesium/Cesium.js:85
+[    2939ms] [LOG] An error occurred in "Tw": Failed to obtain image tile X: 25 Y: 13 Level: 5. @ https://cesium.com/downloads/cesiumjs/releases/1.120/Build/Cesium/Cesium.js:85
+[    2939ms] [LOG] An error occurred in "Tw": Failed to obtain image tile X: 26 Y: 14 Level: 5. @ https://cesium.com/downloads/cesiumjs/releases/1.120/Build/Cesium/Cesium.js:85
+[    2939ms] [LOG] An error occurred in "Tw": Failed to obtain image tile X: 26 Y: 13 Level: 5. @ https://cesium.com/downloads/cesiumjs/releases/1.120/Build/Cesium/Cesium.js:85
+[    2939ms] [LOG] An error occurred in "Tw": Failed to obtain image tile X: 53 Y: 29 Level: 6. @ https://cesium.com/downloads/cesiumjs/releases/1.120/Build/Cesium/Cesium.js:85
+[    2949ms] [LOG] An error occurred in "Tw": Failed to obtain image tile X: 53 Y: 28 Level: 6. @ https://cesium.com/downloads/cesiumjs/releases/1.120/Build/Cesium/Cesium.js:85
+[    2950ms] [LOG] An error occurred in "Tw": Failed to obtain image tile X: 13 Y: 7 Level: 4. @ https://cesium.com/downloads/cesiumjs/releases/1.120/Build/Cesium/Cesium.js:85
+[    2950ms] [LOG] An error occurred in "Tw": Failed to obtain image tile X: 54 Y: 29 Level: 6. @ https://cesium.com/downloads/cesiumjs/releases/1.120/Build/Cesium/Cesium.js:85
+[    2951ms] [LOG] An error occurred in "Tw": Failed to obtain image tile X: 13 Y: 7 Level: 4. @ https://cesium.com/downloads/cesiumjs/releases/1.120/Build/Cesium/Cesium.js:85
+[    2952ms] [LOG] An error occurred in "Tw": Failed to obtain image tile X: 12 Y: 5 Level: 4. @ https://cesium.com/downloads/cesiumjs/releases/1.120/Build/Cesium/Cesium.js:85
+[    2952ms] [LOG] An error occurred in "Tw": Failed to obtain image tile X: 12 Y: 6 Level: 4. @ https://cesium.com/downloads/cesiumjs/releases/1.120/Build/Cesium/Cesium.js:85
+[    2952ms] [LOG] An error occurred in "Tw": Failed to obtain image tile X: 12 Y: 6 Level: 4. @ https://cesium.com/downloads/cesiumjs/releases/1.120/Build/Cesium/Cesium.js:85
+[    2952ms] [LOG] An error occurred in "Tw": Failed to obtain image tile X: 52 Y: 28 Level: 6. @ https://cesium.com/downloads/cesiumjs/releases/1.120/Build/Cesium/Cesium.js:85
+[    2953ms] [LOG] An error occurred in "Tw": Failed to obtain image tile X: 52 Y: 28 Level: 6. @ https://cesium.com/downloads/cesiumjs/releases/1.120/Build/Cesium/Cesium.js:85
+[    2953ms] [LOG] An error occurred in "Tw": Failed to obtain image tile X: 6 Y: 3 Level: 3. @ https://cesium.com/downloads/cesiumjs/releases/1.120/Build/Cesium/Cesium.js:85
+[    2953ms] [LOG] An error occurred in "Tw": Failed to obtain image tile X: 6 Y: 3 Level: 3. @ https://cesium.com/downloads/cesiumjs/releases/1.120/Build/Cesium/Cesium.js:85
+[    2953ms] [LOG] An error occurred in "Tw": Failed to obtain image tile X: 54 Y: 29 Level: 6. @ https://cesium.com/downloads/cesiumjs/releases/1.120/Build/Cesium/Cesium.js:85
+[    2953ms] [LOG] An error occurred in "Tw": Failed to obtain image tile X: 12 Y: 5 Level: 4. @ https://cesium.com/downloads/cesiumjs/releases/1.120/Build/Cesium/Cesium.js:85
+[    2954ms] [LOG] An error occurred in "Tw": Failed to obtain image tile X: 53 Y: 29 Level: 6. @ https://cesium.com/downloads/cesiumjs/releases/1.120/Build/Cesium/Cesium.js:85
+[    2954ms] [LOG] An error occurred in "Tw": Failed to obtain image tile X: 53 Y: 28 Level: 6. @ https://cesium.com/downloads/cesiumjs/releases/1.120/Build/Cesium/Cesium.js:85
+[    3093ms] [ERROR] Failed to load resource: the server responded with a status of 404 (Not Found) @ https://t7.tianditu.gov.cn/cva_w?x=52&y=29&l=6&tk=3434e0337ed4d651277ec7e690a61b4c:0
+[    3094ms] [LOG] An error occurred in "": Failed to obtain terrain tile X: 105 Y: 25 Level: 6. Error message: "undefined" @ https://cesium.com/downloads/cesiumjs/releases/1.120/Build/Cesium/Cesium.js:85
+[    3110ms] [ERROR] Failed to load resource: the server responded with a status of 404 (Not Found) @ https://t7.tianditu.gov.cn/img_w?x=52&y=29&l=6&tk=3434e0337ed4d651277ec7e690a61b4c:0
+[    3125ms] [LOG] An error occurred in "": Failed to obtain terrain tile X: 106 Y: 25 Level: 6. Error message: "undefined" @ https://cesium.com/downloads/cesiumjs/releases/1.120/Build/Cesium/Cesium.js:85
+[    3126ms] [LOG] An error occurred in "": Failed to obtain terrain tile X: 104 Y: 25 Level: 6. Error message: "undefined" @ https://cesium.com/downloads/cesiumjs/releases/1.120/Build/Cesium/Cesium.js:85
+[    3128ms] [LOG] An error occurred in "": Failed to obtain terrain tile X: 105 Y: 24 Level: 6. Error message: "undefined" @ https://cesium.com/downloads/cesiumjs/releases/1.120/Build/Cesium/Cesium.js:85
+[    3129ms] [ERROR] Failed to load resource: the server responded with a status of 404 (Not Found) @ https://t4.tianditu.gov.cn/img_w?x=25&y=14&l=5&tk=3434e0337ed4d651277ec7e690a61b4c:0
+[    3135ms] [ERROR] Failed to load resource: the server responded with a status of 404 (Not Found) @ https://t4.tianditu.gov.cn/cva_w?x=25&y=14&l=5&tk=3434e0337ed4d651277ec7e690a61b4c:0
+[    3138ms] [LOG] An error occurred in "": Failed to obtain terrain tile X: 107 Y: 25 Level: 6. Error message: "undefined" @ https://cesium.com/downloads/cesiumjs/releases/1.120/Build/Cesium/Cesium.js:85
+[    3147ms] [LOG] An error occurred in "": Failed to obtain terrain tile X: 107 Y: 22 Level: 6. Error message: "undefined" @ https://cesium.com/downloads/cesiumjs/releases/1.120/Build/Cesium/Cesium.js:85
+[    3148ms] [LOG] An error occurred in "": Failed to obtain terrain tile X: 106 Y: 24 Level: 6. Error message: "undefined" @ https://cesium.com/downloads/cesiumjs/releases/1.120/Build/Cesium/Cesium.js:85
+[    3162ms] [LOG] An error occurred in "": Failed to obtain terrain tile X: 107 Y: 24 Level: 6. Error message: "undefined" @ https://cesium.com/downloads/cesiumjs/releases/1.120/Build/Cesium/Cesium.js:85
+[    3194ms] [LOG] An error occurred in "Tw": Failed to obtain image tile X: 52 Y: 29 Level: 6. @ https://cesium.com/downloads/cesiumjs/releases/1.120/Build/Cesium/Cesium.js:85
+[    3195ms] [LOG] An error occurred in "Tw": Failed to obtain image tile X: 52 Y: 29 Level: 6. @ https://cesium.com/downloads/cesiumjs/releases/1.120/Build/Cesium/Cesium.js:85
+[    3195ms] [LOG] An error occurred in "Tw": Failed to obtain image tile X: 25 Y: 14 Level: 5. @ https://cesium.com/downloads/cesiumjs/releases/1.120/Build/Cesium/Cesium.js:85
+[    3195ms] [LOG] An error occurred in "Tw": Failed to obtain image tile X: 25 Y: 14 Level: 5. @ https://cesium.com/downloads/cesiumjs/releases/1.120/Build/Cesium/Cesium.js:85
+[    3233ms] [ERROR] Failed to load resource: the server responded with a status of 404 (Not Found) @ https://t7.tianditu.gov.cn/cva_w?x=12&y=7&l=4&tk=3434e0337ed4d651277ec7e690a61b4c:0
+[    3238ms] [LOG] An error occurred in "": Failed to obtain terrain tile X: 209 Y: 49 Level: 7. Error message: "undefined" @ https://cesium.com/downloads/cesiumjs/releases/1.120/Build/Cesium/Cesium.js:85
+[    3277ms] [LOG] An error occurred in "Tw": Failed to obtain image tile X: 12 Y: 7 Level: 4. @ https://cesium.com/downloads/cesiumjs/releases/1.120/Build/Cesium/Cesium.js:85
+[    3278ms] [ERROR] Failed to load resource: the server responded with a status of 404 (Not Found) @ https://t7.tianditu.gov.cn/img_w?x=12&y=7&l=4&tk=3434e0337ed4d651277ec7e690a61b4c:0
+[    3294ms] [ERROR] Failed to load resource: the server responded with a status of 404 (Not Found) @ https://t1.tianditu.gov.cn/img_w?x=105&y=57&l=7&tk=3434e0337ed4d651277ec7e690a61b4c:0
+[    3305ms] [ERROR] Failed to load resource: the server responded with a status of 404 (Not Found) @ https://t0.tianditu.gov.cn/cva_w?x=105&y=56&l=7&tk=3434e0337ed4d651277ec7e690a61b4c:0
+[    3305ms] [ERROR] Failed to load resource: the server responded with a status of 404 (Not Found) @ https://t0.tianditu.gov.cn/img_w?x=105&y=56&l=7&tk=3434e0337ed4d651277ec7e690a61b4c:0
+[    3372ms] [LOG] An error occurred in "Tw": Failed to obtain image tile X: 12 Y: 7 Level: 4. @ https://cesium.com/downloads/cesiumjs/releases/1.120/Build/Cesium/Cesium.js:85
+[    3373ms] [LOG] An error occurred in "Tw": Failed to obtain image tile X: 105 Y: 57 Level: 7. @ https://cesium.com/downloads/cesiumjs/releases/1.120/Build/Cesium/Cesium.js:85
+[    3437ms] [ERROR] Failed to load resource: the server responded with a status of 404 (Not Found) @ https://t7.tianditu.gov.cn/img_w?x=105&y=55&l=7&tk=3434e0337ed4d651277ec7e690a61b4c:0
+[    3437ms] [ERROR] Failed to load resource: the server responded with a status of 404 (Not Found) @ https://t1.tianditu.gov.cn/cva_w?x=105&y=57&l=7&tk=3434e0337ed4d651277ec7e690a61b4c:0
+[    3445ms] [LOG] An error occurred in "Tw": Failed to obtain image tile X: 105 Y: 56 Level: 7. @ https://cesium.com/downloads/cesiumjs/releases/1.120/Build/Cesium/Cesium.js:85
+[    3445ms] [LOG] An error occurred in "Tw": Failed to obtain image tile X: 105 Y: 56 Level: 7. @ https://cesium.com/downloads/cesiumjs/releases/1.120/Build/Cesium/Cesium.js:85
+[    3454ms] [ERROR] Failed to load resource: the server responded with a status of 404 (Not Found) @ https://t4.tianditu.gov.cn/cva_w?x=103&y=54&l=7&tk=3434e0337ed4d651277ec7e690a61b4c:0
+[    3454ms] [ERROR] Failed to load resource: the server responded with a status of 404 (Not Found) @ https://t7.tianditu.gov.cn/img_w?x=104&y=56&l=7&tk=3434e0337ed4d651277ec7e690a61b4c:0
+[    3455ms] [ERROR] Failed to load resource: the server responded with a status of 404 (Not Found) @ https://t0.tianditu.gov.cn/cva_w?x=104&y=57&l=7&tk=3434e0337ed4d651277ec7e690a61b4c:0
+[    3455ms] [ERROR] Failed to load resource: the server responded with a status of 404 (Not Found) @ https://t4.tianditu.gov.cn/img_w?x=103&y=54&l=7&tk=3434e0337ed4d651277ec7e690a61b4c:0
+[    3455ms] [ERROR] Failed to load resource: the server responded with a status of 404 (Not Found) @ https://t7.tianditu.gov.cn/cva_w?x=105&y=55&l=7&tk=3434e0337ed4d651277ec7e690a61b4c:0
+[    3456ms] [ERROR] Failed to load resource: the server responded with a status of 404 (Not Found) @ https://t5.tianditu.gov.cn/cva_w?x=103&y=55&l=7&tk=3434e0337ed4d651277ec7e690a61b4c:0
+[    3456ms] [ERROR] Failed to load resource: the server responded with a status of 404 (Not Found) @ https://t7.tianditu.gov.cn/cva_w?x=104&y=56&l=7&tk=3434e0337ed4d651277ec7e690a61b4c:0
+[    3457ms] [ERROR] Failed to load resource: the server responded with a status of 404 (Not Found) @ https://t0.tianditu.gov.cn/img_w?x=104&y=57&l=7&tk=3434e0337ed4d651277ec7e690a61b4c:0
+[    3457ms] [ERROR] Failed to load resource: the server responded with a status of 404 (Not Found) @ https://t5.tianditu.gov.cn/img_w?x=103&y=55&l=7&tk=3434e0337ed4d651277ec7e690a61b4c:0
+[    3458ms] [LOG] An error occurred in "": Failed to obtain terrain tile X: 207 Y: 49 Level: 7. Error message: "undefined" @ https://cesium.com/downloads/cesiumjs/releases/1.120/Build/Cesium/Cesium.js:85
+[    3474ms] [LOG] An error occurred in "": Failed to obtain terrain tile X: 210 Y: 49 Level: 7. Error message: "undefined" @ https://cesium.com/downloads/cesiumjs/releases/1.120/Build/Cesium/Cesium.js:85
+[    3484ms] [LOG] An error occurred in "Tw": Failed to obtain image tile X: 105 Y: 55 Level: 7. @ https://cesium.com/downloads/cesiumjs/releases/1.120/Build/Cesium/Cesium.js:85
+[    3485ms] [LOG] An error occurred in "Tw": Failed to obtain image tile X: 105 Y: 57 Level: 7. @ https://cesium.com/downloads/cesiumjs/releases/1.120/Build/Cesium/Cesium.js:85
+[    3491ms] [LOG] An error occurred in "Tw": Failed to obtain image tile X: 103 Y: 54 Level: 7. @ https://cesium.com/downloads/cesiumjs/releases/1.120/Build/Cesium/Cesium.js:85
+[    3491ms] [LOG] An error occurred in "Tw": Failed to obtain image tile X: 104 Y: 56 Level: 7. @ https://cesium.com/downloads/cesiumjs/releases/1.120/Build/Cesium/Cesium.js:85
+[    3491ms] [LOG] An error occurred in "Tw": Failed to obtain image tile X: 104 Y: 57 Level: 7. @ https://cesium.com/downloads/cesiumjs/releases/1.120/Build/Cesium/Cesium.js:85
+[    3491ms] [LOG] An error occurred in "Tw": Failed to obtain image tile X: 103 Y: 54 Level: 7. @ https://cesium.com/downloads/cesiumjs/releases/1.120/Build/Cesium/Cesium.js:85
+[    3491ms] [LOG] An error occurred in "Tw": Failed to obtain image tile X: 105 Y: 55 Level: 7. @ https://cesium.com/downloads/cesiumjs/releases/1.120/Build/Cesium/Cesium.js:85
+[    3491ms] [LOG] An error occurred in "Tw": Failed to obtain image tile X: 103 Y: 55 Level: 7. @ https://cesium.com/downloads/cesiumjs/releases/1.120/Build/Cesium/Cesium.js:85
+[    3492ms] [LOG] An error occurred in "Tw": Failed to obtain image tile X: 104 Y: 56 Level: 7. @ https://cesium.com/downloads/cesiumjs/releases/1.120/Build/Cesium/Cesium.js:85
+[    3492ms] [LOG] An error occurred in "Tw": Failed to obtain image tile X: 104 Y: 57 Level: 7. @ https://cesium.com/downloads/cesiumjs/releases/1.120/Build/Cesium/Cesium.js:85
+[    3492ms] [LOG] An error occurred in "Tw": Failed to obtain image tile X: 103 Y: 55 Level: 7. @ https://cesium.com/downloads/cesiumjs/releases/1.120/Build/Cesium/Cesium.js:85
+[    3623ms] [ERROR] Failed to load resource: the server responded with a status of 404 (Not Found) @ https://t6.tianditu.gov.cn/cva_w?x=105&y=54&l=7&tk=3434e0337ed4d651277ec7e690a61b4c:0
+[    3629ms] [ERROR] Failed to load resource: the server responded with a status of 404 (Not Found) @ https://t6.tianditu.gov.cn/img_w?x=105&y=54&l=7&tk=3434e0337ed4d651277ec7e690a61b4c:0
+[    3640ms] [LOG] An error occurred in "": Failed to obtain terrain tile X: 208 Y: 49 Level: 7. Error message: "undefined" @ https://cesium.com/downloads/cesiumjs/releases/1.120/Build/Cesium/Cesium.js:85
+[    3641ms] [LOG] An error occurred in "": Failed to obtain terrain tile X: 211 Y: 48 Level: 7. Error message: "undefined" @ https://cesium.com/downloads/cesiumjs/releases/1.120/Build/Cesium/Cesium.js:85
+[    3669ms] [ERROR] Failed to load resource: the server responded with a status of 404 (Not Found) @ https://t6.tianditu.gov.cn/img_w?x=104&y=55&l=7&tk=3434e0337ed4d651277ec7e690a61b4c:0
+[    3672ms] [LOG] An error occurred in "Tw": Failed to obtain image tile X: 105 Y: 54 Level: 7. @ https://cesium.com/downloads/cesiumjs/releases/1.120/Build/Cesium/Cesium.js:85
+[    3672ms] [LOG] An error occurred in "Tw": Failed to obtain image tile X: 105 Y: 54 Level: 7. @ https://cesium.com/downloads/cesiumjs/releases/1.120/Build/Cesium/Cesium.js:85
+[    3673ms] [ERROR] Failed to load resource: the server responded with a status of 404 (Not Found) @ https://t6.tianditu.gov.cn/cva_w?x=104&y=55&l=7&tk=3434e0337ed4d651277ec7e690a61b4c:0
+[    3673ms] [ERROR] Failed to load resource: the server responded with a status of 404 (Not Found) @ https://t1.tianditu.gov.cn/img_w?x=209&y=112&l=8&tk=3434e0337ed4d651277ec7e690a61b4c:0
+[    3673ms] [ERROR] Failed to load resource: the server responded with a status of 404 (Not Found) @ https://t7.tianditu.gov.cn/img_w?x=208&y=111&l=8&tk=3434e0337ed4d651277ec7e690a61b4c:0
+[    3673ms] [ERROR] Failed to load resource: the server responded with a status of 404 (Not Found) @ https://t6.tianditu.gov.cn/img_w?x=208&y=110&l=8&tk=3434e0337ed4d651277ec7e690a61b4c:0
+[    3674ms] [ERROR] Failed to load resource: the server responded with a status of 404 (Not Found) @ https://t6.tianditu.gov.cn/cva_w?x=208&y=110&l=8&tk=3434e0337ed4d651277ec7e690a61b4c:0
+[    3680ms] [ERROR] Failed to load resource: the server responded with a status of 404 (Not Found) @ https://t0.tianditu.gov.cn/img_w?x=208&y=112&l=8&tk=3434e0337ed4d651277ec7e690a61b4c:0
+[    3681ms] [ERROR] Failed to load resource: the server responded with a status of 404 (Not Found) @ https://t0.tianditu.gov.cn/cva_w?x=209&y=111&l=8&tk=3434e0337ed4d651277ec7e690a61b4c:0
+[    3681ms] [ERROR] Failed to load resource: the server responded with a status of 404 (Not Found) @ https://t0.tianditu.gov.cn/cva_w?x=208&y=112&l=8&tk=3434e0337ed4d651277ec7e690a61b4c:0
+[    3681ms] [ERROR] Failed to load resource: the server responded with a status of 404 (Not Found) @ https://t1.tianditu.gov.cn/cva_w?x=209&y=112&l=8&tk=3434e0337ed4d651277ec7e690a61b4c:0
+[    3681ms] [ERROR] Failed to load resource: the server responded with a status of 404 (Not Found) @ https://t7.tianditu.gov.cn/cva_w?x=208&y=111&l=8&tk=3434e0337ed4d651277ec7e690a61b4c:0
+[    3682ms] [LOG] An error occurred in "Tw": Failed to obtain image tile X: 104 Y: 55 Level: 7. @ https://cesium.com/downloads/cesiumjs/releases/1.120/Build/Cesium/Cesium.js:85
+[    3682ms] [ERROR] Failed to load resource: the server responded with a status of 404 (Not Found) @ https://t0.tianditu.gov.cn/img_w?x=209&y=111&l=8&tk=3434e0337ed4d651277ec7e690a61b4c:0
+[    3683ms] [ERROR] Failed to load resource: the server responded with a status of 404 (Not Found) @ https://t5.tianditu.gov.cn/img_w?x=104&y=54&l=7&tk=3434e0337ed4d651277ec7e690a61b4c:0
+[    3683ms] [ERROR] Failed to load resource: the server responded with a status of 404 (Not Found) @ https://t3.tianditu.gov.cn/img_w?x=51&y=26&l=6&tk=3434e0337ed4d651277ec7e690a61b4c:0
+[    3684ms] [LOG] An error occurred in "Tw": Failed to obtain image tile X: 104 Y: 55 Level: 7. @ https://cesium.com/downloads/cesiumjs/releases/1.120/Build/Cesium/Cesium.js:85
+[    3684ms] [ERROR] Failed to load resource: the server responded with a status of 404 (Not Found) @ https://t3.tianditu.gov.cn/cva_w?x=51&y=26&l=6&tk=3434e0337ed4d651277ec7e690a61b4c:0
+[    3698ms] [ERROR] Failed to load resource: the server responded with a status of 404 (Not Found) @ https://t2.tianditu.gov.cn/cva_w?x=210&y=112&l=8&tk=3434e0337ed4d651277ec7e690a61b4c:0
+[    3699ms] [ERROR] Failed to load resource: the server responded with a status of 404 (Not Found) @ https://t2.tianditu.gov.cn/img_w?x=210&y=112&l=8&tk=3434e0337ed4d651277ec7e690a61b4c:0
+[    3699ms] [ERROR] Failed to load resource: the server responded with a status of 404 (Not Found) @ https://t2.tianditu.gov.cn/cva_w?x=209&y=113&l=8&tk=3434e0337ed4d651277ec7e690a61b4c:0
+[    3699ms] [ERROR] Failed to load resource: the server responded with a status of 404 (Not Found) @ https://t5.tianditu.gov.cn/cva_w?x=104&y=54&l=7&tk=3434e0337ed4d651277ec7e690a61b4c:0
+[    3703ms] [ERROR] Failed to load resource: the server responded with a status of 404 (Not Found) @ https://t2.tianditu.gov.cn/img_w?x=209&y=113&l=8&tk=3434e0337ed4d651277ec7e690a61b4c:0
+[    3719ms] [LOG] An error occurred in "": Failed to obtain terrain tile X: 210 Y: 48 Level: 7. Error message: "undefined" @ https://cesium.com/downloads/cesiumjs/releases/1.120/Build/Cesium/Cesium.js:85
+[    3727ms] [ERROR] Failed to load resource: the server responded with a status of 404 (Not Found) @ https://t4.tianditu.gov.cn/img_w?x=51&y=27&l=6&tk=3434e0337ed4d651277ec7e690a61b4c:0
+[    3730ms] [LOG] An error occurred in "Tw": Failed to obtain image tile X: 208 Y: 111 Level: 8. @ https://cesium.com/downloads/cesiumjs/releases/1.120/Build/Cesium/Cesium.js:85
+[    3730ms] [LOG] An error occurred in "Tw": Failed to obtain image tile X: 208 Y: 110 Level: 8. @ https://cesium.com/downloads/cesiumjs/releases/1.120/Build/Cesium/Cesium.js:85
+[    3731ms] [LOG] An error occurred in "Tw": Failed to obtain image tile X: 208 Y: 110 Level: 8. @ https://cesium.com/downloads/cesiumjs/releases/1.120/Build/Cesium/Cesium.js:85
+[    3735ms] [LOG] An error occurred in "Tw": Failed to obtain image tile X: 208 Y: 112 Level: 8. @ https://cesium.com/downloads/cesiumjs/releases/1.120/Build/Cesium/Cesium.js:85
+[    3736ms] [ERROR] Failed to load resource: the server responded with a status of 404 (Not Found) @ https://t6.tianditu.gov.cn/img_w?x=103&y=56&l=7&tk=3434e0337ed4d651277ec7e690a61b4c:0
+[    3737ms] [LOG] An error occurred in "Tw": Failed to obtain image tile X: 209 Y: 111 Level: 8. @ https://cesium.com/downloads/cesiumjs/releases/1.120/Build/Cesium/Cesium.js:85
+[    3738ms] [LOG] An error occurred in "Tw": Failed to obtain image tile X: 208 Y: 112 Level: 8. @ https://cesium.com/downloads/cesiumjs/releases/1.120/Build/Cesium/Cesium.js:85
+[    3738ms] [LOG] An error occurred in "Tw": Failed to obtain image tile X: 209 Y: 112 Level: 8. @ https://cesium.com/downloads/cesiumjs/releases/1.120/Build/Cesium/Cesium.js:85
+[    3738ms] [LOG] An error occurred in "Tw": Failed to obtain image tile X: 208 Y: 111 Level: 8. @ https://cesium.com/downloads/cesiumjs/releases/1.120/Build/Cesium/Cesium.js:85
+[    3749ms] [ERROR] Failed to load resource: the server responded with a status of 404 (Not Found) @ https://t0.tianditu.gov.cn/img_w?x=207&y=113&l=8&tk=3434e0337ed4d651277ec7e690a61b4c:0
+[    3750ms] [ERROR] Failed to load resource: the server responded with a status of 404 (Not Found) @ https://t7.tianditu.gov.cn/cva_w?x=207&y=112&l=8&tk=3434e0337ed4d651277ec7e690a61b4c:0
+[    3750ms] [ERROR] Failed to load resource: the server responded with a status of 404 (Not Found) @ https://t0.tianditu.gov.cn/cva_w?x=207&y=113&l=8&tk=3434e0337ed4d651277ec7e690a61b4c:0
+[    3753ms] [ERROR] Failed to load resource: the server responded with a status of 404 (Not Found) @ https://t6.tianditu.gov.cn/cva_w?x=103&y=56&l=7&tk=3434e0337ed4d651277ec7e690a61b4c:0
+[    3760ms] [ERROR] Failed to load resource: the server responded with a status of 404 (Not Found) @ https://t4.tianditu.gov.cn/cva_w?x=51&y=27&l=6&tk=3434e0337ed4d651277ec7e690a61b4c:0
+[    3765ms] [ERROR] Failed to load resource: the server responded with a status of 404 (Not Found) @ https://t7.tianditu.gov.cn/cva_w?x=209&y=110&l=8&tk=3434e0337ed4d651277ec7e690a61b4c:0
+[    3767ms] [ERROR] Failed to load resource: the server responded with a status of 404 (Not Found) @ https://t7.tianditu.gov.cn/img_w?x=207&y=112&l=8&tk=3434e0337ed4d651277ec7e690a61b4c:0
+[    3769ms] [LOG] An error occurred in "Tw": Failed to obtain image tile X: 209 Y: 111 Level: 8. @ https://cesium.com/downloads/cesiumjs/releases/1.120/Build/Cesium/Cesium.js:85
+[    3770ms] [LOG] An error occurred in "": Failed to obtain terrain tile X: 211 Y: 49 Level: 7. Error message: "undefined" @ https://cesium.com/downloads/cesiumjs/releases/1.120/Build/Cesium/Cesium.js:85
+[    3771ms] [LOG] An error occurred in "Tw": Failed to obtain image tile X: 104 Y: 54 Level: 7. @ https://cesium.com/downloads/cesiumjs/releases/1.120/Build/Cesium/Cesium.js:85
+[    3773ms] [LOG] An error occurred in "Tw": Failed to obtain image tile X: 51 Y: 26 Level: 6. @ https://cesium.com/downloads/cesiumjs/releases/1.120/Build/Cesium/Cesium.js:85
+[    3774ms] [LOG] An error occurred in "Tw": Failed to obtain image tile X: 51 Y: 26 Level: 6. @ https://cesium.com/downloads/cesiumjs/releases/1.120/Build/Cesium/Cesium.js:85
+[    3775ms] [LOG] An error occurred in "Tw": Failed to obtain image tile X: 210 Y: 112 Level: 8. @ https://cesium.com/downloads/cesiumjs/releases/1.120/Build/Cesium/Cesium.js:85
+[    3776ms] [LOG] An error occurred in "Tw": Failed to obtain image tile X: 210 Y: 112 Level: 8. @ https://cesium.com/downloads/cesiumjs/releases/1.120/Build/Cesium/Cesium.js:85
+[    3777ms] [LOG] An error occurred in "Tw": Failed to obtain image tile X: 209 Y: 113 Level: 8. @ https://cesium.com/downloads/cesiumjs/releases/1.120/Build/Cesium/Cesium.js:85
+[    3778ms] [LOG] An error occurred in "Tw": Failed to obtain image tile X: 104 Y: 54 Level: 7. @ https://cesium.com/downloads/cesiumjs/releases/1.120/Build/Cesium/Cesium.js:85
+[    3778ms] [LOG] An error occurred in "Tw": Failed to obtain image tile X: 209 Y: 113 Level: 8. @ https://cesium.com/downloads/cesiumjs/releases/1.120/Build/Cesium/Cesium.js:85
+[    3778ms] [ERROR] Failed to load resource: the server responded with a status of 404 (Not Found) @ https://t5.tianditu.gov.cn/img_w?x=51&y=28&l=6&tk=3434e0337ed4d651277ec7e690a61b4c:0
+[    3779ms] [ERROR] Failed to load resource: the server responded with a status of 404 (Not Found) @ https://t6.tianditu.gov.cn/img_w?x=207&y=111&l=8&tk=3434e0337ed4d651277ec7e690a61b4c:0
+[    3781ms] [ERROR] Failed to load resource: the server responded with a status of 404 (Not Found) @ https://t3.tianditu.gov.cn/img_w?x=210&y=113&l=8&tk=3434e0337ed4d651277ec7e690a61b4c:0
+[    3808ms] [ERROR] Failed to load resource: the server responded with a status of 404 (Not Found) @ https://t7.tianditu.gov.cn/img_w?x=209&y=110&l=8&tk=3434e0337ed4d651277ec7e690a61b4c:0
+[    3856ms] [ERROR] Failed to load resource: the server responded with a status of 404 (Not Found) @ https://t6.tianditu.gov.cn/cva_w?x=207&y=111&l=8&tk=3434e0337ed4d651277ec7e690a61b4c:0
+[    3856ms] [ERROR] Failed to load resource: the server responded with a status of 404 (Not Found) @ https://t4.tianditu.gov.cn/img_w?x=102&y=55&l=7&tk=3434e0337ed4d651277ec7e690a61b4c:0
+[    3865ms] [LOG] An error occurred in "Tw": Failed to obtain image tile X: 51 Y: 27 Level: 6. @ https://cesium.com/downloads/cesiumjs/releases/1.120/Build/Cesium/Cesium.js:85
+[    3865ms] [LOG] An error occurred in "Tw": Failed to obtain image tile X: 209 Y: 112 Level: 8. @ https://cesium.com/downloads/cesiumjs/releases/1.120/Build/Cesium/Cesium.js:85
+[    3865ms] [LOG] An error occurred in "Tw": Failed to obtain image tile X: 103 Y: 56 Level: 7. @ https://cesium.com/downloads/cesiumjs/releases/1.120/Build/Cesium/Cesium.js:85
+[    3865ms] [LOG] An error occurred in "Tw": Failed to obtain image tile X: 207 Y: 113 Level: 8. @ https://cesium.com/downloads/cesiumjs/releases/1.120/Build/Cesium/Cesium.js:85
+[    3865ms] [LOG] An error occurred in "Tw": Failed to obtain image tile X: 207 Y: 112 Level: 8. @ https://cesium.com/downloads/cesiumjs/releases/1.120/Build/Cesium/Cesium.js:85
+[    3866ms] [LOG] An error occurred in "Tw": Failed to obtain image tile X: 207 Y: 113 Level: 8. @ https://cesium.com/downloads/cesiumjs/releases/1.120/Build/Cesium/Cesium.js:85
+[    3866ms] [LOG] An error occurred in "Tw": Failed to obtain image tile X: 103 Y: 56 Level: 7. @ https://cesium.com/downloads/cesiumjs/releases/1.120/Build/Cesium/Cesium.js:85
+[    3866ms] [LOG] An error occurred in "Tw": Failed to obtain image tile X: 51 Y: 27 Level: 6. @ https://cesium.com/downloads/cesiumjs/releases/1.120/Build/Cesium/Cesium.js:85
+[    3866ms] [LOG] An error occurred in "Tw": Failed to obtain image tile X: 209 Y: 110 Level: 8. @ https://cesium.com/downloads/cesiumjs/releases/1.120/Build/Cesium/Cesium.js:85
+[    3866ms] [LOG] An error occurred in "Tw": Failed to obtain image tile X: 207 Y: 112 Level: 8. @ https://cesium.com/downloads/cesiumjs/releases/1.120/Build/Cesium/Cesium.js:85
+[    3866ms] [LOG] An error occurred in "Tw": Failed to obtain image tile X: 51 Y: 28 Level: 6. @ https://cesium.com/downloads/cesiumjs/releases/1.120/Build/Cesium/Cesium.js:85
+[    3866ms] [LOG] An error occurred in "Tw": Failed to obtain image tile X: 207 Y: 111 Level: 8. @ https://cesium.com/downloads/cesiumjs/releases/1.120/Build/Cesium/Cesium.js:85
+[    3866ms] [LOG] An error occurred in "Tw": Failed to obtain image tile X: 210 Y: 113 Level: 8. @ https://cesium.com/downloads/cesiumjs/releases/1.120/Build/Cesium/Cesium.js:85
+[    3867ms] [ERROR] Failed to load resource: the server responded with a status of 404 (Not Found) @ https://t1.tianditu.gov.cn/cva_w?x=208&y=113&l=8&tk=3434e0337ed4d651277ec7e690a61b4c:0
+[    3867ms] [ERROR] Failed to load resource: the server responded with a status of 404 (Not Found) @ https://t1.tianditu.gov.cn/img_w?x=208&y=113&l=8&tk=3434e0337ed4d651277ec7e690a61b4c:0
+[    3868ms] [ERROR] Failed to load resource: the server responded with a status of 404 (Not Found) @ https://t6.tianditu.gov.cn/img_w?x=209&y=109&l=8&tk=3434e0337ed4d651277ec7e690a61b4c:0
+[    3868ms] [ERROR] Failed to load resource: the server responded with a status of 404 (Not Found) @ https://t3.tianditu.gov.cn/cva_w?x=210&y=113&l=8&tk=3434e0337ed4d651277ec7e690a61b4c:0
+[    3869ms] [ERROR] Failed to load resource: the server responded with a status of 404 (Not Found) @ https://t6.tianditu.gov.cn/cva_w?x=209&y=109&l=8&tk=3434e0337ed4d651277ec7e690a61b4c:0
+[    3875ms] [ERROR] Failed to load resource: the server responded with a status of 404 (Not Found) @ https://t5.tianditu.gov.cn/cva_w?x=51&y=28&l=6&tk=3434e0337ed4d651277ec7e690a61b4c:0
+[    3878ms] [LOG] An error occurred in "Tw": Failed to obtain image tile X: 209 Y: 110 Level: 8. @ https://cesium.com/downloads/cesiumjs/releases/1.120/Build/Cesium/Cesium.js:85
+[    3881ms] [LOG] An error occurred in "Tw": Failed to obtain image tile X: 207 Y: 111 Level: 8. @ https://cesium.com/downloads/cesiumjs/releases/1.120/Build/Cesium/Cesium.js:85
+[    3882ms] [LOG] An error occurred in "Tw": Failed to obtain image tile X: 102 Y: 55 Level: 7. @ https://cesium.com/downloads/cesiumjs/releases/1.120/Build/Cesium/Cesium.js:85
+[    3884ms] [ERROR] Failed to load resource: the server responded with a status of 404 (Not Found) @ https://t7.tianditu.gov.cn/img_w?x=206&y=113&l=8&tk=3434e0337ed4d651277ec7e690a61b4c:0
+[    3885ms] [ERROR] Failed to load resource: the server responded with a status of 404 (Not Found) @ https://t6.tianditu.gov.cn/img_w?x=206&y=112&l=8&tk=3434e0337ed4d651277ec7e690a61b4c:0
+[    3885ms] [ERROR] Failed to load resource: the server responded with a status of 404 (Not Found) @ https://t7.tianditu.gov.cn/cva_w?x=206&y=113&l=8&tk=3434e0337ed4d651277ec7e690a61b4c:0
+[    3886ms] [LOG] An error occurred in "Tw": Failed to obtain image tile X: 208 Y: 113 Level: 8. @ https://cesium.com/downloads/cesiumjs/releases/1.120/Build/Cesium/Cesium.js:85
+[    3887ms] [LOG] An error occurred in "Tw": Failed to obtain image tile X: 208 Y: 113 Level: 8. @ https://cesium.com/downloads/cesiumjs/releases/1.120/Build/Cesium/Cesium.js:85
+[    3887ms] [LOG] An error occurred in "Tw": Failed to obtain image tile X: 209 Y: 109 Level: 8. @ https://cesium.com/downloads/cesiumjs/releases/1.120/Build/Cesium/Cesium.js:85
+[    3888ms] [LOG] An error occurred in "Tw": Failed to obtain image tile X: 210 Y: 113 Level: 8. @ https://cesium.com/downloads/cesiumjs/releases/1.120/Build/Cesium/Cesium.js:85
+[    3888ms] [LOG] An error occurred in "Tw": Failed to obtain image tile X: 209 Y: 109 Level: 8. @ https://cesium.com/downloads/cesiumjs/releases/1.120/Build/Cesium/Cesium.js:85
+[    3888ms] [LOG] An error occurred in "Tw": Failed to obtain image tile X: 51 Y: 28 Level: 6. @ https://cesium.com/downloads/cesiumjs/releases/1.120/Build/Cesium/Cesium.js:85
+[    3888ms] [ERROR] Failed to load resource: the server responded with a status of 404 (Not Found) @ https://t3.tianditu.gov.cn/img_w?x=102&y=54&l=7&tk=3434e0337ed4d651277ec7e690a61b4c:0
+[    3903ms] [ERROR] Failed to load resource: the server responded with a status of 404 (Not Found) @ https://t4.tianditu.gov.cn/img_w?x=206&y=110&l=8&tk=3434e0337ed4d651277ec7e690a61b4c:0
+[    3905ms] [LOG] An error occurred in "Tw": Failed to obtain image tile X: 206 Y: 113 Level: 8. @ https://cesium.com/downloads/cesiumjs/releases/1.120/Build/Cesium/Cesium.js:85
+[    3905ms] [ERROR] Failed to load resource: the server responded with a status of 404 (Not Found) @ https://t5.tianditu.gov.cn/img_w?x=207&y=110&l=8&tk=3434e0337ed4d651277ec7e690a61b4c:0
+[    3906ms] [ERROR] Failed to load resource: the server responded with a status of 404 (Not Found) @ https://t4.tianditu.gov.cn/cva_w?x=206&y=110&l=8&tk=3434e0337ed4d651277ec7e690a61b4c:0
+[    3906ms] [ERROR] Failed to load resource: the server responded with a status of 404 (Not Found) @ https://t5.tianditu.gov.cn/img_w?x=102&y=56&l=7&tk=3434e0337ed4d651277ec7e690a61b4c:0
+[    3906ms] [ERROR] Failed to load resource: the server responded with a status of 404 (Not Found) @ https://t6.tianditu.gov.cn/img_w?x=205&y=113&l=8&tk=3434e0337ed4d651277ec7e690a61b4c:0
+[    3907ms] [ERROR] Failed to load resource: the server responded with a status of 404 (Not Found) @ https://t4.tianditu.gov.cn/img_w?x=205&y=111&l=8&tk=3434e0337ed4d651277ec7e690a61b4c:0
+[    3907ms] [ERROR] Failed to load resource: the server responded with a status of 404 (Not Found) @ https://t6.tianditu.gov.cn/cva_w?x=206&y=112&l=8&tk=3434e0337ed4d651277ec7e690a61b4c:0
+[    3907ms] [ERROR] Failed to load resource: the server responded with a status of 404 (Not Found) @ https://t5.tianditu.gov.cn/cva_w?x=207&y=110&l=8&tk=3434e0337ed4d651277ec7e690a61b4c:0
+[    3907ms] [ERROR] Failed to load resource: the server responded with a status of 404 (Not Found) @ https://t5.tianditu.gov.cn/cva_w?x=208&y=109&l=8&tk=3434e0337ed4d651277ec7e690a61b4c:0
+[    3912ms] [ERROR] Failed to load resource: the server responded with a status of 404 (Not Found) @ https://t6.tianditu.gov.cn/cva_w?x=205&y=113&l=8&tk=3434e0337ed4d651277ec7e690a61b4c:0
+[    3912ms] [ERROR] Failed to load resource: the server responded with a status of 404 (Not Found) @ https://t3.tianditu.gov.cn/cva_w?x=102&y=54&l=7&tk=3434e0337ed4d651277ec7e690a61b4c:0
+[    3913ms] [ERROR] Failed to load resource: the server responded with a status of 404 (Not Found) @ https://t4.tianditu.gov.cn/cva_w?x=205&y=111&l=8&tk=3434e0337ed4d651277ec7e690a61b4c:0
+[    3920ms] [LOG] An error occurred in "Tw": Failed to obtain image tile X: 206 Y: 113 Level: 8. @ https://cesium.com/downloads/cesiumjs/releases/1.120/Build/Cesium/Cesium.js:85
+[    3921ms] [LOG] An error occurred in "Tw": Failed to obtain image tile X: 102 Y: 54 Level: 7. @ https://cesium.com/downloads/cesiumjs/releases/1.120/Build/Cesium/Cesium.js:85
+[    3921ms] [LOG] An error occurred in "Tw": Failed to obtain image tile X: 206 Y: 110 Level: 8. @ https://cesium.com/downloads/cesiumjs/releases/1.120/Build/Cesium/Cesium.js:85
+[    3921ms] [LOG] An error occurred in "Tw": Failed to obtain image tile X: 207 Y: 110 Level: 8. @ https://cesium.com/downloads/cesiumjs/releases/1.120/Build/Cesium/Cesium.js:85
+[    3921ms] [LOG] An error occurred in "Tw": Failed to obtain image tile X: 206 Y: 110 Level: 8. @ https://cesium.com/downloads/cesiumjs/releases/1.120/Build/Cesium/Cesium.js:85
+[    3921ms] [LOG] An error occurred in "Tw": Failed to obtain image tile X: 102 Y: 56 Level: 7. @ https://cesium.com/downloads/cesiumjs/releases/1.120/Build/Cesium/Cesium.js:85
+[    3921ms] [LOG] An error occurred in "Tw": Failed to obtain image tile X: 205 Y: 113 Level: 8. @ https://cesium.com/downloads/cesiumjs/releases/1.120/Build/Cesium/Cesium.js:85
+[    3921ms] [LOG] An error occurred in "Tw": Failed to obtain image tile X: 205 Y: 111 Level: 8. @ https://cesium.com/downloads/cesiumjs/releases/1.120/Build/Cesium/Cesium.js:85
+[    3921ms] [LOG] An error occurred in "Tw": Failed to obtain image tile X: 206 Y: 112 Level: 8. @ https://cesium.com/downloads/cesiumjs/releases/1.120/Build/Cesium/Cesium.js:85
+[    3921ms] [LOG] An error occurred in "Tw": Failed to obtain image tile X: 207 Y: 110 Level: 8. @ https://cesium.com/downloads/cesiumjs/releases/1.120/Build/Cesium/Cesium.js:85
+[    3922ms] [LOG] An error occurred in "Tw": Failed to obtain image tile X: 208 Y: 109 Level: 8. @ https://cesium.com/downloads/cesiumjs/releases/1.120/Build/Cesium/Cesium.js:85
+[    3922ms] [LOG] An error occurred in "Tw": Failed to obtain image tile X: 205 Y: 113 Level: 8. @ https://cesium.com/downloads/cesiumjs/releases/1.120/Build/Cesium/Cesium.js:85
+[    3922ms] [LOG] An error occurred in "Tw": Failed to obtain image tile X: 102 Y: 54 Level: 7. @ https://cesium.com/downloads/cesiumjs/releases/1.120/Build/Cesium/Cesium.js:85
+[    3922ms] [LOG] An error occurred in "Tw": Failed to obtain image tile X: 205 Y: 111 Level: 8. @ https://cesium.com/downloads/cesiumjs/releases/1.120/Build/Cesium/Cesium.js:85
+[    3940ms] [ERROR] Failed to load resource: the server responded with a status of 404 (Not Found) @ https://t5.tianditu.gov.cn/cva_w?x=102&y=56&l=7&tk=3434e0337ed4d651277ec7e690a61b4c:0
+[    3942ms] [LOG] An error occurred in "Tw": Failed to obtain image tile X: 102 Y: 56 Level: 7. @ https://cesium.com/downloads/cesiumjs/releases/1.120/Build/Cesium/Cesium.js:85
+[    2686ms] [ERROR] Failed to load resource: the server responded with a status of 404 (Not Found) @ https://t2.tianditu.gov.cn/cva_w?x=205&y=109&l=8&tk=3434e0337ed4d651277ec7e690a61b4c:0
+[    2688ms] [ERROR] Failed to load resource: the server responded with a status of 404 (Not Found) @ https://t3.tianditu.gov.cn/cva_w?x=206&y=109&l=8&tk=3434e0337ed4d651277ec7e690a61b4c:0
+[    2690ms] [LOG] An error occurred in "Tw": Failed to obtain image tile X: 206 Y: 109 Level: 8. @ https://cesium.com/downloads/cesiumjs/releases/1.120/Build/Cesium/Cesium.js:85
+[    2691ms] [LOG] An error occurred in "Tw": Failed to obtain image tile X: 205 Y: 109 Level: 8. @ https://cesium.com/downloads/cesiumjs/releases/1.120/Build/Cesium/Cesium.js:85
+[    2707ms] [ERROR] Failed to load resource: the server responded with a status of 404 (Not Found) @ https://t5.tianditu.gov.cn/img_w?x=205&y=112&l=8&tk=3434e0337ed4d651277ec7e690a61b4c:0
+[    2709ms] [ERROR] Failed to load resource: the server responded with a status of 404 (Not Found) @ https://t2.tianditu.gov.cn/img_w?x=205&y=109&l=8&tk=3434e0337ed4d651277ec7e690a61b4c:0
+[    2712ms] [ERROR] Failed to load resource: the server responded with a status of 404 (Not Found) @ https://t3.tianditu.gov.cn/img_w?x=206&y=109&l=8&tk=3434e0337ed4d651277ec7e690a61b4c:0
+[    2713ms] [ERROR] Failed to load resource: the server responded with a status of 404 (Not Found) @ https://t4.tianditu.gov.cn/img_w?x=207&y=109&l=8&tk=3434e0337ed4d651277ec7e690a61b4c:0
+[    2717ms] [ERROR] Failed to load resource: the server responded with a status of 404 (Not Found) @ https://t3.tianditu.gov.cn/img_w?x=205&y=110&l=8&tk=3434e0337ed4d651277ec7e690a61b4c:0
+[    2722ms] [ERROR] Failed to load resource: the server responded with a status of 404 (Not Found) @ https://t3.tianditu.gov.cn/cva_w?x=205&y=110&l=8&tk=3434e0337ed4d651277ec7e690a61b4c:0
+[    2728ms] [ERROR] Failed to load resource: the server responded with a status of 404 (Not Found) @ https://t5.tianditu.gov.cn/cva_w?x=205&y=112&l=8&tk=3434e0337ed4d651277ec7e690a61b4c:0
+[    2730ms] [ERROR] Failed to load resource: the server responded with a status of 404 (Not Found) @ https://t5.tianditu.gov.cn/cva_w?x=206&y=111&l=8&tk=3434e0337ed4d651277ec7e690a61b4c:0
+[    2731ms] [ERROR] Failed to load resource: the server responded with a status of 404 (Not Found) @ https://t5.tianditu.gov.cn/img_w?x=206&y=111&l=8&tk=3434e0337ed4d651277ec7e690a61b4c:0
+[    2732ms] [ERROR] Failed to load resource: the server responded with a status of 404 (Not Found) @ https://t4.tianditu.gov.cn/cva_w?x=207&y=109&l=8&tk=3434e0337ed4d651277ec7e690a61b4c:0
+[    2734ms] [LOG] An error occurred in "Tw": Failed to obtain image tile X: 205 Y: 112 Level: 8. @ https://cesium.com/downloads/cesiumjs/releases/1.120/Build/Cesium/Cesium.js:85
+[    2734ms] [LOG] An error occurred in "Tw": Failed to obtain image tile X: 205 Y: 109 Level: 8. @ https://cesium.com/downloads/cesiumjs/releases/1.120/Build/Cesium/Cesium.js:85
+[    2735ms] [LOG] An error occurred in "Tw": Failed to obtain image tile X: 206 Y: 109 Level: 8. @ https://cesium.com/downloads/cesiumjs/releases/1.120/Build/Cesium/Cesium.js:85
+[    2735ms] [LOG] An error occurred in "Tw": Failed to obtain image tile X: 207 Y: 109 Level: 8. @ https://cesium.com/downloads/cesiumjs/releases/1.120/Build/Cesium/Cesium.js:85
+[    2735ms] [LOG] An error occurred in "Tw": Failed to obtain image tile X: 205 Y: 110 Level: 8. @ https://cesium.com/downloads/cesiumjs/releases/1.120/Build/Cesium/Cesium.js:85
+[    2736ms] [LOG] An error occurred in "Tw": Failed to obtain image tile X: 205 Y: 110 Level: 8. @ https://cesium.com/downloads/cesiumjs/releases/1.120/Build/Cesium/Cesium.js:85
+[    2736ms] [LOG] An error occurred in "Tw": Failed to obtain image tile X: 205 Y: 112 Level: 8. @ https://cesium.com/downloads/cesiumjs/releases/1.120/Build/Cesium/Cesium.js:85
+[    2737ms] [LOG] An error occurred in "Tw": Failed to obtain image tile X: 206 Y: 111 Level: 8. @ https://cesium.com/downloads/cesiumjs/releases/1.120/Build/Cesium/Cesium.js:85
+[    2737ms] [LOG] An error occurred in "Tw": Failed to obtain image tile X: 206 Y: 111 Level: 8. @ https://cesium.com/downloads/cesiumjs/releases/1.120/Build/Cesium/Cesium.js:85
+[    2737ms] [LOG] An error occurred in "Tw": Failed to obtain image tile X: 207 Y: 109 Level: 8. @ https://cesium.com/downloads/cesiumjs/releases/1.120/Build/Cesium/Cesium.js:85
+[    2847ms] [ERROR] Failed to load resource: the server responded with a status of 404 (Not Found) @ https://t4.tianditu.gov.cn/cva_w?x=102&y=55&l=7&tk=3434e0337ed4d651277ec7e690a61b4c:0
+[    2849ms] [LOG] An error occurred in "Tw": Failed to obtain image tile X: 102 Y: 55 Level: 7. @ https://cesium.com/downloads/cesiumjs/releases/1.120/Build/Cesium/Cesium.js:85
+[    2875ms] [LOG] An error occurred in "Tw": Failed to obtain image tile X: 206 Y: 112 Level: 8. @ https://cesium.com/downloads/cesiumjs/releases/1.120/Build/Cesium/Cesium.js:85
+[    2877ms] [ERROR] Failed to load resource: the server responded with a status of 404 (Not Found) @ https://t5.tianditu.gov.cn/img_w?x=208&y=109&l=8&tk=3434e0337ed4d651277ec7e690a61b4c:0
+[    2878ms] [LOG] An error occurred in "Tw": Failed to obtain image tile X: 208 Y: 109 Level: 8. @ https://cesium.com/downloads/cesiumjs/releases/1.120/Build/Cesium/Cesium.js:85

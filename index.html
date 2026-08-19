@@ -134,7 +134,7 @@
             DEFAULT_SAMPLE_COUNT: 300,
             MAX_ANTENNA_HEIGHT: 6000,
             MIN_ANTENNA_HEIGHT: 0,
-            DEBOUNCE_TIME: 300,
+
             UPDATE_INTERVAL: 500,
             EARTH_RADIUS: 6371000,
             HEIGHT_RAMP_MATERIAL_UNIFORMS: {
@@ -504,25 +504,7 @@
             }
         });
 
-        let debounceTimer = null;
         let isSampling = false;
-
-        viewer.camera.changed.addEventListener(() => {
-            if (domElements.elevRampToggle.checked) {
-                if (debounceTimer) clearTimeout(debounceTimer);
-
-                debounceTimer = setTimeout(async () => {
-                    if (isSampling || !domElements.elevRampToggle.checked) return;
-
-                    isSampling = true;
-                    try {
-                        await updateViewHeightRange();
-                    } finally {
-                        isSampling = false;
-                    }
-                }, CONSTANTS.DEBOUNCE_TIME);
-            }
-        });
 
         let pickingAB = false;
         let pickState = 0;
@@ -607,7 +589,6 @@
         let lineEntity = null;
 
         let selectionMode = null;
-        let selectionRegion = null;
         let selectionEntity = null;
         let selectionStartPosCarto = null;
 
@@ -638,8 +619,6 @@
 
         let currentMin = 0;
         let currentMax = 3000;
-        let lastSampleTime = 0;
-        let lastSampledRect = null;
 
         function withTimeout(promise, ms) {
             return Promise.race([
@@ -654,145 +633,70 @@
         }
 
         async function updateViewHeightRange() {
-            const now = performance.now();
-            if (now - lastSampleTime < 2000) return;
+            if (!domElements.elevRampToggle.checked) return;
+            if (isSampling) return;
 
-            let rawRect;
-            let isRegionMode = false;
-            let regionGrid = 8;
-
-            if (selectionRegion) {
-                rawRect = selectionRegion;
-                isRegionMode = true;
-                const rectWidth = rawRect.east - rawRect.west;
-                const rectHeight = rawRect.north - rawRect.south;
-                const areaRad = rectWidth * rectHeight;
-                regionGrid = Math.max(12, Math.min(20, Math.floor(Math.sqrt(areaRad) * 1000)));
-            } else {
-                rawRect = viewer.camera.computeViewRectangle();
-                if (!rawRect) return;
-
-                if (lastSampledRect) {
-                    const dLon = rawRect.east - rawRect.west;
-                    const dLat = rawRect.north - rawRect.south;
-                    const centerLon = (rawRect.east + rawRect.west) / 2;
-                    const centerLat = (rawRect.north + rawRect.south) / 2;
-                    const prevCenterLon = (lastSampledRect.east + lastSampledRect.west) / 2;
-                    const prevCenterLat = (lastSampledRect.north + lastSampledRect.south) / 2;
-                    const prevDLon = lastSampledRect.east - lastSampledRect.west;
-                    const prevDLat = lastSampledRect.north - lastSampledRect.south;
-                    const movedFraction = Math.sqrt(
-                        ((centerLon - prevCenterLon) / Math.max(prevDLon, 1e-6)) ** 2 +
-                        ((centerLat - prevCenterLat) / Math.max(prevDLat, 1e-6)) ** 2
-                    );
-                    if (movedFraction < 0.05) return;
-                }
-            }
-
-            const cameraHeight = viewer.camera.positionCartographic.height;
-
-            let rect;
-            let baseGrid;
-            if (isRegionMode) {
-                rect = rawRect;
-                baseGrid = regionGrid;
-            } else {
-                const expansionFactor = Math.max(1.5, Math.min(10.0, cameraHeight / 100000 + 1.0));
-                const expCenterLon = (rawRect.east + rawRect.west) / 2;
-                const expCenterLat = (rawRect.north + rawRect.south) / 2;
-                const expDLon = (rawRect.east - rawRect.west) * expansionFactor;
-                const expDLat = (rawRect.north - rawRect.south) * expansionFactor;
-                rect = {
-                    west: expCenterLon - expDLon / 2,
-                    east: expCenterLon + expDLon / 2,
-                    south: expCenterLat - expDLat / 2,
-                    north: expCenterLat + expDLat / 2
-                };
-                baseGrid = Math.max(8, Math.min(32, Math.floor(100 / Math.max(cameraHeight / 1000, 0.5))));
-            }
-
-            const buffer = isRegionMode
-                ? (rect.east - rect.west) * 0.05
-                : 0.01;
+            const rect = viewer.camera.computeViewRectangle();
+            if (!rect) return;
 
             isSampling = true;
-            updateViewStatus('进行中');
+            status.spectrum = '采样中...';
+            updateStatusBar();
 
             try {
-                const baseSamples = [];
-                for (let i = 0; i < baseGrid; i++) {
-                    for (let j = 0; j < baseGrid; j++) {
-                        const lon = Cesium.Math.lerp(rect.west - buffer, rect.east + buffer, i / (baseGrid - 1));
-                        const lat = Cesium.Math.lerp(rect.south - buffer, rect.north + buffer, j / (baseGrid - 1));
-                        baseSamples.push(Cesium.Cartographic.fromRadians(lon, lat));
+                const cameraHeight = viewer.camera.positionCartographic.height;
+                const grid = Math.max(8, Math.min(24, Math.floor(80 / Math.max(cameraHeight / 1000, 0.5))));
+                const heights = [];
+
+                const lonStep = (rect.east - rect.west) / (grid - 1);
+                const latStep = (rect.north - rect.south) / (grid - 1);
+
+                const promises = [];
+                for (let i = 0; i < grid; i++) {
+                    for (let j = 0; j < grid; j++) {
+                        const lon = rect.west + i * lonStep;
+                        const lat = rect.south + j * latStep;
+                        promises.push(TerrainSampler._getHeight(lon, lat));
                     }
                 }
 
-                const batchSize = 32;
-                const baseUpdated = [];
-                for (let i = 0; i < baseSamples.length; i += batchSize) {
-                    const batch = baseSamples.slice(i, Math.min(i + batchSize, baseSamples.length));
-                    const batchUpdated = await withTimeout(
-                        Cesium.sampleTerrainMostDetailed(viewer.terrainProvider, batch),
-                        15000
-                    );
-                    baseUpdated.push(...batchUpdated);
-                    const progress = Math.min(i + batchSize, baseSamples.length);
-                    updateViewStatus(`采样 ${progress}/${baseSamples.length} 点...`);
-                    await new Promise(r => setTimeout(r, 0));
+                const results = await Promise.all(promises);
+                for (const h of results) {
+                    if (h !== undefined && !isNaN(h) && h > -1000) heights.push(h);
                 }
 
-                const baseValidHeights = baseUpdated.map(p => p.height).filter(h => h !== undefined);
-
-                if (baseValidHeights.length === 0) {
-                    console.warn("基础采样失败，无有效高度数据");
-                    updateViewStatus('采样失败');
+                if (heights.length === 0) {
+                    status.spectrum = '采样失败';
+                    updateStatusBar();
                     return;
                 }
 
-                const allValidHeights = [...baseValidHeights];
-                if (allValidHeights.length > 0) {
-                    viewMinHeight = Math.min(...allValidHeights);
-                    viewMaxHeight = Math.max(...allValidHeights);
-                    if (viewMaxHeight - viewMinHeight < (isRegionMode ? 1 : 10)) {
-                        viewMaxHeight = viewMinHeight + (isRegionMode ? 1 : 10);
-                    }
-                    const rangePad = isRegionMode ? 0 : (viewMaxHeight - viewMinHeight) * 0.2;
-                    viewMinHeight = Math.max(0, viewMinHeight - rangePad);
-                    viewMaxHeight = viewMaxHeight + rangePad;
+                viewMinHeight = Math.min(...heights);
+                viewMaxHeight = Math.max(...heights);
+                if (viewMaxHeight - viewMinHeight < 10) viewMaxHeight = viewMinHeight + 10;
+                const pad = (viewMaxHeight - viewMinHeight) * 0.15;
+                viewMinHeight = Math.max(0, viewMinHeight - pad);
+                viewMaxHeight = viewMaxHeight + pad;
 
-                    const regionInfo = isRegionMode
-                        ? `选区${((rect.east - rect.west) * 111.32).toFixed(2)}×${((rect.north - rect.south) * 111.32).toFixed(2)}km `
-                        : '';
-                    console.log(`色谱采样完成：${regionInfo}${baseValidHeights.length}点，范围[${viewMinHeight.toFixed(0)}, ${viewMaxHeight.toFixed(0)}]`);
-
-                    if (viewer.scene.globe.material) {
-                        viewer.scene.globe.material.uniforms.uMinHeight = viewMinHeight;
-                        viewer.scene.globe.material.uniforms.uMaxHeight = viewMaxHeight;
-                        domElements.legendText.innerText = `${viewMinHeight.toFixed(0)}m - ${viewMaxHeight.toFixed(0)}m`;
-
-                        const legendSpans = domElements.legend.querySelectorAll('span');
-                        if (legendSpans.length >= 2) {
-                            legendSpans[0].innerText = Math.round(viewMaxHeight);
-                            legendSpans[1].innerText = Math.round(viewMinHeight);
-                        }
-
-                        viewer.scene.requestRender();
-                    }
+                if (viewer.scene.globe.material) {
+                    viewer.scene.globe.material.uniforms.uMinHeight = viewMinHeight;
+                    viewer.scene.globe.material.uniforms.uMaxHeight = viewMaxHeight;
                 }
+
+                domElements.legendText.innerText = `${viewMinHeight.toFixed(0)}m - ${viewMaxHeight.toFixed(0)}m`;
+                const spans = domElements.legend.querySelectorAll('span');
+                if (spans.length >= 2) {
+                    spans[0].innerText = Math.round(viewMaxHeight);
+                    spans[1].innerText = Math.round(viewMinHeight);
+                }
+
+                status.spectrum = '✓完成';
+                viewer.scene.requestRender();
             } catch (e) {
-                if (e.message === '采样超时') {
-                    console.warn("采样超时，请稍后重试");
-                    updateViewStatus('采样超时');
-                } else {
-                    console.warn("采样被取消或失败", e);
-                    updateViewStatus('采样失败');
-                }
+                console.warn('色谱采样失败:', e);
+                status.spectrum = '采样失败';
             } finally {
                 isSampling = false;
-                lastSampleTime = performance.now();
-                lastSampledRect = rawRect;
-                status.spectrum = domElements.elevRampToggle.checked ? '✓完成' : '未启用';
                 updateStatusBar();
             }
         }
@@ -809,25 +713,20 @@
                 const enabled = domElements.elevRampToggle.checked;
                 domElements.legend.style.display = enabled ? 'block' : 'none';
                 domElements.gammaControl.style.display = enabled ? 'block' : 'none';
-                domElements.regionControl.style.display = enabled ? 'block' : 'none';
+                domElements.regionControl.style.display = 'none';
 
                 if (!enabled) {
                     viewer.scene.globe.material = null;
                     status.spectrum = '未启用';
                     status.terrain = '✓完成';
                     updateStatusBar();
+                    return;
                 }
 
-                if (enabled) {
-                    if (selectionRegion) {
-                        viewer.scene.globe.material = heightRampMaterial;
-                        await updateViewHeightRange();
-                    } else {
-                        viewer.scene.globe.material = null;
-                        status.spectrum = '等待选区';
-                        updateStatusBar();
-                    }
-                }
+                viewer.scene.globe.material = heightRampMaterial;
+                status.spectrum = '加载中...';
+                updateStatusBar();
+                await updateViewHeightRange();
             });
 
             domElements.gammaSlider.addEventListener("input", () => {
@@ -915,7 +814,6 @@
             };
 
             function clearSelection() {
-                selectionRegion = null;
                 selectionMode = null;
                 domElements.rectSelectBtn.innerText = "矩形选区";
                 if (selectionEntity) {
@@ -1086,7 +984,6 @@
                 if (selectionEntity && selectionEntity.rectangle) {
                     const rect = selectionEntity.rectangle.coordinates.getValue();
                     if (rect) {
-                        selectionRegion = rect.clone();
                         const widthKm = (rect.east - rect.west) * 111.32;
                         const heightKm = (rect.north - rect.south) * 111.32;
                         if (domElements.elevRampToggle.checked) {
@@ -1102,7 +999,7 @@
 
                 selectionStartPosCarto = null;
 
-                if (selectionRegion && domElements.elevRampToggle.checked) {
+                if (domElements.elevRampToggle.checked) {
                     updateViewHeightRange();
                 }
                 return;

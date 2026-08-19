@@ -1,0 +1,47 @@
+[     257ms] [LOG] %c欢迎使用CesiumTdt插件，%c该插件由Jason提供，%c目前支持1.120版本 color: green; font-size: 16px; font-weight: bold; color: blue; font-size: 14px; font-style: italic; color: red; font-size: 14px; font-weight: bold; @ http://localhost:8080/lib/cesiumTdt.js:0
+[     973ms] [ERROR] 采样A/B点地形失败: TypeError: Cannot read properties of undefined (reading 'computeMaximumLevelAtPosition')
+    at Object.Qre (https://cesium.com/downloads/cesiumjs/releases/1.120/Build/Cesium/Cesium.js:93:186783)
+    at Object.sampleElevation (http://localhost:8080/:211:46)
+    at runProfile (http://localhost:8080/:942:36)
+    at http://localhost:8080/:358:30 @ http://localhost:8080/:949
+[     975ms] [ERROR] 采样地形失败: TypeError: Cannot read properties of undefined (reading 'computeMaximumLevelAtPosition')
+    at Object.Qre (https://cesium.com/downloads/cesiumjs/releases/1.120/Build/Cesium/Cesium.js:93:186783)
+    at Object.sampleTerrainPath (http://localhost:8080/:204:46)
+    at runProfile (http://localhost:8080/:1058:85) @ http://localhost:8080/:1060
+[    2484ms] [LOG] An error occurred in "": Failed to obtain terrain tile X: 56 Y: 10 Level: 5. Error message: "undefined" @ https://cesium.com/downloads/cesiumjs/releases/1.120/Build/Cesium/Cesium.js:85
+[    2485ms] [LOG] An error occurred in "": Failed to obtain terrain tile X: 57 Y: 11 Level: 5. Error message: "undefined" @ https://cesium.com/downloads/cesiumjs/releases/1.120/Build/Cesium/Cesium.js:85
+[    2532ms] [LOG] An error occurred in "": Failed to obtain terrain tile X: 53 Y: 12 Level: 5. Error message: "undefined" @ https://cesium.com/downloads/cesiumjs/releases/1.120/Build/Cesium/Cesium.js:85
+[    2533ms] [LOG] An error occurred in "": Failed to obtain terrain tile X: 55 Y: 12 Level: 5. Error message: "undefined" @ https://cesium.com/downloads/cesiumjs/releases/1.120/Build/Cesium/Cesium.js:85
+[    2547ms] [LOG] An error occurred in "": Failed to obtain terrain tile X: 56 Y: 11 Level: 5. Error message: "undefined" @ https://cesium.com/downloads/cesiumjs/releases/1.120/Build/Cesium/Cesium.js:85
+[    2548ms] [LOG] An error occurred in "": Failed to obtain terrain tile X: 55 Y: 11 Level: 5. Error message: "undefined" @ https://cesium.com/downloads/cesiumjs/releases/1.120/Build/Cesium/Cesium.js:85
+[    2550ms] [LOG] An error occurred in "": Failed to obtain terrain tile X: 56 Y: 13 Level: 5. Error message: "undefined" @ https://cesium.com/downloads/cesiumjs/releases/1.120/Build/Cesium/Cesium.js:85
+[    2551ms] [LOG] An error occurred in "": Failed to obtain terrain tile X: 54 Y: 10 Level: 5. Error message: "undefined" @ https://cesium.com/downloads/cesiumjs/releases/1.120/Build/Cesium/Cesium.js:85
+[    2552ms] [LOG] An error occurred in "": Failed to obtain terrain tile X: 57 Y: 12 Level: 5. Error message: "undefined" @ https://cesium.com/downloads/cesiumjs/releases/1.120/Build/Cesium/Cesium.js:85
+[    2552ms] [LOG] An error occurred in "": Failed to obtain terrain tile X: 55 Y: 13 Level: 5. Error message: "undefined" @ https://cesium.com/downloads/cesiumjs/releases/1.120/Build/Cesium/Cesium.js:85
+[    2554ms] [LOG] An error occurred in "": Failed to obtain terrain tile X: 54 Y: 13 Level: 5. Error message: "undefined" @ https://cesium.com/downloads/cesiumjs/releases/1.120/Build/Cesium/Cesium.js:85
+[    2554ms] [LOG] An error occurred in "": Failed to obtain terrain tile X: 56 Y: 12 Level: 5. Error message: "undefined" @ https://cesium.com/downloads/cesiumjs/releases/1.120/Build/Cesium/Cesium.js:85
+[    2555ms] [LOG] An error occurred in "": Failed to obtain terrain tile X: 54 Y: 11 Level: 5. Error message: "undefined" @ https://cesium.com/downloads/cesiumjs/releases/1.120/Build/Cesium/Cesium.js:85
+[    2606ms] [LOG] An error occurred in "": Failed to obtain terrain tile X: 55 Y: 10 Level: 5. Error message: "undefined" @ https://cesium.com/downloads/cesiumjs/releases/1.120/Build/Cesium/Cesium.js:85
+[    2608ms] [LOG] An error occurred in "": Failed to obtain terrain tile X: 54 Y: 12 Level: 5. Error message: "undefined" @ https://cesium.com/downloads/cesiumjs/releases/1.120/Build/Cesium/Cesium.js:85
+[    2616ms] [LOG] An error occurred in "": Failed to obtain terrain tile X: 57 Y: 10 Level: 5. Error message: "undefined" @ https://cesium.com/downloads/cesiumjs/releases/1.120/Build/Cesium/Cesium.js:85
+[    2617ms] [LOG] An error occurred in "": Failed to obtain terrain tile X: 57 Y: 13 Level: 5. Error message: "undefined" @ https://cesium.com/downloads/cesiumjs/releases/1.120/Build/Cesium/Cesium.js:85
+[    2619ms] [LOG] An error occurred in "": Failed to obtain terrain tile X: 53 Y: 13 Level: 5. Error message: "undefined" @ https://cesium.com/downloads/cesiumjs/releases/1.120/Build/Cesium/Cesium.js:85
+[    2636ms] [LOG] An error occurred in "": Failed to obtain terrain tile X: 52 Y: 13 Level: 5. Error message: "undefined" @ https://cesium.com/downloads/cesiumjs/releases/1.120/Build/Cesium/Cesium.js:85
+[    2644ms] [LOG] An error occurred in "": Failed to obtain terrain tile X: 52 Y: 12 Level: 5. Error message: "undefined" @ https://cesium.com/downloads/cesiumjs/releases/1.120/Build/Cesium/Cesium.js:85
+[    2898ms] [LOG] An error occurred in "": Failed to obtain terrain tile X: 106 Y: 24 Level: 6. Error message: "undefined" @ https://cesium.com/downloads/cesiumjs/releases/1.120/Build/Cesium/Cesium.js:85
+[    2899ms] [LOG] An error occurred in "": Failed to obtain terrain tile X: 106 Y: 25 Level: 6. Error message: "undefined" @ https://cesium.com/downloads/cesiumjs/releases/1.120/Build/Cesium/Cesium.js:85
+[    2937ms] [LOG] An error occurred in "": Failed to obtain terrain tile X: 108 Y: 23 Level: 6. Error message: "undefined" @ https://cesium.com/downloads/cesiumjs/releases/1.120/Build/Cesium/Cesium.js:85
+[    2938ms] [LOG] An error occurred in "": Failed to obtain terrain tile X: 108 Y: 24 Level: 6. Error message: "undefined" @ https://cesium.com/downloads/cesiumjs/releases/1.120/Build/Cesium/Cesium.js:85
+[    2976ms] [LOG] An error occurred in "": Failed to obtain terrain tile X: 105 Y: 24 Level: 6. Error message: "undefined" @ https://cesium.com/downloads/cesiumjs/releases/1.120/Build/Cesium/Cesium.js:85
+[    2977ms] [LOG] An error occurred in "": Failed to obtain terrain tile X: 107 Y: 24 Level: 6. Error message: "undefined" @ https://cesium.com/downloads/cesiumjs/releases/1.120/Build/Cesium/Cesium.js:85
+[    2989ms] [LOG] An error occurred in "": Failed to obtain terrain tile X: 107 Y: 25 Level: 6. Error message: "undefined" @ https://cesium.com/downloads/cesiumjs/releases/1.120/Build/Cesium/Cesium.js:85
+[    2990ms] [LOG] An error occurred in "": Failed to obtain terrain tile X: 105 Y: 25 Level: 6. Error message: "undefined" @ https://cesium.com/downloads/cesiumjs/releases/1.120/Build/Cesium/Cesium.js:85
+[    3010ms] [LOG] An error occurred in "": Failed to obtain terrain tile X: 104 Y: 25 Level: 6. Error message: "undefined" @ https://cesium.com/downloads/cesiumjs/releases/1.120/Build/Cesium/Cesium.js:85
+[    3055ms] [LOG] An error occurred in "": Failed to obtain terrain tile X: 108 Y: 25 Level: 6. Error message: "undefined" @ https://cesium.com/downloads/cesiumjs/releases/1.120/Build/Cesium/Cesium.js:85
+[    3056ms] [LOG] An error occurred in "": Failed to obtain terrain tile X: 108 Y: 22 Level: 6. Error message: "undefined" @ https://cesium.com/downloads/cesiumjs/releases/1.120/Build/Cesium/Cesium.js:85
+[    3057ms] [LOG] An error occurred in "": Failed to obtain terrain tile X: 107 Y: 22 Level: 6. Error message: "undefined" @ https://cesium.com/downloads/cesiumjs/releases/1.120/Build/Cesium/Cesium.js:85
+[    3388ms] [LOG] An error occurred in "": Failed to obtain terrain tile X: 207 Y: 49 Level: 7. Error message: "undefined" @ https://cesium.com/downloads/cesiumjs/releases/1.120/Build/Cesium/Cesium.js:85
+[    3460ms] [LOG] An error occurred in "": Failed to obtain terrain tile X: 208 Y: 49 Level: 7. Error message: "undefined" @ https://cesium.com/downloads/cesiumjs/releases/1.120/Build/Cesium/Cesium.js:85
+[    3461ms] [LOG] An error occurred in "": Failed to obtain terrain tile X: 209 Y: 49 Level: 7. Error message: "undefined" @ https://cesium.com/downloads/cesiumjs/releases/1.120/Build/Cesium/Cesium.js:85
+[    3544ms] [LOG] An error occurred in "": Failed to obtain terrain tile X: 210 Y: 48 Level: 7. Error message: "undefined" @ https://cesium.com/downloads/cesiumjs/releases/1.120/Build/Cesium/Cesium.js:85
+[    3602ms] [LOG] An error occurred in "": Failed to obtain terrain tile X: 210 Y: 49 Level: 7. Error message: "undefined" @ https://cesium.com/downloads/cesiumjs/releases/1.120/Build/Cesium/Cesium.js:85

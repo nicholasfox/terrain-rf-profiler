@@ -1,0 +1,41 @@
+- generic [active] [ref=f2e1]:
+  - generic [ref=f2e3]:
+    - generic [ref=f2e8]:
+      - generic [ref=f2e9]: An error occurred while rendering. Rendering has stopped.
+      - generic [ref=f2e10]:
+        - paragraph [ref=f2e12]: "TypeError: Cannot read properties of undefined (reading 'projection')"
+        - generic [ref=f2e13]: See more...
+      - button "OK" [ref=f2e15] [cursor=pointer]
+    - button "天地图 影像" [ref=f2e17] [cursor=pointer]
+    - button "Full screen" [ref=f2e20] [cursor=pointer]
+  - generic [ref=f2e25]: "地图图层: 等待地形数据: 等待色谱分析: 未启用"
+  - generic [ref=f2e26]:
+    - text: "A天线高:"
+    - spinbutton [ref=f2e27]: "20"
+    - text: "m B天线高:"
+    - spinbutton [ref=f2e28]: "20"
+    - text: m
+    - generic [ref=f2e29]:
+      - text: "频 率:"
+      - spinbutton [ref=f2e30]: "1.4"
+      - text: "GHz 采样密度:"
+      - spinbutton [ref=f2e31]: "300"
+    - generic [ref=f2e32]:
+      - text: "A经度:"
+      - spinbutton [ref=f2e33]: "111.270049"
+      - text: "纬度:"
+      - spinbutton [ref=f2e34]: "22.272179"
+      - text: "海拔: -- m"
+    - generic [ref=f2e35]:
+      - text: "B经度:"
+      - spinbutton [ref=f2e36]: "112.944868"
+      - text: "纬度:"
+      - spinbutton [ref=f2e37]: "22.176439"
+      - text: "海拔: -- m"
+    - button "选点模式" [ref=f2e39]
+    - generic [ref=f2e41]:
+      - checkbox "考虑折射 (K = 4/3)" [ref=f2e42]
+      - text: 考虑折射 (K = 4/3)
+    - generic [ref=f2e44]:
+      - checkbox "地形色谱图" [ref=f2e45]
+      - text: 地形色谱图
