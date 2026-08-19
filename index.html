@@ -1186,7 +1186,7 @@
                         }
                         return Cesium.Cartesian3.fromRadians(A.longitude, A.latitude, A.height || 0);
                     }, false),
-                    billboard: { image: "icons/target.png", width: 48, height: 48, verticalOrigin: Cesium.VerticalOrigin.BOTTOM, disableDepthTestDistance: Number.POSITIVE_INFINITY },
+                    billboard: { image: "icons/target.png", width: 48, height: 48, verticalOrigin: Cesium.VerticalOrigin.BOTTOM, disableDepthTestDistance: Number.POSITIVE_INFINITY, heightReference: Cesium.HeightReference.CLAMP_TO_GROUND },
                     label: {
                         text: new Cesium.CallbackProperty(() => {
                             let lon, lat, elev;
@@ -1211,7 +1211,8 @@
                         pixelOffset: new Cesium.Cartesian2(0, 30),
                         disableDepthTestDistance: Number.POSITIVE_INFINITY,
                         scaleByDistance: new Cesium.NearFarScalar(1e3, 1, 5e6, 0.3),
-                        translucencyByDistance: new Cesium.NearFarScalar(1e3, 1, 3e6, 0.2)
+                        translucencyByDistance: new Cesium.NearFarScalar(1e3, 1, 3e6, 0.2),
+                        heightReference: Cesium.HeightReference.CLAMP_TO_GROUND
                     }
                 });
             }
@@ -1224,7 +1225,7 @@
                         }
                         return Cesium.Cartesian3.fromRadians(B.longitude, B.latitude, B.height || 0);
                     }, false),
-                    billboard: { image: "icons/target.png", width: 48, height: 48, verticalOrigin: Cesium.VerticalOrigin.BOTTOM, disableDepthTestDistance: Number.POSITIVE_INFINITY },
+                    billboard: { image: "icons/target.png", width: 48, height: 48, verticalOrigin: Cesium.VerticalOrigin.BOTTOM, disableDepthTestDistance: Number.POSITIVE_INFINITY, heightReference: Cesium.HeightReference.CLAMP_TO_GROUND },
                     label: {
                         text: new Cesium.CallbackProperty(() => {
                             let lon, lat, elev;
@@ -1249,7 +1250,8 @@
                         pixelOffset: new Cesium.Cartesian2(0, 30),
                         disableDepthTestDistance: Number.POSITIVE_INFINITY,
                         scaleByDistance: new Cesium.NearFarScalar(1e3, 1, 5e6, 0.3),
-                        translucencyByDistance: new Cesium.NearFarScalar(1e3, 1, 3e6, 0.2)
+                        translucencyByDistance: new Cesium.NearFarScalar(1e3, 1, 3e6, 0.2),
+                        heightReference: Cesium.HeightReference.CLAMP_TO_GROUND
                     }
                 });
             }
