@@ -209,7 +209,6 @@
             }
         };
         ConfigManager.load();
-        viewer.scene.verticalExaggeration = parseFloat(domElements.vertExagSlider.value);
         domElements.vertExagVal.innerText = parseFloat(domElements.vertExagSlider.value).toFixed(1);
         domElements.rampMinVal.innerText = domElements.rampMinSlider.value;
         domElements.rampMaxVal.innerText = domElements.rampMaxSlider.value;
@@ -468,6 +467,7 @@
         }
 
         const viewer = new Cesium.Viewer('cesiumContainer', viewerOptions);
+        viewer.scene.verticalExaggeration = parseFloat(domElements.vertExagSlider.value);
 
         if (tdtKey) {
             try {
