@@ -82,8 +82,10 @@
             <label style="white-space:nowrap;">
                 <input type="checkbox" id="elevRampToggle"> 地形色谱图
             </label>
-            <span id="gammaControl" style="display:none; white-space:nowrap; font-size:12px;">
-                色谱Gamma: <input id="gammaSlider" type="range" min="0.3" max="2.0" step="0.1" value="0.8" style="width:80px;vertical-align:middle;">
+            <span id="rampControls" style="display:none; white-space:nowrap; font-size:12px;">
+                最低: <input id="rampMinInput" type="number" value="0" min="-500" max="9000" step="100" style="width:55px;">m
+                最高: <input id="rampMaxInput" type="number" value="1000" min="0" max="9000" step="100" style="width:55px;">m
+                Gamma: <input id="gammaSlider" type="range" min="0.3" max="2.0" step="0.1" value="0.8" style="width:70px;vertical-align:middle;">
                 <span id="gammaValue">0.8</span>
             </span>
             <span id="regionControl" style="display:none; white-space:nowrap;">
@@ -162,7 +164,9 @@
             radiusInfo: document.getElementById("radiusInfo"),
             gammaSlider: document.getElementById("gammaSlider"),
             gammaValue: document.getElementById("gammaValue"),
-            gammaControl: document.getElementById("gammaControl"),
+            rampControls: document.getElementById("rampControls"),
+            rampMinInput: document.getElementById("rampMinInput"),
+            rampMaxInput: document.getElementById("rampMaxInput"),
             regionControl: document.getElementById("regionControl"),
             rectSelectBtn: document.getElementById("rectSelectBtn"),
             clearSelectionBtn: document.getElementById("clearSelectionBtn")
@@ -458,8 +462,6 @@
             updateStatusBar();
         });
 
-        let viewMinHeight = 0;
-        let viewMaxHeight = 100;
 
         const heightRampMaterial = new Cesium.Material({
             fabric: {
@@ -508,7 +510,6 @@
             }
         });
 
-        let isSampling = false;
 
         let pickingAB = false;
         let pickState = 0;
@@ -636,79 +637,7 @@
             updateStatusBar();
         }
 
-        async function updateViewHeightRange() {
-            if (!domElements.elevRampToggle.checked) return;
-            if (isSampling) return;
-
-            const rect = viewer.camera.computeViewRectangle();
-            if (!rect) return;
-
-            isSampling = true;
-            status.spectrum = '采样中...';
-            updateStatusBar();
-
-            try {
-                const cameraHeight = viewer.camera.positionCartographic.height;
-                const grid = Math.max(8, Math.min(24, Math.floor(80 / Math.max(cameraHeight / 1000, 0.5))));
-                const heights = [];
-
-                const lonStep = (rect.east - rect.west) / (grid - 1);
-                const latStep = (rect.north - rect.south) / (grid - 1);
-
-                const promises = [];
-                for (let i = 0; i < grid; i++) {
-                    for (let j = 0; j < grid; j++) {
-                        const lon = rect.west + i * lonStep;
-                        const lat = rect.south + j * latStep;
-                        promises.push(TerrainSampler._getHeight(lon, lat));
-                    }
-                }
-
-                const results = await Promise.all(promises);
-                for (const h of results) {
-                    if (h !== undefined && !isNaN(h) && h >= 0) heights.push(h);
-                }
-
-                if (heights.length === 0) {
-                    status.spectrum = '采样失败';
-                    updateStatusBar();
-                    return;
-                }
-
-                heights.sort((a, b) => a - b);
-                const p5 = heights[Math.floor(heights.length * 0.05)] || 0;
-                const p95 = heights[Math.floor(heights.length * 0.95)] || heights[heights.length - 1];
-                const range = p95 - p5;
-                const minRange = 20;
-                const effectiveRange = Math.max(range, minRange);
-                const pad = effectiveRange * 0.05;
-                viewMinHeight = Math.max(0, p5 - pad);
-                viewMaxHeight = p95 + pad;
-
-                if (viewer.scene.globe.material) {
-                    viewer.scene.globe.material.uniforms.uMinHeight = viewMinHeight;
-                    viewer.scene.globe.material.uniforms.uMaxHeight = viewMaxHeight;
-                }
-
-                domElements.legendText.innerText = `${viewMinHeight.toFixed(0)}m - ${viewMaxHeight.toFixed(0)}m`;
-                const spans = domElements.legend.querySelectorAll('span');
-                if (spans.length >= 2) {
-                    spans[0].innerText = Math.round(viewMaxHeight);
-                    spans[1].innerText = Math.round(viewMinHeight);
-                }
-
-                status.spectrum = '✓完成';
-                viewer.scene.requestRender();
-            } catch (e) {
-                console.warn('色谱采样失败:', e);
-                status.spectrum = '采样失败';
-            } finally {
-                isSampling = false;
-                updateStatusBar();
-            }
-        }
-
-        function setupEventListeners() {
+function setupEventListeners() {
             domElements.antA.addEventListener("input", () => runProfile(true));
             domElements.antB.addEventListener("input", () => runProfile(true));
             domElements.kFactorToggle.addEventListener("change", () => {
@@ -716,11 +645,10 @@
                 runProfile(true);
             });
 
-            domElements.elevRampToggle.addEventListener("change", async () => {
+            domElements.elevRampToggle.addEventListener("change", () => {
                 const enabled = domElements.elevRampToggle.checked;
                 domElements.legend.style.display = enabled ? 'block' : 'none';
-                domElements.gammaControl.style.display = enabled ? 'block' : 'none';
-                domElements.regionControl.style.display = 'none';
+                domElements.rampControls.style.display = enabled ? 'inline' : 'none';
 
                 if (!enabled) {
                     viewer.scene.globe.material = null;
@@ -731,25 +659,36 @@
                 }
 
                 viewer.scene.globe.material = heightRampMaterial;
-                status.spectrum = '加载中...';
+                applyRampValues();
+                status.spectrum = '✓完成';
                 updateStatusBar();
-                await updateViewHeightRange();
             });
 
-            domElements.gammaSlider.addEventListener("input", () => {
-                const gamma = parseFloat(domElements.gammaSlider.value);
-                domElements.gammaValue.innerText = gamma.toFixed(1);
+            function applyRampValues() {
+                const minH = parseFloat(domElements.rampMinInput.value) || 0;
+                const maxH = parseFloat(domElements.rampMaxInput.value) || 1000;
+                const gamma = parseFloat(domElements.gammaSlider.value) || 0.8;
                 if (viewer.scene.globe.material) {
+                    viewer.scene.globe.material.uniforms.uMinHeight = minH;
+                    viewer.scene.globe.material.uniforms.uMaxHeight = maxH;
                     viewer.scene.globe.material.uniforms.uGamma = gamma;
-                    viewer.scene.requestRender();
                 }
+                domElements.legendText.innerText = `${minH}m - ${maxH}m`;
+                const spans = domElements.legend.querySelectorAll('span');
+                if (spans.length >= 2) {
+                    spans[0].innerText = Math.round(maxH);
+                    spans[1].innerText = Math.round(minH);
+                }
+                viewer.scene.requestRender();
+            }
+
+            domElements.rampMinInput.addEventListener("change", applyRampValues);
+            domElements.rampMaxInput.addEventListener("change", applyRampValues);
+            domElements.gammaSlider.addEventListener("input", () => {
+                domElements.gammaValue.innerText = parseFloat(domElements.gammaSlider.value).toFixed(1);
+                applyRampValues();
             });
 
-            viewer.camera.moveEnd.addEventListener(() => {
-                if (domElements.elevRampToggle.checked) {
-                    updateViewHeightRange();
-                }
-            });
 
             domElements.freqGHz.addEventListener("input", updateFrequency);
 
@@ -997,7 +936,7 @@
                             viewer.scene.globe.material = heightRampMaterial;
                             status.spectrum = `选区 ${widthKm.toFixed(2)}×${heightKm.toFixed(2)}km 采样中...`;
                             updateStatusBar();
-                            updateViewHeightRange();
+                            applyRampValues();
                         }
                     }
                     selectionMode = null;
@@ -1007,7 +946,7 @@
                 selectionStartPosCarto = null;
 
                 if (domElements.elevRampToggle.checked) {
-                    updateViewHeightRange();
+                    applyRampValues();
                 }
                 return;
             }
