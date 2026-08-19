@@ -252,7 +252,7 @@
                 const { data, bounds } = tile;
                 const g = this.GRID_SIZE - 1;
                 const colF = (lonDeg - bounds.west) / (bounds.east - bounds.west) * g;
-                const rowF = (latDeg - bounds.south) / (bounds.north - bounds.south) * g;
+                const rowF = (bounds.north - latDeg) / (bounds.north - bounds.south) * g;
                 const col = Math.max(0, Math.min(g, colF));
                 const row = Math.max(0, Math.min(g, rowF));
                 const c0 = Math.floor(col), r0 = Math.floor(row);
