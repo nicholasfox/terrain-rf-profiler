@@ -1049,10 +1049,13 @@ function setupEventListeners() {
             if (!lineEntity) {
                 lineEntity = viewer.entities.add({
                     polyline: {
-                        positions: new Cesium.CallbackProperty(() => [
-                            Cesium.Cartesian3.fromRadians(A.longitude, A.latitude, A.height || 0),
-                            Cesium.Cartesian3.fromRadians(B.longitude, B.latitude, B.height || 0)
-                        ], false),
+                        positions: new Cesium.CallbackProperty(() => {
+                            const exag = viewer.scene.verticalExaggeration || 1;
+                            return [
+                                Cesium.Cartesian3.fromRadians(A.longitude, A.latitude, (A.height || 0) * exag),
+                                Cesium.Cartesian3.fromRadians(B.longitude, B.latitude, (B.height || 0) * exag)
+                            ];
+                        }, false),
                         width: 3,
                         material: Cesium.Color.YELLOW,
                         clampToGround: true
@@ -1064,10 +1067,11 @@ function setupEventListeners() {
                 markerA = viewer.entities.add({
                     id: 'A',
                     position: new Cesium.CallbackProperty(() => {
+                        const exag = viewer.scene.verticalExaggeration || 1;
                         if (isDragging && draggedEntity && draggedEntity.id === 'A') {
                             return draggedPosition;
                         }
-                        return Cesium.Cartesian3.fromRadians(A.longitude, A.latitude, A.height || 0);
+                        return Cesium.Cartesian3.fromRadians(A.longitude, A.latitude, (A.height || 0) * exag);
                     }, false),
                     billboard: { image: "icons/target.png", width: 48, height: 48, verticalOrigin: Cesium.VerticalOrigin.BOTTOM, disableDepthTestDistance: 50000, heightReference: Cesium.HeightReference.CLAMP_TO_GROUND },
                     label: {
@@ -1103,10 +1107,11 @@ function setupEventListeners() {
                 markerB = viewer.entities.add({
                     id: 'B',
                     position: new Cesium.CallbackProperty(() => {
+                        const exag = viewer.scene.verticalExaggeration || 1;
                         if (isDragging && draggedEntity && draggedEntity.id === 'B') {
                             return draggedPosition;
                         }
-                        return Cesium.Cartesian3.fromRadians(B.longitude, B.latitude, B.height || 0);
+                        return Cesium.Cartesian3.fromRadians(B.longitude, B.latitude, (B.height || 0) * exag);
                     }, false),
                     billboard: { image: "icons/target.png", width: 48, height: 48, verticalOrigin: Cesium.VerticalOrigin.BOTTOM, disableDepthTestDistance: 50000, heightReference: Cesium.HeightReference.CLAMP_TO_GROUND },
                     label: {
