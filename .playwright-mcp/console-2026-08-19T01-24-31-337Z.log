@@ -1,9 +1,0 @@
-[    1199ms] [LOG] %c欢迎使用CesiumTdt插件，%c该插件由Jason提供，%c目前支持1.120版本 color: green; font-size: 16px; font-weight: bold; color: blue; font-size: 14px; font-style: italic; color: red; font-size: 14px; font-weight: bold; @ http://localhost:8080/lib/cesiumTdt.js:0
-[    5077ms] [LOG] An error occurred in "": Failed to obtain terrain tile X: 52 Y: 12 Level: 5. Error message: "undefined" @ https://cesium.com/downloads/cesiumjs/releases/1.120/Build/Cesium/Cesium.js:85
-[    5527ms] [LOG] An error occurred in "": Failed to obtain terrain tile X: 833 Y: 194 Level: 9. Error message: "undefined" @ https://cesium.com/downloads/cesiumjs/releases/1.120/Build/Cesium/Cesium.js:85
-[    5650ms] [LOG] An error occurred in "": Failed to obtain terrain tile X: 834 Y: 194 Level: 9. Error message: "undefined" @ https://cesium.com/downloads/cesiumjs/releases/1.120/Build/Cesium/Cesium.js:85
-[    5691ms] [LOG] An error occurred in "": Failed to obtain terrain tile X: 835 Y: 194 Level: 9. Error message: "undefined" @ https://cesium.com/downloads/cesiumjs/releases/1.120/Build/Cesium/Cesium.js:85
-[    5813ms] [LOG] An error occurred in "": Failed to obtain terrain tile X: 417 Y: 97 Level: 8. Error message: "undefined" @ https://cesium.com/downloads/cesiumjs/releases/1.120/Build/Cesium/Cesium.js:85
-[    5849ms] [LOG] An error occurred in "": Failed to obtain terrain tile X: 418 Y: 97 Level: 8. Error message: "undefined" @ https://cesium.com/downloads/cesiumjs/releases/1.120/Build/Cesium/Cesium.js:85
-[    6024ms] [LOG] An error occurred in "": Failed to obtain terrain tile X: 419 Y: 96 Level: 8. Error message: "undefined" @ https://cesium.com/downloads/cesiumjs/releases/1.120/Build/Cesium/Cesium.js:85
-[    6024ms] [LOG] An error occurred in "": Failed to obtain terrain tile X: 419 Y: 97 Level: 8. Error message: "undefined" @ https://cesium.com/downloads/cesiumjs/releases/1.120/Build/Cesium/Cesium.js:85

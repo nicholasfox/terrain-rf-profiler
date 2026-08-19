@@ -1,3 +1,0 @@
-[     560ms] [LOG] %c欢迎使用CesiumTdt插件，%c该插件由Jason提供，%c目前支持1.120版本 color: green; font-size: 16px; font-weight: bold; color: blue; font-size: 14px; font-style: italic; color: red; font-size: 14px; font-weight: bold; @ http://localhost:8080/lib/cesiumTdt.js:0
-[     736ms] [WARNING] terrain set failed: TypeError: Cannot set properties of undefined (setting 'selectedTerrain')
-    at http://localhost:8080/?v=25:446:65 @ http://localhost:8080/?v=25:446
