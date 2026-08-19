@@ -337,6 +337,16 @@
 
         let terrainOption = undefined;
         window.geoTerrainProvider = null;
+
+        const terrainViewModels = [
+            new Cesium.ProviderViewModel({
+                name: 'WGS84 Ellipsoid',
+                iconUrl: 'data:image/svg+xml,' + encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" width="48" height="48"><rect width="48" height="48" fill="#555"/><text x="6" y="20" fill="#fff" font-size="11" font-weight="bold">WGS84</text><text x="8" y="36" fill="#ccc" font-size="10">Ellipsoid</text></svg>'),
+                tooltip: 'WGS84椭球体(无地形)',
+                creationFunction: () => new Cesium.EllipsoidTerrainProvider()
+            })
+        ];
+
         if (tdtKey) {
             const terrainUrls = tdtSubdomains.map(s =>
                 `https://t${s}.tianditu.gov.cn/mapservice/swdx?T=elv_c&tk=${tdtKey}`
@@ -345,6 +355,12 @@
                 geoTerrainProvider = new Cesium.GeoTerrainProvider({ urls: terrainUrls });
                 terrainOption = new Cesium.Terrain(geoTerrainProvider);
                 status.terrain = '加载中';
+                terrainViewModels.unshift(new Cesium.ProviderViewModel({
+                    name: '天地图 3D地形',
+                    iconUrl: 'data:image/svg+xml,' + encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" width="48" height="48"><rect width="48" height="48" fill="#3a6a2a"/><text x="6" y="20" fill="#fff" font-size="11" font-weight="bold">天地图</text><text x="4" y="36" fill="#8f8" font-size="10">3D地形</text></svg>'),
+                    tooltip: '天地图3D地形(可倾斜查看起伏)',
+                    creationFunction: () => geoTerrainProvider
+                }));
             } catch (e) {
                 console.error('GeoTerrainProvider 创建失败:', e);
                 status.terrain = '✗失败';
@@ -411,16 +427,24 @@
         if (tdtKey) {
             viewerOptions.imageryProviderViewModels = imageryViewModels;
             viewerOptions.selectedImageryProviderViewModel = imageryViewModels[0];
+            viewerOptions.terrainProviderViewModels = terrainViewModels;
+            viewerOptions.selectedTerrainProviderViewModel = terrainViewModels[0];
             viewerOptions.baseLayerPicker = true;
-            if (terrainOption) {
-                viewerOptions.terrain = terrainOption;
-            }
+        } else {
+            viewerOptions.terrainProviderViewModels = terrainViewModels;
+            viewerOptions.selectedTerrainProviderViewModel = terrainViewModels[0];
+            viewerOptions.baseLayerPicker = true;
         }
 
         const viewer = new Cesium.Viewer('cesiumContainer', viewerOptions);
 
         if (tdtKey) {
-            viewer.baseLayerPicker.viewModel.selectedImagery = imageryViewModels[0];
+            try {
+                viewer.baseLayerPicker.viewModel.selectedImagery = imageryViewModels[0];
+            } catch (e) { console.warn('imagery set failed:', e); }
+            try {
+                viewer.terrainProvider = geoTerrainProvider;
+            } catch (e) { console.warn('terrain set failed:', e); }
             addAnnotationLayer('img');
             currentImageryName = '天地图 影像';
         }
