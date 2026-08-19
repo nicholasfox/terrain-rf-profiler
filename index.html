@@ -840,10 +840,17 @@
             domElements.latBInput.addEventListener("input", debouncedUpdate);
 
             function updateABCoordinates() {
-                lonA = parseFloat(domElements.lonAInput.value);
-                latA = parseFloat(domElements.latAInput.value);
-                lonB = parseFloat(domElements.lonBInput.value);
-                latB = parseFloat(domElements.latBInput.value);
+                const lonAVal = parseFloat(domElements.lonAInput.value);
+                const latAVal = parseFloat(domElements.latAInput.value);
+                const lonBVal = parseFloat(domElements.lonBInput.value);
+                const latBVal = parseFloat(domElements.latBInput.value);
+
+                if (isNaN(lonAVal) || isNaN(latAVal) || isNaN(lonBVal) || isNaN(latBVal)) return;
+                if (lonAVal < -180 || lonAVal > 180 || latAVal < -90 || latAVal > 90) return;
+                if (lonBVal < -180 || lonBVal > 180 || latBVal < -90 || latBVal > 90) return;
+
+                lonA = lonAVal; latA = latAVal;
+                lonB = lonBVal; latB = latBVal;
 
                 A = Cesium.Cartographic.fromDegrees(lonA, latA);
                 B = Cesium.Cartographic.fromDegrees(lonB, latB);
@@ -1315,7 +1322,7 @@
                     }
                 },
                 grid: {
-                    left: 40,
+                    left: 65,
                     right: 40,
                     top: 10,
                     bottom: 25,
@@ -1339,7 +1346,12 @@
 
                 yAxis: {
                     type: "value",
-                    axisLabel: { show: true, color: "#333", fontSize: 11 },
+                    axisLabel: {
+                        show: true,
+                        color: "#333",
+                        fontSize: 11,
+                        formatter: v => v >= 10000 ? (v / 1000).toFixed(1) + 'k' : v.toFixed(0)
+                    },
                     axisTick: { show: true },
                     axisLine: { show: true },
                     splitLine: { show: false }
