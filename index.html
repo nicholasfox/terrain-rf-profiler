@@ -496,8 +496,6 @@
             }
         });
 
-        viewer.scene.screenSpaceCameraController.enableTilt = false;
-
         viewer.camera.setView({
             orientation: {
                 heading: 0,
@@ -510,17 +508,6 @@
         let isSampling = false;
 
         viewer.camera.changed.addEventListener(() => {
-            if (Math.abs(viewer.camera.pitch - (CONSTANTS.CAMERA_PITCH)) > 0.001) {
-                viewer.camera.setView({
-                    orientation: {
-                        heading: viewer.camera.heading,
-                        pitch: CONSTANTS.CAMERA_PITCH,
-                        roll: 0
-                    }
-                });
-                return;
-            }
-
             if (domElements.elevRampToggle.checked) {
                 if (debounceTimer) clearTimeout(debounceTimer);
 
@@ -997,11 +984,11 @@
             const carto = Cesium.Cartographic.fromCartesian(cartesian);
 
             if (pickState === 0) {
-                A = new Cesium.Cartographic(carto.longitude, carto.latitude, 0);
+                A = new Cesium.Cartographic(carto.longitude, carto.latitude, carto.height || 0);
                 pickState = 1;
 
             } else {
-                B = new Cesium.Cartographic(carto.longitude, carto.latitude, 0);
+                B = new Cesium.Cartographic(carto.longitude, carto.latitude, carto.height || 0);
                 pickState = 0;
                 pickingAB = false;
                 domElements.pickAB.innerText = "选点模式";
