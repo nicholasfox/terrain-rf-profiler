@@ -808,19 +808,16 @@ function setupEventListeners() {
         domElements.latBInput.value = latB.toFixed(6);
 
         function updateLabelColors() {
-            const provider = viewer.imageryProvider;
-            let isOSM = false;
-            if (provider && provider.url) {
-                isOSM = provider.url.includes('openstreetmap') || provider.url.includes('img_w') || provider.url.includes('vec_w');
-            }
-
-            const fillColor = isOSM ? Cesium.Color.RED : Cesium.Color.RED;
+            const fillColor = Cesium.Color.WHITE;
+            const outlineColor = Cesium.Color.BLACK;
 
             if (markerA && markerA.label) {
                 markerA.label.fillColor = fillColor;
+                markerA.label.outlineColor = outlineColor;
             }
             if (markerB && markerB.label) {
                 markerB.label.fillColor = fillColor;
+                markerB.label.outlineColor = outlineColor;
             }
 
             viewer.scene.requestRender();
@@ -1043,8 +1040,6 @@ function setupEventListeners() {
                     }
                 });
             }
-
-            const labelFillColor = Cesium.Color.RED;
 
             if (!markerA) {
                 markerA = viewer.entities.add({
