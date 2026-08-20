@@ -78,14 +78,13 @@
 
 Download `los.exe` from [Releases](https://github.com/nicholasfox/terrain-rf-profiler/releases). Double-click to run — no installation, no internet required (first use requires Tianditu key configuration).
 
-### 方式二：浏览器直接打开 | Browser
+### 方式二：浏览器本地运行 | Browser (Local)
 
-直接在浏览器中打开 `index.html` 即可（需要联网加载天地图地形瓦片）。
+需要启动本地 HTTP 服务（直接打开 `index.html` 会因 CORS 限制无法加载地形数据）：
 
-Open `index.html` directly in your browser (requires internet for Tianditu terrain tiles).
+You need a local HTTP server (opening `index.html` directly will fail to load terrain tiles due to CORS):
 
 ```bash
-# 或本地启动服务 | Or serve locally
 python3 -m http.server 8080
 # → http://localhost:8080
 ```
