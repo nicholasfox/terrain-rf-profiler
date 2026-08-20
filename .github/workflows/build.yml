@@ -1,0 +1,48 @@
+name: Build Windows x64
+
+on:
+  push:
+    branches: [main, feature/tianditu-terrain]
+  workflow_dispatch:
+
+jobs:
+  build-windows:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install Rust stable
+        uses: dtolnay/rust-toolchain@stable
+        with:
+          targets: x86_64-pc-windows-msvc
+
+      - name: Install Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Install Tauri CLI
+        run: cargo install tauri-cli
+
+      - name: Install Windows WebView2 SDK (if needed by Tauri)
+        shell: bash
+        run: echo "Tauri v2 handles WebView2 automatically"
+
+      - name: Build Tauri app
+        run: cargo tauri build --target x86_64-pc-windows-msvc
+        working-directory: src-tauri
+
+      - name: Find executable
+        id: find-exe
+        shell: bash
+        run: |
+          EXE=$(find src-tauri/target/x86_64-pc-windows-msvc/release -name "los.exe" -type f | head -1)
+          echo "path=$EXE" >> "$GITHUB_OUTPUT"
+          echo "Found: $EXE"
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: LOS-Windows-x64
+          path: ${{ steps.find-exe.outputs.path }}
+          if-no-files-found: error

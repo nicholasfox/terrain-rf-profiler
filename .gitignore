@@ -3,3 +3,8 @@ index备份.html
 效果挺好
 key.txt
 .playwright-mcp/
+
+# Tauri build artifacts
+src-tauri/target/
+*.tar.gz
+*.zip
