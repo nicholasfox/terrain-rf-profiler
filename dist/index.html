@@ -101,6 +101,10 @@
                 <button id="clearSelectionBtn" style="font-size:12px;margin-left:5px;">清除选区</button>
             </span>
         </div>
+        <div style="margin-top:5px;">
+            <button id="clearCacheBtn" style="font-size:12px;" title="清除瓦片缓存，修复地图加载异常">清除瓦片缓存</button>
+            <span id="cacheResult" style="margin-left:5px;font-size:11px;color:#666;"></span>
+        </div>
     </div>
 
     <script>
@@ -165,7 +169,9 @@
             rampMaxVal: document.getElementById("rampMaxVal"),
             regionControl: document.getElementById("regionControl"),
             rectSelectBtn: document.getElementById("rectSelectBtn"),
-            clearSelectionBtn: document.getElementById("clearSelectionBtn")
+            clearSelectionBtn: document.getElementById("clearSelectionBtn"),
+            clearCacheBtn: document.getElementById("clearCacheBtn"),
+            cacheResult: document.getElementById("cacheResult")
         };
 
         const ConfigManager = {
@@ -814,6 +820,27 @@ function setupEventListeners() {
 
             domElements.clearSelectionBtn.onclick = () => {
                 clearSelection();
+            };
+
+            domElements.clearCacheBtn.onclick = async () => {
+                const el = domElements.cacheResult;
+                el.textContent = '清除中...';
+                el.style.color = '#666';
+                let cleared = 0;
+                try {
+                    if ('caches' in window) {
+                        const keys = await caches.keys();
+                        for (const key of keys) {
+                            await caches.delete(key);
+                            cleared++;
+                        }
+                    }
+                } catch (e) {}
+                try { localStorage.removeItem('los_config'); } catch (e) {}
+                try { sessionStorage.clear(); } catch (e) {}
+                el.textContent = `已清除 ${cleared} 个缓存，刷新中...`;
+                el.style.color = '#0a0';
+                setTimeout(() => location.reload(true), 600);
             };
 
             function clearSelection() {
