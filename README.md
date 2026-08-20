@@ -3,7 +3,7 @@
 > **RF Line-of-Sight / 地形通视分析** — A single-page 3D terrain analysis tool built with CesiumJS + ECharts.  
 > 基于 CesiumJS + ECharts 的单页 3D 地形射频通视分析工具。
 
-[![Cesium](https://img.shields.io/badge/Cesium-1.105-blue)](https://cesium.com)
+[![Cesium](https://img.shields.io/badge/Cesium-1.120-blue)](https://cesium.com)
 [![ECharts](https://img.shields.io/badge/ECharts-5-orange)](https://echarts.apache.org)
 [![License](https://img.shields.io/badge/license-MIT-green)](LICENSE)
 
@@ -12,18 +12,10 @@
 ## 目录 | Table of Contents
 
 - [功能概览 | Features](#功能概览--features)
-- [灵感来源 | Inspiration](#灵感来源--inspiration)
+- [截图预览 | Screenshots](#截图预览--screenshots)
 - [快速开始 | Quick Start](#快速开始--quick-start)
+- [天地图 Key 申请 | Tianditu API Key](#天地图-key-申请--tianditu-api-key)
 - [使用说明 | Usage Guide](#使用说明--usage-guide)
-  - [1. 默认界面 | Default Interface](#1-默认界面--default-interface)
-  - [2. 调节天线高度与频率 | Adjust Antenna & Frequency](#2-调节天线高度与频率--adjust-antenna--frequency)
-  - [3. 空气折射 (K 因子) | Atmospheric Refraction](#3-空气折射-k-因子--atmospheric-refraction)
-  - [4. 切换卫星图底图 | Switch to Satellite Imagery](#4-切换卫星图底图--switch-to-satellite-imagery)
-  - [5. 选点模式 | Point Picking Mode](#5-选点模式--point-picking-mode)
-  - [6. 地形色谱图（等待选区）| Elevation Ramp (Awaiting Selection)](#6-地形色谱图等待选区--elevation-ramp-awaiting-selection)
-  - [7. 矩形选区与色谱着色 | Rectangle Selection & Chromatogram](#7-矩形选区与色谱着色--rectangle-selection--chromatogram)
-  - [8. 图表光标同步 | Chart Hover Sync](#8-图表光标同步--chart-hover-sync)
-- [控制面板总览 | Control Panel Overview](#控制面板总览--control-panel-overview)
 - [技术细节 | Technical Details](#技术细节--technical-details)
 
 ---
@@ -37,11 +29,13 @@
 | **天线高度** | 分别设置 A/B 两点天线高度 (0–6000m) |
 | **频率设置** | 调整工作频率，菲涅尔区半径自动重算 |
 | **空气折射** | K=4/3 地球曲率修正，图表显示对比参考线 |
-| **底图切换** | OpenStreetMap ↔ ArcGIS 全球卫星影像 |
+| **起伏夸张** | 地形高度1x–5x 垂直夸张，图表同步联动 |
+| **地形色谱图** | 全球范围 BGYW 伪彩色高度着色，可手动调节最低/最高海拔范围 |
+| **天地图地形** | 使用天地图3D地形瓦片，中文地名标注层 |
+| **3D 自由视角** | 支持自由旋转/倾斜/缩放地球场景 |
 | **选点模式** | 点击地图直接选取 A/B 位置 |
-| **地形色谱图** | 3D 球面地形高度伪彩色着色，可调节 Gamma |
-| **矩形选区** | 在地图上划定色谱分析区域 |
-| **光标同步** | 图表悬停时 3D 场景对应位置红色标记联动 |
+| **光标同步** | 图表悬停时3D场景对应位置红色标记联动 |
+| **桌面应用** | Windows x64 桌面版，离线运行 |
 
 | Feature | Description |
 |---------|-------------|
@@ -50,33 +44,110 @@
 | **Antenna Height** | Independent height setting for each endpoint (0–6000m) |
 | **Frequency** | Adjust operating frequency; Fresnel radius recalculated automatically |
 | **Refraction** | K=4/3 Earth curvature correction with comparison reference line |
-| **Base Map** | Toggle between OpenStreetMap and ArcGIS World Imagery |
+| **Vertical Exaggeration** | Terrain height1x–5x vertical exaggeration, synced to chart |
+| **Elevation Ramp** | BGYW pseudo-color overlay across the full globe, with manual min/max elevation range |
+| **Tianditu Terrain** | 3D terrain tiles from Tianditu, Chinese place name annotation layer |
+| **3D Free View** | Free orbit/tilt/zoom on the globe |
 | **Pick Mode** | Click directly on the globe to set A/B points |
-| **Elevation Ramp** | Pseudo-color elevation overlay on the 3D globe, with Gamma control |
-| **Rectangular Selection** | Draw a region on the map for chromatogram analysis |
 | **Hover Sync** | Hover on chart → red dot follows on the 3D scene |
+| **Desktop App** | Windows x64 standalone build, offline capable |
 
-## 灵感来源 | Inspiration
+---
 
-**中文**  
-本工具的功能设计参考了 [HeyWhatsThat Path Profiler](https://heywhatsthat.com/profiler.html) 和 **Google Earth** 的地形剖面功能，并在此基础上增加了 **3D 地形色谱图** —— 通过伪彩色着色在球面上直观展示地形高度分布，方便快速分析选点。与此同时，本工具将射频通视分析（LOS、菲涅尔区、K 因子空气折射）与 3D 地理场景深度集成，为无线链路规划提供一站式可视化支撑。
+## 截图预览 | Screenshots
 
-**English**  
-This tool's feature design draws inspiration from the [HeyWhatsThat Path Profiler](https://heywhatsthat.com/profiler.html) and **Google Earth**'s terrain profile capabilities. On top of that, it adds a **3D elevation chromatogram** — a pseudo-color overlay on the globe that visualizes terrain height distribution for rapid site selection. It also deeply integrates RF line-of-sight analysis (LOS, Fresnel zones, K-factor refraction) with the 3D geospatial scene, providing an all-in-one visualization tool for wireless link planning.
+### 默认界面 | Default Interface
+![Default Interface](screenshots/01_default.png)
+
+### 卫星图底图 | Satellite Imagery
+![Satellite Imagery](screenshots/04_satellite.png)
+
+### 地形色谱图 | Elevation Ramp
+![Chromatogram](screenshots/07_chromatogram_active.png)
+
+### 控制面板 | Control Panel
+![Control Panel](screenshots/09_control_panel.png)
 
 ---
 
 ## 快速开始 | Quick Start
 
-**Open directly / 直接打开**
+### 方式一：Windows 桌面应用（推荐）| Desktop App (Recommended)
 
-Just open `index.html` in a browser (requires internet for CesiumJS, ECharts, and terrain tiles).  
-直接在浏览器中打开 `index.html` 即可（需要联网加载 CesiumJS、ECharts 及地形瓦片）。
+从 [Releases](https://github.com/nicholasfox/terrain-rf-profiler/releases) 页面下载 `los.exe`，双击运行即可。无需安装，无需联网（首次使用需配置天地图 Key）。
+
+Download `los.exe` from [Releases](https://github.com/nicholasfox/terrain-rf-profiler/releases). Double-click to run — no installation, no internet required (first use requires Tianditu key configuration).
+
+### 方式二：浏览器直接打开 | Browser
+
+直接在浏览器中打开 `index.html` 即可（需要联网加载天地图地形瓦片）。
+
+Open `index.html` directly in your browser (requires internet for Tianditu terrain tiles).
 
 ```bash
-# Or serve locally / 或本地启动服务
+# 或本地启动服务 | Or serve locally
 python3 -m http.server 8080
 # → http://localhost:8080
+```
+
+---
+
+## 天地图 Key 申请 | Tianditu API Key
+
+本工具使用 **天地图** 提供地形数据和地名标注，需要一个天地图 API Key 才能正常使用。
+
+This tool uses **Tianditu** for terrain data and place name annotations. A Tianditu API key is required.
+
+### 申请步骤 | How to Apply
+
+1. 打开天地图开放平台：https://console.tianditu.gov.cn/
+   Open Tianditu Console: https://console.tianditu.gov.cn/
+
+2. 点击 **"注册"** 注册一个天地图账号（支持手机号注册）
+   Click **"Register"** to create a Tianditu account (phone number supported)
+
+3. 登录后进入控制台，点击 **"创建新应用"**
+   After login, click **"Create New Application"**
+
+4. 填写应用信息：
+   Fill in the application details:
+   - **应用名称**（Application Name）：任意填写，如 `RF Profiler`
+   - **应用类型**（Application Type）：选择 **"浏览器端"**
+   - **域名白名单**：如果是本地使用，填写 `*` 或 `localhost`
+
+5. 点击 **"创建"**，即可获得一个 **Key**（32位字符串，如 `3434e0337ed4d651277ec7e690a61b4c`）
+   Click **"Create"** to get a **Key** (32-character string)
+
+### 配置方法 | Configuration
+
+#### 桌面版 | Desktop App
+
+首次运行 `los.exe` 时，程序所在目录会生成一个 `key.txt` 文件。用文本编辑器打开，将你的 Key 粘贴进去保存即可。
+
+When you first run `los.exe`, a `key.txt` file is created in the same directory. Open it with a text editor, paste your key, and save.
+
+```
+# key.txt 内容示例 | Example key.txt content
+3434e0337ed4d651277ec7e690a61b4c
+```
+
+#### 浏览器版 | Browser
+
+在 `index.html` 中找到以下行，将 `YOUR_KEY` 替换为你的 Key：
+
+In `index.html`, find the following line and replace `YOUR_KEY` with your key:
+
+```javascript
+const TIANDITU_KEY = localStorage.getItem('tianditu_key') || 'YOUR_KEY';
+```
+
+或者在浏览器控制台执行（会保存到 localStorage）：
+
+Or run in browser console (saves to localStorage):
+
+```javascript
+localStorage.setItem('tianditu_key', '你的Key');
+location.reload();
 ```
 
 ---
@@ -88,10 +159,10 @@ python3 -m http.server 8080
 ![Default Interface](screenshots/01_default.png)
 
 **中文**  
-页面加载后，自动在广东沿海（A: 111.27°E, 22.27°N / B: 112.94°E, 22.18°N）生成两点，并采样地形绘制截面分析图。上方为 3D 地球场景，下方为 ECharts 路径分析图表。
+页面加载后，自动在广东沿海（A: 111.27°E, 22.27°N / B: 112.94°E, 22.18°N）生成两点，采样天地图地形绘制截面分析图。上方为3D地球场景，下方为 ECharts 路径分析图表。
 
 **English**  
-On load, the app places two default markers near the Guangdong coast and samples terrain to draw the profile chart. The 3D globe occupies the upper area; the ECharts profile chart sits at the bottom.
+On load, the app places two default markers near the Guangdong coast, samples Tianditu terrain, and draws the profile chart. The 3D globe occupies the upper area; the ECharts profile chart sits at the bottom.
 
 ---
 
@@ -112,13 +183,13 @@ The left control panel allows independent antenna height (meters) and frequency 
 ![Refraction K=4/3](screenshots/03_refraction.png)
 
 **中文**  
-勾选 **"考虑折射 (K=4/3)"** 后，地球曲率将按等效地球半径（~8493 km）计算。图表中：
+勾选 **"考虑折射 (K = 4/3)"** 后，地球曲率将按等效地球半径（~8495 km）计算。图表中：
 - 地形/曲率线按 K=4/3 修正隆起
 - 灰色虚线为 K=1（无折射）对比参考线
 - 状态栏显示有效地球半径值
 
 **English**  
-Check **"考虑折射 (K=4/3)"** to apply the effective Earth radius (~8493 km) for curvature correction. The chart shows:
+Check **"考虑折射 (K = 4/3)"** to apply the effective Earth radius (~8495 km) for curvature correction. The chart shows:
 - Terrain/curvature lines corrected for K=4/3
 - A gray dashed K=1 (no refraction) reference line
 - Effective radius displayed in the status bar
@@ -130,10 +201,10 @@ Check **"考虑折射 (K=4/3)"** to apply the effective Earth radius (~8493 km) 
 ![Satellite Imagery](screenshots/04_satellite.png)
 
 **中文**  
-点击右上角 **图层切换按钮**，可在 OpenStreetMap 与 ArcGIS 全球卫星影像之间切换。标记颜色自动适配浅色/深色底图。
+点击右上角 **图层切换按钮**，可在天地图标准地图与卫星影像之间切换。天地图自动叠加中文地名标注层。标记颜色自动适配浅色/深色底图。
 
 **English**  
-Click the **layer switcher** (top-right) to toggle between OpenStreetMap and ArcGIS World Imagery. Marker colors adapt automatically to the base map.
+Click the **layer switcher** (top-right) to toggle between Tianditu standard map and satellite imagery. Tianditu automatically overlays Chinese place name annotations. Marker colors adapt to the base map.
 
 ---
 
@@ -149,35 +220,33 @@ Click **"选点模式"** (Pick Mode). The button changes to "点击地图选 A/B
 
 ---
 
-### 6. 地形色谱图（等待选区）| Elevation Ramp (Awaiting Selection)
-
-![Chromatogram Waiting](screenshots/06_chromatogram_waiting.png)
-
-**中文**  
-勾选 **"地形色谱图"** 后，顶部出现 Gamma 滑块和选区控制。此时因尚未划定选区，状态栏显示 **"等待选区"**，3D 场景暂无色谱覆盖。
-
-**English**  
-Check **"地形色谱图"** (Elevation Ramp). The Gamma slider and selection controls appear. Without a selection region, the status bar shows **"等待选区"** (Awaiting Selection) and no color overlay is applied.
-
----
-
-### 7. 矩形选区与色谱着色 | Rectangle Selection & Chromatogram
+### 6. 地形色谱图 | Elevation Ramp
 
 ![Chromatogram Active](screenshots/07_chromatogram_active.png)
 
 **中文**  
-点击 **"矩形选区"** 按钮进入选区模式，在地图上拖拽画出矩形区域。松开后：
-- 3D 球面按地形高度着色（蓝→绿→黄→红→白）
-- 左上方显示色谱图例
-- 状态栏显示采样进度和完成状态
-- 可通过 **Gamma 滑块** 调节颜色分布的非线性度
+勾选 **"地形色谱图"** 后，3D 地球表面按地形高度进行伪彩色着色（蓝→青→绿→黄→白，即 BGYW 色图）。左下角显示颜色图例。
+
+通过 **最低/最高** 两个滑块可手动调节色谱的海拔映射范围：
+- **最低**：色谱蓝端对应的海拔（默认0m）
+- **最高**：色谱白端对应的海拔（默认1430m）
 
 **English**  
-Click **"矩形选区"** (Rectangle Select) to enter selection mode, then drag on the globe to draw a rectangle. On release:
-- The 3D globe is colorized by elevation (blue→green→yellow→red→white)
-- A color legend appears top-left
-- The status bar shows sampling progress and completion
-- Use the **Gamma slider** to adjust color distribution nonlinearity
+Check **"地形色谱图"** (Elevation Ramp) to apply pseudo-color elevation overlay on the globe (blue→cyan→green→yellow→white, BGYW colormap). A color legend appears at bottom-left.
+
+Use the **最低/最高** (min/max) sliders to adjust the elevation mapping range:
+- **最低 (Min)**: Elevation for the blue end (default 0m)
+- **最高 (Max)**: Elevation for the white end (default 1430m)
+
+---
+
+### 7. 起伏夸张 | Vertical Exaggeration
+
+**中文**  
+**起伏夸张** 滑块（1.0x–5.0x）可对地形高度进行垂直夸张，使地形起伏更加明显。调整时3D 地球场景和下方分析图表同步联动。
+
+**English**  
+The **起伏夸张** (Vertical Exaggeration) slider (1.0x–5.0x) amplifies terrain height for clearer visualization. Changes apply to both the 3D globe and the profile chart simultaneously.
 
 ---
 
@@ -204,7 +273,8 @@ Hover over the profile chart and a **red dot** appears on the 3D globe at the co
 3. **A/B 坐标** — 经纬度手动输入，支持实时编辑
 4. **选点模式** — 切换到地图点击选点
 5. **空气折射** — K=4/3 复选框
-6. **地形色谱** — 主开关 + Gamma 调节 + 矩形选区/清除
+6. **起伏夸张** — 1x–5x 垂直夸张滑块
+7. **地形色谱图** — 主开关 + 最低/最高海拔范围滑块
 
 **English**  
 All controls are grouped in the left panel, top to bottom:
@@ -213,32 +283,61 @@ All controls are grouped in the left panel, top to bottom:
 3. **A/B Coordinates** — manual lat/lon with real-time editing
 4. **Pick Mode** — switch to globe click-selection
 5. **Refraction** — K=4/3 toggle
-6. **Elevation Ramp** — master toggle, Gamma adjustment, rectangle select & clear
+6. **Vertical Exaggeration** — 1x–5x terrain height multiplier
+7. **Elevation Ramp** — master toggle, min/max elevation range sliders
+
+---
+
+## 与 main 分支的主要差异 | Changes from Main
+
+| 改动 | 说明 |
+|------|------|
+| **地形数据源** | 从 ArcGIS 地形 → 天地图3D地形瓦片 |
+| **地名标注** | 新增天地图中文地名叠加层 |
+| **起伏夸张** | 新增1x–5x 垂直夸张滑块 |
+| **地形色谱图** | 从矩形选区模式 → 全球范围 BGYW 色图 + 手动最低/最高范围 |
+| **3D 视角** | 解锁自由旋转/倾斜/缩放 |
+| **桌面应用** | 新增 Tauri v2 Windows x64 打包 |
+| **CesiumJS** | 1.105 → 1.120（兼容天地图） |
+| **CDN 本地化** | 所有外部 CDN 资源移至本地 lib/ 目录 |
+
+| Change | Description |
+|--------|-------------|
+| **Terrain Source** | ArcGIS terrain → Tianditu 3D terrain tiles |
+| **Place Names** | Added Tianditu Chinese annotation overlay |
+| **Vertical Exaggeration** | New1x–5x terrain height slider |
+| **Elevation Ramp** | Rectangle selection → full-globe BGYW colormap with min/max range |
+| **3D View** | Unlocked free orbit/tilt/zoom |
+| **Desktop App** | Tauri v2 Windows x64 packaging |
+| **CesiumJS** | 1.105 → 1.120 (Tianditu compatibility) |
+| **CDN Localization** | All external CDNs moved to local lib/ |
 
 ---
 
 ## 技术细节 | Technical Details
 
 ### Stack
-- **CesiumJS 1.105** — 3D globe, terrain sampling, elevation ramp material
+- **CesiumJS 1.120** — 3D globe, Tianditu terrain sampling, BGYW elevation ramp shader
 - **ECharts 5** — interactive profile chart
+- **Tianditu** — terrain tiles, satellite imagery, Chinese place name annotations
+- **Tauri v2** — Windows x64 desktop packaging (optional)
 - **Vanilla JS** — no framework, no bundler, single HTML file
 
 ### Key Concepts
 
 | 概念 | 说明 |
 |------|------|
-| **采样** | `Cesium.sampleTerrainMostDetailed` 批量异步采样，32 点/批，15 秒超时 |
-| **色谱** | 自定义 Globe Material，基于高度分段线性插色，Gamma 幂次映射 |
-| **选区** | 自适应网格 (12×12 ~ 20×20)，5% 缓冲区，最小高度范围 1m |
+| **地形采样** | 通过天地图地形瓦片 API (XHR) 获取150×150 Int16 LE 高程网格 |
+| **色谱着色** | 自定义 Globe Material，BGYW 色图线性插色 + Gamma 幂次映射 |
 | **菲涅尔区** | `F1 = sqrt(λ × d1 × d2 / D)`，60% 半径作为容限 |
 | **K 因子** | 有效地球半径 `Re = R × K`，曲率修正 `x(D-x)/(2RK)` |
+| **瓦片坐标** | URL level L = GeographicTilingScheme level (L-1) |
 
 ### Performance Notes
-- Chromatogram sampling runs in **batches of 32** with progress updates
-- Camera movement triggers **debounced** re-sampling (300ms debounce + 2s throttle)
-- High-point refinement was removed to save 2–3× time in sampling
-- Shader-based color mapping runs at <0.1% GPU cost (global material)
+- 色谱采样以 **32 点/批** 运行，带进度更新
+- 摄像机移动触发 **防抖** 重采样（300ms 防抖 + 2s 节流）
+- Shader 着色 GPU 开销 <0.1%（全局材质）
+- CesiumJS 及所有依赖资源已**本地化**，无需外部 CDN
 
 ---
 
