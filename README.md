@@ -115,7 +115,7 @@ This tool uses **Tianditu** for terrain data and place name annotations. A Tiand
    - **应用类型**（Application Type）：选择 **"浏览器端"**
    - **域名白名单**：如果是本地使用，填写 `*` 或 `localhost`
 
-5. 点击 **"创建"**，即可获得一个 **Key**（32位字符串，如 `3434e0337ed4d651277ec7e690a61b4c`）
+5. 点击 **"创建"**，即可获得一个 **Key**（32位字符串，如 `xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx`）
    Click **"Create"** to get a **Key** (32-character string)
 
 ### 配置方法 | Configuration
@@ -128,7 +128,7 @@ When you first run `los.exe`, a `key.txt` file is created in the same directory.
 
 ```
 # key.txt 内容示例 | Example key.txt content
-3434e0337ed4d651277ec7e690a61b4c
+xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 ```
 
 #### 浏览器版 | Browser
